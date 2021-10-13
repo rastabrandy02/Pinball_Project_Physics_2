@@ -28,12 +28,12 @@ public:
 
 	int GetMouseX() const
 	{
-		return mouse_x;
+		return mouse_x * SCREEN_SIZE;
 	}
 
 	int GetMouseY() const
 	{
-		return mouse_y;
+		return mouse_y * SCREEN_SIZE;
 	}
 
 private:

@@ -30,6 +30,85 @@ bool ModuleSceneIntro::Start()
 	rick = App->textures->Load("pinball/rick_head.png");
 	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
 
+
+	//load UI elements
+	game_icon = App->textures->Load("pinball/UI_elements/icon.png");
+	audio_icon = App->textures->Load("pinball/UI_elements/audio_icon.png");
+	bestscore = App->textures->Load("pinball/UI_elements/bestscore.png");
+	bg_menu = App->textures->Load("pinball/UI_elements/bg_menu.png");
+	but_credits = App->textures->Load("pinball/UI_elements/but_credits.png");
+	but_exit = App->textures->Load("pinball/UI_elements/but_exit.png");
+	but_fullscreen = App->textures->Load("pinball/UI_elements/but_fullscreen.png");
+	but_home = App->textures->Load("pinball/UI_elements/but_home.png");
+	but_no = App->textures->Load("pinball/UI_elements/but_no.png");
+	but_yes = App->textures->Load("pinball/UI_elements/but_yes.png");
+	but_play = App->textures->Load("pinball/UI_elements/but_play.png");
+	but_restart = App->textures->Load("pinball/UI_elements/but_restart.png");
+	but_settings = App->textures->Load("pinball/UI_elements/but_settings.png");
+	but_start = App->textures->Load("pinball/UI_elements/but_start.png");
+	credits_panel = App->textures->Load("pinball/UI_elements/credits_panel.png");
+	ctl_logo = App->textures->Load("pinball/UI_elements/ctl_logo.png");
+	extra_ball = App->textures->Load("pinball/UI_elements/extra_ball.png");
+	hand_anim = App->textures->Load("pinball/UI_elements/hand_anim.png");
+	keys = App->textures->Load("pinball/UI_elements/keys.png");
+	msg_box = App->textures->Load("pinball/UI_elements/msg_box.png");
+	progress_bar = App->textures->Load("pinball/UI_elements/progress_bar.png");
+	score_panel = App->textures->Load("pinball/UI_elements/score_panel.png");
+	star = App->textures->Load("pinball/UI_elements/star.png");
+
+	//load pinball elements
+	pinball_bg = App->textures->Load("pinball/pinball_elements/pinball_bg.png");
+	arrow_light_0 = App->textures->Load("pinball/pinball_elements/arrow_light_0.png");
+	arrow_light_1 = App->textures->Load("pinball/pinball_elements/arrow_light_1.png");
+	arrow_start = App->textures->Load("pinball/pinball_elements/arrow_start.png");
+	ball = App->textures->Load("pinball/pinball_elements/ball.png");
+	bumper = App->textures->Load("pinball/pinball_elements/bumper.png");
+	bumper_button = App->textures->Load("pinball/pinball_elements/bumper_button.png");
+	button_light_0 = App->textures->Load("pinball/pinball_elements/button_light_0.png");
+	button_light_1 = App->textures->Load("pinball/pinball_elements/button_light_1.png");
+	button_light_2 = App->textures->Load("pinball/pinball_elements/button_light_2.png");
+	button_light_3 = App->textures->Load("pinball/pinball_elements/button_light_3.png");
+	button_light_4 = App->textures->Load("pinball/pinball_elements/button_light_4.png");
+	button_light_5 = App->textures->Load("pinball/pinball_elements/button_light_5.png");
+	capsule_0 = App->textures->Load("pinball/pinball_elements/capsule_0.png");
+	capsule_1 = App->textures->Load("pinball/pinball_elements/capsule_1.png");
+	capsule_2 = App->textures->Load("pinball/pinball_elements/capsule_2.png");
+	capsule_3 = App->textures->Load("pinball/pinball_elements/capsule_3.png");
+	curve_light_button = App->textures->Load("pinball/pinball_elements/curve_light_button.png");
+	curve_tunnel = App->textures->Load("pinball/pinball_elements/curve_tunnel.png");
+	eye = App->textures->Load("pinball/pinball_elements/eye.png");
+	flipper = App->textures->Load("pinball/pinball_elements/flipper.png");
+	flipper_bumper = App->textures->Load("pinball/pinball_elements/flipper_bumper.png");
+	gate = App->textures->Load("pinball/pinball_elements/gate.png");
+	hole = App->textures->Load("pinball/pinball_elements/hole.png");
+	jackpot = App->textures->Load("pinball/pinball_elements/jackpot.png");
+	jumper = App->textures->Load("pinball/pinball_elements/jumper.png");
+	letter_P = App->textures->Load("pinball/pinball_elements/letter_0.png");
+	letter_I = App->textures->Load("pinball/pinball_elements/letter_1.png");
+	letter_N = App->textures->Load("pinball/pinball_elements/letter_2.png");
+	letter_B = App->textures->Load("pinball/pinball_elements/letter_3.png");
+	letter_A = App->textures->Load("pinball/pinball_elements/letter_4.png");
+	letter_L0 = App->textures->Load("pinball/pinball_elements/letter_5.png");
+	letter_L1 = App->textures->Load("pinball/pinball_elements/letter_6.png");
+	light_indicator_0 = App->textures->Load("pinball/pinball_elements/light_indicator_0.png");
+	light_indicator_1 = App->textures->Load("pinball/pinball_elements/light_indicator_1.png");
+	light_indicator_2 = App->textures->Load("pinball/pinball_elements/light_indicator_2.png");
+	logo = App->textures->Load("pinball/pinball_elements/logo.png");
+	multiplier_light = App->textures->Load("pinball/pinball_elements/multiplier_light.png");
+	multiplier_toggle_light = App->textures->Load("pinball/pinball_elements/multiplier_toggle_light.png");
+	router_light_0 = App->textures->Load("pinball/pinball_elements/router_light_0.png");
+	router_light_1 = App->textures->Load("pinball/pinball_elements/router_light_1.png");
+	router_light_2 = App->textures->Load("pinball/pinball_elements/router_light_2.png");
+	router_light_3 = App->textures->Load("pinball/pinball_elements/router_light_3.png");
+	router_light_4 = App->textures->Load("pinball/pinball_elements/router_light_4.png");
+	router_light_5 = App->textures->Load("pinball/pinball_elements/router_light_5.png");
+	router_light_6 = App->textures->Load("pinball/pinball_elements/router_light_6.png");
+	safe_pin = App->textures->Load("pinball/pinball_elements/safe_pin.png");
+	shield = App->textures->Load("pinball/pinball_elements/shield.png");
+	spring = App->textures->Load("pinball/pinball_elements/spring.png");
+	start_platform = App->textures->Load("pinball/pinball_elements/start_platform.png");
+	tunnel_start = App->textures->Load("pinball/pinball_elements/tunnel_start.png");
+
 	// TODO: Homework - create a sensor
 
 	return ret;
@@ -116,6 +195,8 @@ update_status ModuleSceneIntro::Update()
 
 	// All draw functions ------------------------------------------------------
 	p2List_item<PhysBody*>* c = circles.getFirst();
+
+	App->renderer->Blit(pinball_bg, 0, 0, nullptr);
 
 	while(c != NULL)
 	{
