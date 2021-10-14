@@ -109,6 +109,7 @@ bool ModuleSceneIntro::Start()
 	start_platform = App->textures->Load("pinball/pinball_elements/start_platform.png");
 	tunnel_start = App->textures->Load("pinball/pinball_elements/tunnel_start.png");
 
+
 	//Create all the walls
 	
 	walls.add(App->physics->CreateStaticChain(0, 0, mainWalls, 102));
@@ -118,6 +119,117 @@ bool ModuleSceneIntro::Start()
 	walls.add(App->physics->CreateStaticChain(0, 0, rightRedIsland, 12));
 	walls.add(App->physics->CreateStaticChain(0, 0, bigIsland, 24));
 	walls.add(App->physics->CreateStaticChain(0, 0, littleIsland, 18));
+
+	r_arrow_light_0[0] = { 0,0,230 / 2,140 };
+	r_arrow_light_0[1] = { 230 / 2,0,230,140 };
+	r_arrow_light_1[0] = { 0,0,230 / 2,140 };
+	r_arrow_light_1[1] = { 230 / 2,0,230,140 };
+	r_arrow_start[0] = { 0,0,148 / 2,67 };
+	r_arrow_start[1] = { 148 / 2,0,148,67 };
+
+	for (int i = 0; i < 7; i++)
+	{
+		r_bumper[i] = { 1218 / 7 * i,0,1218 / 7 * (i + 1),348 / 2 };
+	}
+	for (int i = 0; i < 7; i++)
+	{
+		r_bumper[i + 7] = { 1218 / 7 * i,348 / 2,1218 / 7 * (i + 1),348 };
+	}
+
+	r_bumper_button[0] = { 0,0,46 / 2,74 };
+	r_bumper_button[1] = { 46 / 2,0,46,74 };
+	r_button_light_0[0] = { 0,0,188 / 2,94 };
+	r_button_light_0[1] = { 188 / 2,0,188,94 };
+	r_button_light_1[0] = { 0,0,188 / 2,94 };
+	r_button_light_1[1] = { 188 / 2,0,188,94 };
+	r_button_light_2[0] = { 0,0,188 / 2,94 };
+	r_button_light_2[1] = { 188 / 2,0,188,94 };
+	r_button_light_3[0] = { 0,0,188 / 2,94 };
+	r_button_light_3[1] = { 188 / 2,0,188,94 };
+	r_button_light_4[0] = { 0,0,188 / 2,94 };
+	r_button_light_4[1] = { 188 / 2,0,188,94 };
+	r_button_light_5[0] = { 0,0,188 / 2,94 };
+	r_button_light_5[1] = { 188 / 2,0,188,94 };
+	r_capsule_0[0] = { 0,0, 268 / 2,198 };
+	r_capsule_0[1] = { 268 / 2,0,268,198 };
+	r_capsule_1[0] = { 0,0, 268 / 2,198 };
+	r_capsule_1[1] = { 268 / 2,0,268,198 };
+	r_capsule_2[0] = { 0,0, 268 / 2,198 };
+	r_capsule_2[1] = { 268 / 2,0,268,198 };
+	r_capsule_3[0] = { 0,0, 268 / 2,198 };
+	r_capsule_3[1] = { 268 / 2,0,268,198 };
+	r_curve_light_button[0] = { 0,0, 234 / 2,107 };
+	r_curve_light_button[1] = { 234 / 2,0,234,107 };
+	r_flipper_bumper[0] = { 0,0, 256 / 2,264 };
+	r_flipper_bumper[1] = { 256 / 2,0,256,264 };
+	r_jackpot[0] = { 0,0, 230 / 2,197 };
+	r_jackpot[1] = { 230 / 2,0,230,197 };
+	r_jumper[0];
+	r_jumper[1];
+	r_letter_P[0] = { 0,0, 200 / 2,100 };
+	r_letter_P[1] = { 200 / 2,0,200,100 };
+	r_letter_I[0] = { 0,0, 200 / 2,100 };
+	r_letter_I[1] = { 200 / 2,0,200,100 };
+	r_letter_N[0] = { 0,0, 200 / 2,100 };
+	r_letter_N[1] = { 200 / 2,0,200,100 };
+	r_letter_B[0] = { 0,0, 200 / 2,100 };
+	r_letter_B[1] = { 200 / 2,0,200,100 };
+	r_letter_A[0] = { 0,0, 200 / 2,100 };
+	r_letter_A[1] = { 200 / 2,0,200,100 };
+	r_letter_L0[0] = { 0,0, 200 / 2,100 };
+	r_letter_L0[1] = { 200 / 2,0,200,100 };
+	r_letter_L1[0] = { 0,0, 200 / 2,100 };
+	r_letter_L1[1] = { 200 / 2,0,200,100 };
+	r_light_indicator_0[0] = { 0,0, 314 / 2,139 };
+	r_light_indicator_0[1] = { 314 / 2,0,314,139 };
+	r_light_indicator_1[0] = { 0,0, 314 / 2,139 };
+	r_light_indicator_1[1] = { 314 / 2,0,314,139 };
+	r_light_indicator_2[0] = { 0,0, 314 / 2,139 };
+	r_light_indicator_2[1] = { 314 / 2,0,314,139 };
+	r_logo[0] = { 0,0, 816 / 2,310 };
+	r_logo[1] = { 816 / 2,0,816,310 };
+	r_bultiplier_light[0] = { 0,0, 314 / 2,139 };
+	r_bultiplier_light[1] = { 314 / 2,0,314,139 };
+	r_multiplier_toggle_light[0] = { 0,0, 226 / 2,110 };
+	r_multiplier_toggle_light[1] = { 226 / 2,0,226,110 };
+	r_router_light_0[0] = { 0,0, 236 / 2,118 };
+	r_router_light_0[1] = { 236 / 2,0,236,118 };
+	r_router_light_1[0] = { 0,0, 236 / 2,118 };
+	r_router_light_1[1] = { 236 / 2,0,236,118 };
+	r_router_light_2[0] = { 0,0, 236 / 2,118 };
+	r_router_light_2[1] = { 236 / 2,0,236,118 };
+	r_router_light_3[0] = { 0,0, 236 / 2,118 };
+	r_router_light_3[1] = { 236 / 2,0,236,118 };
+	r_router_light_4[0] = { 0,0, 236 / 2,118 };
+	r_router_light_4[1] = { 236 / 2,0,236,118 };
+	r_router_light_5[0] = { 0,0, 236 / 2,118 };
+	r_router_light_5[1] = { 236 / 2,0,236,118 };
+	r_router_light_6[0] = { 0,0, 236 / 2,118 };
+	r_router_light_6[1] = { 236 / 2,0,236,118 };
+	r_shield[0] = { 0,0, 80 / 2,40 };
+	r_shield[1] = { 80 / 2,0,80,40 };
+
+	r_audio_icon[0] = { 0,0,184 / 2,100 };
+	r_audio_icon[1] = { 184 / 2,0,184,100 };
+	
+	r_but_fullscreen[0] = { 0,0,184 / 2,100 };
+	r_but_fullscreen[1] = { 184 / 2,0,184,100 };
+	r_hand_anim[0] = { 0,0,1010 / 5,554 / 2 };
+	r_hand_anim[0] = { 1010 / 5,0,1010 / 5 * 2,554 / 2 };
+
+	for (int i = 0; i < 5; i++)
+	{
+		r_hand_anim[i] = { 1010 / 5 * i,0,1010 / 5 * (i+1),554 / 2 };
+	}
+	for (int i = 0; i < 5; i++)
+	{
+		r_hand_anim[i + 5] = { 1010 / 5 * i,554 / 2,1010 / 5 * (i + 1),554 };
+	}
+
+
+	// TODO: Homework - create a sensor
+
+
 	return ret;
 }
 
@@ -132,126 +244,141 @@ bool ModuleSceneIntro::CleanUp()
 // Update: draw background
 update_status ModuleSceneIntro::Update()
 {
-	if(App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
-	{
-		ray_on = !ray_on;
-		ray.x = App->input->GetMouseX();
-		ray.y = App->input->GetMouseY();
-	}
-
-	if(App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
-	{
-		circles.add(App->physics->CreateCircle(App->input->GetMouseX(), App->input->GetMouseY(), 25));
-		// TODO 8: Make sure to add yourself as collision callback to the circle you creates
-	}
-
-	if(App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
-	{
-		boxes.add(App->physics->CreateRectangle(App->input->GetMouseX(), App->input->GetMouseY(), 100, 50));
-	}
-
-	if(App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
-	{
-		// Pivot 0, 0
-		int rick_head[64] = {
-			14, 36,
-			42, 40,
-			40, 0,
-			75, 30,
-			88, 4,
-			94, 39,
-			111, 36,
-			104, 58,
-			107, 62,
-			117, 67,
-			109, 73,
-			110, 85,
-			106, 91,
-			109, 99,
-			103, 104,
-			100, 115,
-			106, 121,
-			103, 125,
-			98, 126,
-			95, 137,
-			83, 147,
-			67, 147,
-			53, 140,
-			46, 132,
-			34, 136,
-			38, 126,
-			23, 123,
-			30, 114,
-			10, 102,
-			29, 90,
-			0, 75,
-			30, 62
-		};
-
-		ricks.add(App->physics->CreateChain(App->input->GetMouseX(), App->input->GetMouseY(), rick_head, 64));
-	}
-
-	// Prepare for raycast ------------------------------------------------------
+	//if not paused not update elements but still draw them 
+	//if (!gamePaused)
 	
-	iPoint mouse;
-	mouse.x = App->input->GetMouseX();
-	mouse.y = App->input->GetMouseY();
-	int ray_hit = ray.DistanceTo(mouse);
 
-	fVector normal(0.0f, 0.0f);
-
-	// All draw functions ------------------------------------------------------
-	p2List_item<PhysBody*>* c = circles.getFirst();
-
-	App->renderer->Blit(pinball_bg, 0, 0, nullptr);
-
-	while(c != NULL)
-	{
-		int x, y;
-		c->data->GetPosition(x, y);
-		if(c->data->Contains(App->input->GetMouseX(), App->input->GetMouseY()))
-			App->renderer->Blit(circle, x, y, NULL, 1.0f, c->data->GetRotation());
-		c = c->next;
-	}
-
-	c = boxes.getFirst();
-
-	while(c != NULL)
-	{
-		int x, y;
-		c->data->GetPosition(x, y);
-		App->renderer->Blit(box, x, y, NULL, 1.0f, c->data->GetRotation());
-		if(ray_on)
+		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 		{
-			int hit = c->data->RayCast(ray.x, ray.y, mouse.x, mouse.y, normal.x, normal.y);
-			if(hit >= 0)
-				ray_hit = hit;
+			ray_on = !ray_on;
+			ray.x = App->input->GetMouseX();
+			ray.y = App->input->GetMouseY();
 		}
-		c = c->next;
-	}
 
-	c = ricks.getFirst();
+		if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+		{
+			circles.add(App->physics->CreateCircle(App->input->GetMouseX(), App->input->GetMouseY(), 25));
+			// TODO 8: Make sure to add yourself as collision callback to the circle you creates
+		}
 
-	while(c != NULL)
-	{
-		int x, y;
-		c->data->GetPosition(x, y);
-		App->renderer->Blit(rick, x, y, NULL, 1.0f, c->data->GetRotation());
-		c = c->next;
-	}
+		if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+		{
+			boxes.add(App->physics->CreateRectangle(App->input->GetMouseX(), App->input->GetMouseY(), 100, 50));
+		}
 
-	// ray -----------------
-	if(ray_on == true)
-	{
-		fVector destination(mouse.x-ray.x, mouse.y-ray.y);
-		destination.Normalize();
-		destination *= ray_hit;
+		if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
+		{
+			// Pivot 0, 0
+			int rick_head[64] = {
+				14, 36,
+				42, 40,
+				40, 0,
+				75, 30,
+				88, 4,
+				94, 39,
+				111, 36,
+				104, 58,
+				107, 62,
+				117, 67,
+				109, 73,
+				110, 85,
+				106, 91,
+				109, 99,
+				103, 104,
+				100, 115,
+				106, 121,
+				103, 125,
+				98, 126,
+				95, 137,
+				83, 147,
+				67, 147,
+				53, 140,
+				46, 132,
+				34, 136,
+				38, 126,
+				23, 123,
+				30, 114,
+				10, 102,
+				29, 90,
+				0, 75,
+				30, 62
+			};
 
-		App->renderer->DrawLine(ray.x, ray.y, ray.x + destination.x, ray.y + destination.y, 255, 255, 255);
+			ricks.add(App->physics->CreateChain(App->input->GetMouseX(), App->input->GetMouseY(), rick_head, 64));
+		}
 
-		if(normal.x != 0.0f)
-			App->renderer->DrawLine(ray.x + destination.x, ray.y + destination.y, ray.x + destination.x + normal.x * 25.0f, ray.y + destination.y + normal.y * 25.0f, 100, 255, 100);
-	}
+		// Prepare for raycast ------------------------------------------------------
+
+		fPoint mouse;
+		mouse.x = App->input->GetMouseX();
+		mouse.y = App->input->GetMouseY();
+		float ray_hit = ray.DistanceTo(mouse);
+
+		fVector normal(0.0f, 0.0f);
+	
+		// All draw functions ------------------------------------------------------
+		p2List_item<PhysBody*>* c = circles.getFirst();
+
+		App->renderer->Blit(pinball_bg, 0, 0, nullptr);
+
+		//the elements under will not appear correctly, but we dont need them :)
+
+		while (c != NULL)
+		{
+			int x, y;
+			c->data->GetPosition(x, y);
+			if (c->data->Contains(App->input->GetMouseX(), App->input->GetMouseY()))
+				App->renderer->Blit(circle, x, y, NULL, 1.0f, c->data->GetRotation());
+			c = c->next;
+		}
+
+		c = boxes.getFirst();
+
+		while (c != NULL)
+		{
+			int x, y;
+			c->data->GetPosition(x, y);
+			App->renderer->Blit(box, x, y, NULL, 1.0f, c->data->GetRotation());
+			if (ray_on)
+			{
+				int hit = c->data->RayCast(ray.x, ray.y, mouse.x, mouse.y, normal.x, normal.y);
+				if (hit >= 0)
+					ray_hit = hit;
+			}
+			c = c->next;
+		}
+
+		c = ricks.getFirst();
+
+		while (c != NULL)
+		{
+			int x, y;
+			c->data->GetPosition(x, y);
+			App->renderer->Blit(rick, x, y, NULL, 1.0f, c->data->GetRotation());
+			c = c->next;
+		}
+
+		// ray -----------------
+		if (ray_on == true)
+		{
+			fVector destination(mouse.x - ray.x, mouse.y - ray.y);
+			destination.Normalize();
+			destination *= ray_hit;
+
+			App->renderer->DrawLine(ray.x, ray.y, ray.x + destination.x, ray.y + destination.y, 255, 255, 255);
+
+			if (normal.x != 0.0f)
+				App->renderer->DrawLine(ray.x + destination.x, ray.y + destination.y, ray.x + destination.x + normal.x * 25.0f, ray.y + destination.y + normal.y * 25.0f, 100, 255, 100);
+		}
+		//right: 726  left: 326  y: 1706		
+		App->renderer->Blit(flipper, 326, 1076, nullptr, 1, 0, NULL, NULL, SDL_FLIP_HORIZONTAL);
+		App->renderer->Blit(flipper, 726, 1076, nullptr, 1, 0, NULL, NULL, SDL_FLIP_NONE);
+
+		
+		//right: 840  left: 240  y: 1460
+		App->renderer->Blit(flipper_bumper, 240, 1460, &r_flipper_bumper[1], 1, 0, NULL, NULL, SDL_FLIP_HORIZONTAL);
+		App->renderer->Blit(flipper_bumper, 840, 1460, &r_flipper_bumper[1], 1, 0, NULL, NULL, SDL_FLIP_NONE);
+
 
 	return UPDATE_CONTINUE;
 }

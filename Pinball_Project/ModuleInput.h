@@ -26,12 +26,12 @@ public:
 		return keyboard[id];
 	}
 
-	int GetMouseX() const
+	float GetMouseX() const
 	{
 		return mouse_x * SCREEN_SIZE;
 	}
 
-	int GetMouseY() const
+	float GetMouseY() const
 	{
 		return mouse_y * SCREEN_SIZE;
 	}

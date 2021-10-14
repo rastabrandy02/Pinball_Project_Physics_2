@@ -18,7 +18,13 @@ public:
 	void OnCollision(PhysBody* bodyA, PhysBody* bodyB);
 
 public:
+
 	//List of the different bodies
+
+
+	bool gamePaused = false;
+
+
 	p2List<PhysBody*> circles;
 	p2List<PhysBody*> boxes;
 	p2List<PhysBody*> ricks;
@@ -34,7 +40,7 @@ public:
 	SDL_Texture* box;
 	SDL_Texture* rick;
 	uint bonus_fx;
-	p2Point<int> ray;
+	p2Point<float> ray;
 	bool ray_on;
 
 	//UI textures
@@ -83,8 +89,8 @@ public:
 	SDL_Texture* curve_light_button = nullptr;
 	SDL_Texture* curve_tunnel = nullptr;
 	SDL_Texture* eye = nullptr;
-	SDL_Texture* flipper = nullptr;
-	SDL_Texture* flipper_bumper = nullptr;
+	SDL_Texture* flipper = nullptr;		   //right: 726  left: 326  y: 1706
+	SDL_Texture* flipper_bumper = nullptr; //right: 840  left: 240  y: 1460
 	SDL_Texture* gate = nullptr;
 	SDL_Texture* hole = nullptr;
 	SDL_Texture* jackpot = nullptr;
@@ -115,6 +121,52 @@ public:
 	SDL_Texture* start_platform = nullptr;
 	SDL_Texture* tunnel_start = nullptr;
 
+
+	//image rects
+	SDL_Rect r_arrow_light_0[2];
+	SDL_Rect r_arrow_light_1[2];
+	SDL_Rect r_arrow_start[2];
+	SDL_Rect r_bumper[14];
+	SDL_Rect r_bumper_button[2];
+	SDL_Rect r_button_light_0[2];
+	SDL_Rect r_button_light_1[2];
+	SDL_Rect r_button_light_2[2];
+	SDL_Rect r_button_light_3[2];
+	SDL_Rect r_button_light_4[2];
+	SDL_Rect r_button_light_5[2];
+	SDL_Rect r_capsule_0[2];
+	SDL_Rect r_capsule_1[2];
+	SDL_Rect r_capsule_2[2];
+	SDL_Rect r_capsule_3[2];
+	SDL_Rect r_curve_light_button[2];
+	SDL_Rect r_flipper_bumper[2];
+	SDL_Rect r_jackpot[2];
+	SDL_Rect r_jumper[2];
+	SDL_Rect r_letter_P[2];
+	SDL_Rect r_letter_I[2];
+	SDL_Rect r_letter_N[2];
+	SDL_Rect r_letter_B[2];
+	SDL_Rect r_letter_A[2];
+	SDL_Rect r_letter_L0[2];
+	SDL_Rect r_letter_L1[2];
+	SDL_Rect r_light_indicator_0[2];
+	SDL_Rect r_light_indicator_1[2];
+	SDL_Rect r_light_indicator_2[2];
+	SDL_Rect r_logo[2];
+	SDL_Rect r_bultiplier_light[2];
+	SDL_Rect r_multiplier_toggle_light[2];
+	SDL_Rect r_router_light_0[2];
+	SDL_Rect r_router_light_1[2];
+	SDL_Rect r_router_light_2[2];
+	SDL_Rect r_router_light_3[2];
+	SDL_Rect r_router_light_4[2];
+	SDL_Rect r_router_light_5[2];
+	SDL_Rect r_router_light_6[2];
+	SDL_Rect r_shield[2];
+
+	SDL_Rect r_audio_icon[2];
+	SDL_Rect r_but_fullscreen[2];
+	SDL_Rect r_hand_anim[10];
 
 	//The coordinates of all the walls to create the chains
 	int mainWalls[102] = {
