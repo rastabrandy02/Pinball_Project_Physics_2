@@ -29,6 +29,6 @@ enum update_status
 #define WIN_BORDERLESS false
 #define WIN_FULLSCREEN_DESKTOP false
 #define VSYNC true
-#define TITLE "2D Physics Playground"
+#define TITLE "Space Adventure - Pinball"
 
 //1152 x 1920

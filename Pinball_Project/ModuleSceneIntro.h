@@ -17,6 +17,15 @@ public:
 	bool CleanUp();
 	void OnCollision(PhysBody* bodyA, PhysBody* bodyB);
 
+	int GetCenterX(SDL_Rect r)
+	{
+		return  r.x + r.w / 2;
+	}
+	int GetCenterY(SDL_Rect r)
+	{
+		return  r.y + r.h / 2;
+	}
+
 public:
 
 	//List of the different bodies
