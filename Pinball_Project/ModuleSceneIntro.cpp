@@ -352,7 +352,7 @@ update_status ModuleSceneIntro::Update()
 		// All draw functions ------------------------------------------------------
 		p2List_item<PhysBody*>* c = circles.getFirst();
 
-		//App->renderer->Blit(pinball_bg, 0, 0, nullptr);
+		App->renderer->Blit(pinball_bg, 0, 0, nullptr);
 
 		//the elements under will not appear correctly, but we dont need them :)
 
@@ -404,8 +404,8 @@ update_status ModuleSceneIntro::Update()
 				App->renderer->DrawLine(ray.x + destination.x, ray.y + destination.y, ray.x + destination.x + normal.x * 25.0f, ray.y + destination.y + normal.y * 25.0f, 100, 255, 100);
 		}
 		//right: 726  left: 326  y: 1706		
-		App->renderer->Blit(flipper, 326, 1076, nullptr, 1, 0, NULL, NULL, SDL_FLIP_HORIZONTAL);
-		App->renderer->Blit(flipper, 726, 1076, nullptr, 1, 0, NULL, NULL, SDL_FLIP_NONE);
+		App->renderer->Blit(flipper, 310, 1680, nullptr, 1, 0, NULL, NULL, SDL_FLIP_HORIZONTAL);
+		App->renderer->Blit(flipper, 560, 1680, nullptr, 1, 0, NULL, NULL, SDL_FLIP_NONE);
 
 		
 		//right: 840  left: 240  y: 1460
