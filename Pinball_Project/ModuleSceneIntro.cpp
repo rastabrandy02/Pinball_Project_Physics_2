@@ -22,7 +22,7 @@ bool ModuleSceneIntro::Start()
 {
 	LOG("Loading Intro assets");
 	bool ret = true;
-
+	// TODO: Homework - create a sensor
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 
 	circle = App->textures->Load("pinball/wheel.png"); 
@@ -109,8 +109,15 @@ bool ModuleSceneIntro::Start()
 	start_platform = App->textures->Load("pinball/pinball_elements/start_platform.png");
 	tunnel_start = App->textures->Load("pinball/pinball_elements/tunnel_start.png");
 
-	// TODO: Homework - create a sensor
-
+	//Create all the walls
+	
+	walls.add(App->physics->CreateStaticChain(0, 0, mainWalls, 102));
+	walls.add(App->physics->CreateStaticChain(0, 0, leftWall, 16));
+	walls.add(App->physics->CreateStaticChain(0, 0, rightWall, 16));
+	walls.add(App->physics->CreateStaticChain(0, 0, leftRedIsland, 12));
+	walls.add(App->physics->CreateStaticChain(0, 0, rightRedIsland, 12));
+	walls.add(App->physics->CreateStaticChain(0, 0, bigIsland, 24));
+	walls.add(App->physics->CreateStaticChain(0, 0, littleIsland, 18));
 	return ret;
 }
 
