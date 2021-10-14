@@ -110,6 +110,40 @@ bool ModuleSceneIntro::Start()
 	tunnel_start = App->textures->Load("pinball/pinball_elements/tunnel_start.png");
 
 
+	//adapt walls to screen size
+
+	for (int i = 0; i < 102; i++)
+	{
+		mainWalls[i] *= SCREEN_SIZE;
+	}
+	
+	for (int i = 0; i < 16; i++)
+	{
+		leftWall[i] *= SCREEN_SIZE;
+	}
+	
+	for (int i = 0; i < 16; i++)
+	{
+		rightWall[i] *= SCREEN_SIZE;
+	}
+
+	for (int i = 0; i < 12; i++)
+	{
+		leftRedIsland[i] *= SCREEN_SIZE;
+	}
+	for (int i = 0; i < 12; i++)
+	{
+		rightRedIsland[i] *= SCREEN_SIZE;
+	}
+	for (int i = 0; i < 24; i++)
+	{
+		bigIsland[i] *= SCREEN_SIZE;
+	}
+	for (int i = 0; i < 18; i++)
+	{
+		littleIsland[i] *= SCREEN_SIZE;
+	}
+
 	//Create all the walls
 	
 	walls.add(App->physics->CreateStaticChain(0, 0, mainWalls, 102));
@@ -225,6 +259,7 @@ bool ModuleSceneIntro::Start()
 	{
 		r_hand_anim[i + 5] = { 1010 / 5 * i,554 / 2,1010 / 5 * (i + 1),554 };
 	}
+
 
 
 	// TODO: Homework - create a sensor

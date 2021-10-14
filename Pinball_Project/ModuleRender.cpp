@@ -158,6 +158,8 @@ bool ModuleRender::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uin
 	return ret;
 }
 
+int temp = 1;
+
 bool ModuleRender::DrawLine(int x1, int y1, int x2, int y2, Uint8 r, Uint8 g, Uint8 b, Uint8 a, bool use_camera)
 {
 	bool ret = true;
@@ -168,9 +170,9 @@ bool ModuleRender::DrawLine(int x1, int y1, int x2, int y2, Uint8 r, Uint8 g, Ui
 	int result = -1;
 
 	if(use_camera)
-		result = SDL_RenderDrawLine(renderer, camera.x + x1 * SCREEN_SIZE, camera.y + y1 * SCREEN_SIZE, camera.x + x2 * SCREEN_SIZE, camera.y + y2 * SCREEN_SIZE);
+		result = SDL_RenderDrawLine(renderer, camera.x + x1 * temp, camera.y + y1 * temp, camera.x + x2 * temp, camera.y + y2 * temp);
 	else
-		result = SDL_RenderDrawLine(renderer, x1 * SCREEN_SIZE, y1 * SCREEN_SIZE, x2 * SCREEN_SIZE, y2 * SCREEN_SIZE);
+		result = SDL_RenderDrawLine(renderer, x1 * temp, y1 * temp, x2 * temp, y2 * temp);
 
 	if(result != 0)
 	{
