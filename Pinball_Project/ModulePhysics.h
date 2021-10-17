@@ -49,6 +49,14 @@ public:
 	PhysBody* CreateRectangleSensor(int x, int y, int width, int height);
 	PhysBody* CreateChain(int x, int y, int* points, int size);
 	PhysBody* CreateStaticChain(int x, int y, int* points, int size);
+	PhysBody* CreateKinematicChain(int x, int y, int* points, int size);
+	b2RevoluteJoint* CreateFlipperJoint(b2Body* round, b2Vec2 groundAnchor, b2Body* flipper, b2Vec2 flipperAnchor);
+	
+
+	b2World* GetWorld() const
+	{
+		return world;
+	}
 
 private:
 

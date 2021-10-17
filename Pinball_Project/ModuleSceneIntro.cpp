@@ -144,6 +144,11 @@ bool ModuleSceneIntro::Start()
 		littleIsland[i] *= SCREEN_SIZE;
 	}
 
+	for (int i = 0; i < 20; i++)
+	{
+		leftFlipper[i] *= SCREEN_SIZE;
+	}
+
 	//Create all the walls
 	
 	walls.add(App->physics->CreateStaticChain(0, 0, mainWalls, 102));
@@ -154,6 +159,28 @@ bool ModuleSceneIntro::Start()
 	walls.add(App->physics->CreateStaticChain(0, 0, bigIsland, 24));
 	walls.add(App->physics->CreateStaticChain(0, 0, littleIsland, 18));
 
+	PhysBody* leftFlipper_pb = App->physics->CreateKinematicChain(100, 100, leftFlipper, 20);
+	b2Vec2 leftWallFlipperPivot = { 0,0 };//get position from the wall
+	b2Vec2 leftFlipperOrigin = { 0,0 };
+
+
+	App->physics->CreateFlipperJoint(walls.getFirst()->next->data->body,leftWallFlipperPivot,leftFlipper_pb->body,leftFlipperOrigin);
+	
+
+
+	
+
+
+
+
+	
+
+
+
+
+
+
+	//Set rects of multi-texture sprites
 	r_arrow_light_0[0] = { 0,0,230 / 2,140 };
 	r_arrow_light_0[1] = { 230 / 2,0,230,140 };
 	r_arrow_light_1[0] = { 0,0,230 / 2,140 };
@@ -259,7 +286,6 @@ bool ModuleSceneIntro::Start()
 	}
 
 
-
 	// TODO: Homework - create a sensor
 
 
@@ -339,6 +365,22 @@ update_status ModuleSceneIntro::Update()
 
 			ricks.add(App->physics->CreateChain(App->input->GetMouseX(), App->input->GetMouseY(), rick_head, 64));
 		}
+
+		//if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_DOWN)
+		//{
+		//	fLeftJoint.motorSpeed = 1.0f;
+		//}
+		//else
+		//{
+		//	fLeftJoint.motorSpeed = 0.0f;
+		//
+		//}
+
+		b2Vec2 force = { 0,10.0f };
+
+		
+
+		//leftFlipper_b.getFirst()->data->body->ApplyTorque(10.0f, true);
 
 		// Prepare for raycast ------------------------------------------------------
 

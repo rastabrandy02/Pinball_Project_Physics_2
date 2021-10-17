@@ -66,6 +66,22 @@ update_status ModulePhysics::PreUpdate()
 	return UPDATE_CONTINUE;
 }
 
+b2RevoluteJoint* ModulePhysics::CreateFlipperJoint(b2Body* ground, b2Vec2 groundAnchor, b2Body* flipper, b2Vec2 flipperAnchor)
+{
+	b2RevoluteJointDef FlipperJoint;
+	FlipperJoint.bodyA = ground;
+	FlipperJoint.bodyB = flipper;
+	FlipperJoint.collideConnected = false;
+	FlipperJoint.enableLimit = true;
+	FlipperJoint.enableMotor = true;
+	FlipperJoint.localAnchorA.Set(groundAnchor.x, groundAnchor.y);
+	FlipperJoint.localAnchorB.Set(flipperAnchor.x, flipperAnchor.y);
+
+	b2RevoluteJoint* Flippjoint = (b2RevoluteJoint*)world->CreateJoint(&FlipperJoint);
+	return Flippjoint;
+}
+
+
 PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius)
 {
 	b2BodyDef body;
@@ -178,6 +194,42 @@ PhysBody* ModulePhysics::CreateStaticChain(int x, int y, int* points, int size)
 
 	return pbody;
 }
+
+PhysBody* ModulePhysics::CreateKinematicChain(int x, int y, int* points, int size)
+{
+	b2BodyDef body;
+	body.type = b2_kinematicBody;
+	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
+
+	b2Body* b = world->CreateBody(&body);
+
+	b2ChainShape shape;
+	b2Vec2* p = new b2Vec2[size / 2];
+
+	for (uint i = 0; i < size / 2; ++i)
+	{
+		p[i].x = PIXEL_TO_METERS(points[i * 2 + 0]);
+		p[i].y = PIXEL_TO_METERS(points[i * 2 + 1]);
+	}
+
+	shape.CreateLoop(p, size / 2);
+
+	b2FixtureDef fixture;
+	fixture.shape = &shape;
+
+	b->CreateFixture(&fixture);
+
+	delete p;
+
+	PhysBody* pbody = new PhysBody();
+	pbody->body = b;
+	pbody->width = pbody->height = 0;
+
+	return pbody;
+}
+
+
+
 // 
 update_status ModulePhysics::PostUpdate()
 {

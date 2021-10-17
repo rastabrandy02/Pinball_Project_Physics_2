@@ -33,12 +33,17 @@ public:
 
 	bool gamePaused = false;
 
+	
 
 	p2List<PhysBody*> circles;
 	p2List<PhysBody*> boxes;
 	p2List<PhysBody*> ricks;
 
 	p2List<PhysBody*> walls;
+	//p2List<b2RevoluteJoint*> flippers;
+	p2List<PhysBody*> leftFlipper_b;
+
+	
 
 	
 
@@ -292,4 +297,30 @@ public:
 	296, 769,
 	295, 791
 	};
+
+	int leftFlipper[20] =
+	{
+		 11, -21,
+		-10, -22,
+		-21, -7,
+		-20, 12,
+		-11, 21,
+		126, 78,
+		134, 78,
+		140, 73,
+		140, 65,
+		136, 57
+
+	};
+
+	int testChain[8] =
+	{
+		0,0,
+		10,0,
+		10,10,
+		0,10
+	};
+
+	//int rightFlipper[20];
+
 };
