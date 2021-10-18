@@ -72,10 +72,10 @@ b2RevoluteJoint* ModulePhysics::CreateFlipperJoint(b2Body* ground, b2Vec2 ground
 	FlipperJoint.bodyA = ground;
 	FlipperJoint.bodyB = flipper;
 	FlipperJoint.collideConnected = false;
-	FlipperJoint.enableLimit = true;
+	FlipperJoint.enableLimit = false;
 	FlipperJoint.enableMotor = true;
-	FlipperJoint.localAnchorA.Set(groundAnchor.x, groundAnchor.y);
-	FlipperJoint.localAnchorB.Set(flipperAnchor.x, flipperAnchor.y);
+	FlipperJoint.localAnchorA.Set(PIXEL_TO_METERS(groundAnchor.x), PIXEL_TO_METERS(groundAnchor.y));
+	FlipperJoint.localAnchorB.Set(PIXEL_TO_METERS(flipperAnchor.x), PIXEL_TO_METERS(flipperAnchor.y));
 
 	b2RevoluteJoint* Flippjoint = (b2RevoluteJoint*)world->CreateJoint(&FlipperJoint);
 	return Flippjoint;
@@ -162,6 +162,7 @@ PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size)
 
 	return pbody;
 }
+
 PhysBody* ModulePhysics::CreateStaticChain(int x, int y, int* points, int size)
 {
 	b2BodyDef body;

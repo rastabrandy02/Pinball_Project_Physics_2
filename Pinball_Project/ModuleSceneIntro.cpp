@@ -149,24 +149,47 @@ bool ModuleSceneIntro::Start()
 		leftFlipper[i] *= SCREEN_SIZE;
 	}
 
+	for (int i = 0; i < 20; i++)
+	{
+		rightFlipper[i] *= SCREEN_SIZE;
+	}
+
 	//Create all the walls
 	
-	walls.add(App->physics->CreateStaticChain(0, 0, mainWalls, 102));
-	walls.add(App->physics->CreateStaticChain(0, 0, leftWall, 16));
-	walls.add(App->physics->CreateStaticChain(0, 0, rightWall, 16));
-	walls.add(App->physics->CreateStaticChain(0, 0, leftRedIsland, 12));
-	walls.add(App->physics->CreateStaticChain(0, 0, rightRedIsland, 12));
-	walls.add(App->physics->CreateStaticChain(0, 0, bigIsland, 24));
-	walls.add(App->physics->CreateStaticChain(0, 0, littleIsland, 18));
+	PhysBody* pb_mainWalls = App->physics->CreateStaticChain(0, 0, mainWalls, 102);
+	PhysBody* pb_leftWall = App->physics->CreateStaticChain(0, 0, leftWall, 16);
+	PhysBody* pb_rightWall = App->physics->CreateStaticChain(0, 0, rightWall, 16);
+	PhysBody* pb_leftRedIsland = App->physics->CreateStaticChain(0, 0, leftRedIsland, 12);
+	PhysBody* pb_rightRedIsland = App->physics->CreateStaticChain(0, 0, rightRedIsland, 12);
+	PhysBody* pb_bigIsland = App->physics->CreateStaticChain(0, 0, bigIsland, 24);
+	PhysBody* pb_littleIsland = App->physics->CreateStaticChain(0, 0, littleIsland, 18);
 
-	PhysBody* leftFlipper_pb = App->physics->CreateKinematicChain(100, 100, leftFlipper, 20);
-	b2Vec2 leftWallFlipperPivot = { 0,0 };//get position from the wall
+	walls.add(pb_mainWalls);
+	walls.add(pb_leftWall);
+	walls.add(pb_rightWall);
+	walls.add(pb_leftRedIsland);
+	walls.add(pb_rightRedIsland);
+	walls.add(pb_bigIsland);
+	walls.add(pb_littleIsland);
+
+	pb_leftFlipper = App->physics->CreateKinematicChain(200, 100, leftFlipper, 20);
+	pb_rightFlipper = App->physics->CreateKinematicChain(300, 100, rightFlipper, 20);
+	b2Vec2 leftWallFlipperPivot = { 100,100 };//get position from the wall
 	b2Vec2 leftFlipperOrigin = { 0,0 };
 
-
-	App->physics->CreateFlipperJoint(walls.getFirst()->next->data->body,leftWallFlipperPivot,leftFlipper_pb->body,leftFlipperOrigin);
+	//b2RevoluteJoint *flippJoint;
+	//flippJoint = App->physics->CreateFlipperJoint(
+	//	walls.findNode(pb_leftWall)->data->body,
+	//	leftWallFlipperPivot,
+	//	leftFlipper_pb->body,
+	//	leftFlipperOrigin
+	//);
+	//
+	//flippJoint->SetMotorSpeed(1.0f);
 	
 
+	//pb_leftFlipper->body->SetAngularVelocity(-5.0f);
+	//pb_rightFlipper->body->SetAngularVelocity(5.0f);
 
 	
 
@@ -285,6 +308,7 @@ bool ModuleSceneIntro::Start()
 		r_hand_anim[i + 5] = { 1010 / 5 * i,554 / 2,1010 / 5 * (i + 1),554 };
 	}
 
+	angularSpeed = 1.0f;
 
 	// TODO: Homework - create a sensor
 
@@ -397,6 +421,19 @@ update_status ModuleSceneIntro::Update()
 		App->renderer->Blit(pinball_bg, 0, 0, nullptr);
 
 		//the elements under will not appear correctly, but we dont need them :)
+
+		
+
+
+		if (App->input->GetKey(SDL_SCANCODE_LEFT))
+		{
+			if (pb_leftFlipper->body->GetAngle() > DEGTORAD * 15.0f)
+			{
+
+			}
+		}
+
+
 
 		while (c != NULL)
 		{

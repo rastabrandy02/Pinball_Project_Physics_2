@@ -43,8 +43,10 @@ public:
 	//p2List<b2RevoluteJoint*> flippers;
 	p2List<PhysBody*> leftFlipper_b;
 
+	PhysBody* pb_leftFlipper;
+	PhysBody* pb_rightFlipper;
 	
-
+	float angularSpeed;
 	
 
 	PhysBody* sensor;
@@ -310,6 +312,21 @@ public:
 		140, 73,
 		140, 65,
 		136, 57
+
+	};
+
+	int rightFlipper[20] =
+	{
+		-11, -21,
+		 10, -22,
+		 21, -7,
+		 20, 12,
+		 11, 21,
+		-126, 78,
+		-134, 78,
+		-140, 73,
+		-140, 65,
+		-136, 57
 
 	};
 
