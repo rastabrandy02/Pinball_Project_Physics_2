@@ -172,8 +172,8 @@ bool ModuleSceneIntro::Start()
 	walls.add(pb_bigIsland);
 	walls.add(pb_littleIsland);
 
-	pb_leftFlipper = App->physics->CreateKinematicChain(200, 100, leftFlipper, 20);
-	pb_rightFlipper = App->physics->CreateKinematicChain(300, 100, rightFlipper, 20);
+	pb_leftFlipper = App->physics->CreateKinematicChain(326, 1700, leftFlipper, 20);
+	pb_rightFlipper = App->physics->CreateKinematicChain(718, 1700, rightFlipper, 20);
 	b2Vec2 leftWallFlipperPivot = { 100,100 };//get position from the wall
 	b2Vec2 leftFlipperOrigin = { 0,0 };
 
@@ -188,8 +188,7 @@ bool ModuleSceneIntro::Start()
 	//flippJoint->SetMotorSpeed(1.0f);
 	
 
-	//pb_leftFlipper->body->SetAngularVelocity(-5.0f);
-	//pb_rightFlipper->body->SetAngularVelocity(5.0f);
+
 
 	
 
@@ -308,7 +307,10 @@ bool ModuleSceneIntro::Start()
 		r_hand_anim[i + 5] = { 1010 / 5 * i,554 / 2,1010 / 5 * (i + 1),554 };
 	}
 
-	angularSpeed = 1.0f;
+	angularSpeed = 10.0f;
+	minAngle = 0.0f;
+	maxAngle = 45.0f;
+
 
 	// TODO: Homework - create a sensor
 
@@ -422,15 +424,37 @@ update_status ModuleSceneIntro::Update()
 
 		//the elements under will not appear correctly, but we dont need them :)
 
+		//pb_leftFlipper->body->SetAngularVelocity(-5.0f);
+		//pb_rightFlipper->body->SetAngularVelocity(5.0f);
+
+		if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_STATE::KEY_REPEAT)
+		{
+			//LOG("angle: %f", pb_leftFlipper->body->GetAngle() * RADTODEG);
+			if (pb_leftFlipper->body->GetAngle() - DEGTORAD * angularSpeed > -DEGTORAD * maxAngle)
+			{
+				pb_leftFlipper->body->SetAngularVelocity(-angularSpeed);
+				LOG("true");
+			}
+		}
+		else
+		{
+			
+			if (pb_leftFlipper->body->GetAngle() < 0.0f)
+			{
+				LOG("false");
+				pb_leftFlipper->body->SetAngularVelocity(angularSpeed);
+			}
+		}
 		
 
-
-		if (App->input->GetKey(SDL_SCANCODE_LEFT))
+		if (pb_leftFlipper->body->GetAngle() * RADTODEG <= -maxAngle)
 		{
-			if (pb_leftFlipper->body->GetAngle() > DEGTORAD * 15.0f)
-			{
+			pb_leftFlipper->body->SetFixedRotation(DEGTORAD * -maxAngle);
+		}
 
-			}
+		if (pb_leftFlipper->body->GetAngle() * RADTODEG >= 0.0f)
+		{
+			pb_leftFlipper->body->SetFixedRotation(DEGTORAD * 0.0f);
 		}
 
 

@@ -200,7 +200,7 @@ PhysBody* ModulePhysics::CreateKinematicChain(int x, int y, int* points, int siz
 {
 	b2BodyDef body;
 	body.type = b2_kinematicBody;
-	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
+	body.position.Set(PIXEL_TO_METERS(x) * SCREEN_SIZE, PIXEL_TO_METERS(y) * SCREEN_SIZE);
 
 	b2Body* b = world->CreateBody(&body);
 

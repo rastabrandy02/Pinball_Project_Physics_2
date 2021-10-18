@@ -47,6 +47,8 @@ public:
 	PhysBody* pb_rightFlipper;
 	
 	float angularSpeed;
+	float maxAngle;
+	float minAngle;
 	
 
 	PhysBody* sensor;
