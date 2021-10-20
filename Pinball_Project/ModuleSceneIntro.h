@@ -34,6 +34,7 @@ public:
 	bool gamePaused = false;
 
 	
+	PhysBody* ballLauncherRectangle;
 
 	p2List<PhysBody*> circles;
 	p2List<PhysBody*> boxes;
@@ -303,8 +304,7 @@ public:
 	295, 791
 	};
 
-	int leftFlipper[20] =
-	{
+	int leftFlipper[20] ={
 		 11, -21,
 		-10, -22,
 		-21, -7,
@@ -317,9 +317,7 @@ public:
 		136, 57
 
 	};
-
-	int rightFlipper[20] =
-	{
+	int rightFlipper[20] ={
 		-11, -21,
 		 10, -22,
 		 21, -7,
@@ -333,13 +331,22 @@ public:
 
 	};
 
-	int testChain[8] =
-	{
-		0,0,
-		10,0,
-		10,10,
-		0,10
+	int margin = 20;
+
+	int ballStartPositionerLeft[6]
+	{	1050, 1771,
+		1090 - margin, 1780,
+		1050, 1780
+	
 	};
+	int ballStartPositionerRight[6]
+	{	1130, 1771,
+		1130, 1780,
+		1090 + margin, 1780
+		
+	};
+
+	float startForce;
 
 	//int rightFlipper[20];
 

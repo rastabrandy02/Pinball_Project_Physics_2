@@ -120,21 +120,16 @@ bool ModuleSceneIntro::Start()
 	for (int i = 0; i < 16; i++)
 	{
 		leftWall[i] *= SCREEN_SIZE;
-	}
-	
-	for (int i = 0; i < 16; i++)
-	{
 		rightWall[i] *= SCREEN_SIZE;
 	}
+
 
 	for (int i = 0; i < 12; i++)
 	{
 		leftRedIsland[i] *= SCREEN_SIZE;
-	}
-	for (int i = 0; i < 12; i++)
-	{
 		rightRedIsland[i] *= SCREEN_SIZE;
 	}
+
 	for (int i = 0; i < 24; i++)
 	{
 		bigIsland[i] *= SCREEN_SIZE;
@@ -147,11 +142,13 @@ bool ModuleSceneIntro::Start()
 	for (int i = 0; i < 20; i++)
 	{
 		leftFlipper[i] *= SCREEN_SIZE;
+		rightFlipper[i] *= SCREEN_SIZE;
 	}
 
-	for (int i = 0; i < 20; i++)
+	for (size_t i = 0; i < 6; i++)
 	{
-		rightFlipper[i] *= SCREEN_SIZE;
+		ballStartPositionerLeft[i] *= SCREEN_SIZE;
+		ballStartPositionerRight[i] *= SCREEN_SIZE;
 	}
 
 	//Create all the walls
@@ -163,6 +160,10 @@ bool ModuleSceneIntro::Start()
 	PhysBody* pb_rightRedIsland = App->physics->CreateStaticChain(0, 0, rightRedIsland, 12);
 	PhysBody* pb_bigIsland = App->physics->CreateStaticChain(0, 0, bigIsland, 24);
 	PhysBody* pb_littleIsland = App->physics->CreateStaticChain(0, 0, littleIsland, 18);
+	PhysBody* pb_ballStartPositionerLeft = App->physics->CreateStaticChain(0, 0, ballStartPositionerLeft, 6);
+	PhysBody* pb_ballStartPositionerRight = App->physics->CreateStaticChain(0, 0, ballStartPositionerRight, 6);
+	ballLauncherRectangle = App->physics->CreateKinematicRectangle(1090, 1771 + 25, 80, 50); //110 pixels until bottom
+
 
 	walls.add(pb_mainWalls);
 	walls.add(pb_leftWall);
@@ -171,6 +172,8 @@ bool ModuleSceneIntro::Start()
 	walls.add(pb_rightRedIsland);
 	walls.add(pb_bigIsland);
 	walls.add(pb_littleIsland);
+	walls.add(pb_ballStartPositionerLeft);
+	walls.add(pb_ballStartPositionerRight);
 
 	pb_leftFlipper = App->physics->CreateKinematicChain(326, 1700, leftFlipper, 20);
 	pb_rightFlipper = App->physics->CreateKinematicChain(718, 1700, rightFlipper, 20);
@@ -394,22 +397,103 @@ update_status ModuleSceneIntro::Update()
 			ricks.add(App->physics->CreateChain(App->input->GetMouseX(), App->input->GetMouseY(), rick_head, 64));
 		}
 
-		//if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_DOWN)
-		//{
-		//	fLeftJoint.motorSpeed = 1.0f;
-		//}
-		//else
-		//{
-		//	fLeftJoint.motorSpeed = 0.0f;
-		//
-		//}
 
-		b2Vec2 force = { 0,10.0f };
+		//MANAGE LEFT FLIPPER
+		if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_STATE::KEY_REPEAT)
+		{
+			if (pb_leftFlipper->body->GetAngle() - DEGTORAD * angularSpeed > -DEGTORAD * maxAngle)
+			{
+				pb_leftFlipper->body->SetAngularVelocity(-angularSpeed);
+				//LOG("go up");
+			}
 
+			if (pb_leftFlipper->body->GetAngle() - DEGTORAD * angularSpeed < -DEGTORAD * maxAngle)
+			{
+				//LOG("unacceptable");
+				pb_leftFlipper->body->SetAngularVelocity(0.0f);
+			}
+		}
+		else
+		{
+
+			if (pb_leftFlipper->body->GetAngle() < 0.0f)
+			{
+				if (pb_leftFlipper->body->GetAngle() < DEGTORAD * minAngle + DEGTORAD * angleMargin)
+				{
+					//LOG("go down");
+					pb_leftFlipper->body->SetAngularVelocity(angularSpeed);
+				}
+
+			}
+
+			if (pb_leftFlipper->body->GetAngle() + DEGTORAD * angularSpeed > DEGTORAD * minAngle + DEGTORAD * angleMargin)
+			{
+				//LOG("unacceptable");
+				pb_leftFlipper->body->SetAngularVelocity(0.0f);
+			}
+		}
+
+		//MANAGE RIGHT FLIPPER
+		if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_STATE::KEY_REPEAT)
+		{
+			if (pb_rightFlipper->body->GetAngle() + DEGTORAD * angularSpeed < DEGTORAD * maxAngle)
+			{
+				pb_rightFlipper->body->SetAngularVelocity(angularSpeed);
+				//LOG("go up");
+			}
+
+			if (pb_rightFlipper->body->GetAngle() + DEGTORAD * angularSpeed > DEGTORAD * maxAngle)
+			{
+				//LOG("unacceptable");
+				pb_rightFlipper->body->SetAngularVelocity(0.0f);
+			}
+		}
+		else
+		{
+
+			if (pb_rightFlipper->body->GetAngle() > 0.0f)
+			{
+				if (pb_rightFlipper->body->GetAngle() > DEGTORAD * minAngle - DEGTORAD * angleMargin)
+				{
+					//LOG("go down");
+					pb_rightFlipper->body->SetAngularVelocity(-angularSpeed);
+				}
+			}
+
+			if (pb_rightFlipper->body->GetAngle() - DEGTORAD * angularSpeed < DEGTORAD * minAngle - DEGTORAD * angleMargin)
+			{
+				//LOG("unacceptable");
+				pb_rightFlipper->body->SetAngularVelocity(0.0f);
+			}
+		}
+
+		//MANAGE START SPRING
+
+		if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_STATE::KEY_DOWN) 
+		{
+			startForce = 0;
+		}
+		if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_STATE::KEY_REPEAT)
+		{
+			startForce += 0.05f;
+		}
+		if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_STATE::KEY_UP)
+		{
+			b2Vec2 force = { 0,-startForce };
+			ballLauncherRectangle->body->SetLinearVelocity(force);
+		}
+		if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_STATE::KEY_IDLE)
+		{
+			if (ballLauncherRectangle->body->GetPosition().y < 1650)
+			{
+				b2Vec2 pos = { PIXEL_TO_METERS((1050 + 40) * SCREEN_SIZE),PIXEL_TO_METERS((1850 - 40) * SCREEN_SIZE)};
+				//b2Vec2 pos = { PIXEL_TO_METERS(ballLauncherRectangle->body->GetPosition().x) * SCREEN_SIZE, PIXEL_TO_METERS(1850)};
+				ballLauncherRectangle->body->SetTransform(pos, 0.0f * DEGTORAD);
+				b2Vec2 zeroSpeed = { 0,0 };
+				ballLauncherRectangle->body->SetLinearVelocity(zeroSpeed);
+			}
+		}
 		
-
-		//leftFlipper_b.getFirst()->data->body->ApplyTorque(10.0f, true);
-
 		// Prepare for raycast ------------------------------------------------------
 
 		fPoint mouse;
@@ -423,98 +507,9 @@ update_status ModuleSceneIntro::Update()
 		p2List_item<PhysBody*>* c = circles.getFirst();
 
 		App->renderer->Blit(pinball_bg, 0, 0, nullptr);
-
-		//the elements under will not appear correctly, but we dont need them :)
-
-		//pb_leftFlipper->body->SetAngularVelocity(-5.0f);
-		//pb_rightFlipper->body->SetAngularVelocity(5.0f);
-
+		App->renderer->Blit(start_platform, SCREEN_WIDTH - 122, SCREEN_HEIGHT - 184, nullptr);
+		App->renderer->Blit(spring, 1067, 1786, nullptr);
 		
-
-		//MANAGE LEFT FLIPPER
-
-		if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_STATE::KEY_REPEAT)
-		{
-			//LOG("angle: %f", pb_leftFlipper->body->GetAngle() * RADTODEG);
-			if (pb_leftFlipper->body->GetAngle() - DEGTORAD * angularSpeed > -DEGTORAD * maxAngle)
-			{
-				pb_leftFlipper->body->SetAngularVelocity(-angularSpeed);
-				LOG("go up");
-			}
-
-			if (pb_leftFlipper->body->GetAngle() - DEGTORAD * angularSpeed < -DEGTORAD * maxAngle)
-			{
-				LOG("unacceptable");
-				pb_leftFlipper->body->SetAngularVelocity(0.0f);
-			}
-		}
-		else
-		{
-			
-			if (pb_leftFlipper->body->GetAngle() < 0.0f)
-			{
-				if (pb_leftFlipper->body->GetAngle() < DEGTORAD * minAngle + DEGTORAD * angleMargin)
-				{
-					LOG("go down");
-					pb_leftFlipper->body->SetAngularVelocity(angularSpeed);
-				}
-				
-			}
-
-			if (pb_leftFlipper->body->GetAngle() + DEGTORAD * angularSpeed > DEGTORAD * minAngle + DEGTORAD * angleMargin)
-			{
-				LOG("unacceptable");
-				pb_leftFlipper->body->SetAngularVelocity(0.0f);
-			}
-		}
-
-		//MANAGE RIGHT FLIPPER
-		if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_STATE::KEY_REPEAT)
-		{
-			//LOG("angle: %f", pb_rightFlipper->body->GetAngle() * RADTODEG);
-			if (pb_rightFlipper->body->GetAngle() + DEGTORAD * angularSpeed < DEGTORAD * maxAngle)
-			{
-				pb_rightFlipper->body->SetAngularVelocity(angularSpeed);
-				LOG("go up");
-			}
-
-			if (pb_rightFlipper->body->GetAngle() + DEGTORAD * angularSpeed > DEGTORAD * maxAngle)
-			{
-				LOG("unacceptable");
-				pb_rightFlipper->body->SetAngularVelocity(0.0f);
-			}
-		}
-		else
-		{
-
-			if (pb_rightFlipper->body->GetAngle() > 0.0f)
-			{
-				if (pb_rightFlipper->body->GetAngle() > DEGTORAD * minAngle - DEGTORAD * angleMargin)
-				{
-					LOG("go down");
-					pb_rightFlipper->body->SetAngularVelocity(-angularSpeed);
-				}
-			}
-
-			if (pb_rightFlipper->body->GetAngle() - DEGTORAD * angularSpeed < DEGTORAD * minAngle - DEGTORAD * angleMargin)
-			{
-				LOG("unacceptable");
-				pb_rightFlipper->body->SetAngularVelocity(0.0f);
-			}
-		}
-		
-
-		//if (pb_leftFlipper->body->GetAngle() * RADTODEG <= -maxAngle)
-		//{
-		//	pb_leftFlipper->body->SetFixedRotation(DEGTORAD * -maxAngle);
-		//}
-		//
-		//if (pb_leftFlipper->body->GetAngle() * RADTODEG >= 0.0f)
-		//{
-		//	pb_leftFlipper->body->SetFixedRotation(DEGTORAD * 0.0f);
-		//}
-
-
 
 		while (c != NULL)
 		{

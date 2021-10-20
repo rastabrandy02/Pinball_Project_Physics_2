@@ -130,6 +130,30 @@ PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height)
 	return pbody;
 }
 
+PhysBody* ModulePhysics::CreateKinematicRectangle(int x, int y, int width, int height)
+{
+	b2BodyDef body;
+	body.type = b2_kinematicBody;
+	body.position.Set(PIXEL_TO_METERS(x) * SCREEN_SIZE, PIXEL_TO_METERS(y) * SCREEN_SIZE);
+
+	b2Body* b = world->CreateBody(&body);
+	b2PolygonShape box;
+	box.SetAsBox(PIXEL_TO_METERS(width) * 0.5f * SCREEN_SIZE, PIXEL_TO_METERS(height) * 0.5f * SCREEN_SIZE);
+
+	b2FixtureDef fixture;
+	fixture.shape = &box;
+	fixture.density = 1.0f;
+
+	b->CreateFixture(&fixture);
+
+	PhysBody* pbody = new PhysBody();
+	pbody->body = b;
+	pbody->width = width * 0.5f * SCREEN_SIZE;
+	pbody->height = height * 0.5f * SCREEN_SIZE;
+
+	return pbody;
+}
+
 PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size)
 {
 	b2BodyDef body;
