@@ -307,9 +307,11 @@ bool ModuleSceneIntro::Start()
 		r_hand_anim[i + 5] = { 1010 / 5 * i,554 / 2,1010 / 5 * (i + 1),554 };
 	}
 
-	angularSpeed = 10.0f;
+	angleMargin = 10.0f;
+
+	angularSpeed = 15.0f;
 	minAngle = 0.0f;
-	maxAngle = 45.0f;
+	maxAngle = 60.0f;
 
 
 	// TODO: Homework - create a sensor
@@ -427,13 +429,23 @@ update_status ModuleSceneIntro::Update()
 		//pb_leftFlipper->body->SetAngularVelocity(-5.0f);
 		//pb_rightFlipper->body->SetAngularVelocity(5.0f);
 
+		
+
+		//MANAGE LEFT FLIPPER
+
 		if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_STATE::KEY_REPEAT)
 		{
 			//LOG("angle: %f", pb_leftFlipper->body->GetAngle() * RADTODEG);
 			if (pb_leftFlipper->body->GetAngle() - DEGTORAD * angularSpeed > -DEGTORAD * maxAngle)
 			{
 				pb_leftFlipper->body->SetAngularVelocity(-angularSpeed);
-				LOG("true");
+				LOG("go up");
+			}
+
+			if (pb_leftFlipper->body->GetAngle() - DEGTORAD * angularSpeed < -DEGTORAD * maxAngle)
+			{
+				LOG("unacceptable");
+				pb_leftFlipper->body->SetAngularVelocity(0.0f);
 			}
 		}
 		else
@@ -441,21 +453,66 @@ update_status ModuleSceneIntro::Update()
 			
 			if (pb_leftFlipper->body->GetAngle() < 0.0f)
 			{
-				LOG("false");
-				pb_leftFlipper->body->SetAngularVelocity(angularSpeed);
+				if (pb_leftFlipper->body->GetAngle() < DEGTORAD * minAngle + DEGTORAD * angleMargin)
+				{
+					LOG("go down");
+					pb_leftFlipper->body->SetAngularVelocity(angularSpeed);
+				}
+				
+			}
+
+			if (pb_leftFlipper->body->GetAngle() + DEGTORAD * angularSpeed > DEGTORAD * minAngle + DEGTORAD * angleMargin)
+			{
+				LOG("unacceptable");
+				pb_leftFlipper->body->SetAngularVelocity(0.0f);
+			}
+		}
+
+		//MANAGE RIGHT FLIPPER
+		if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_STATE::KEY_REPEAT)
+		{
+			//LOG("angle: %f", pb_rightFlipper->body->GetAngle() * RADTODEG);
+			if (pb_rightFlipper->body->GetAngle() + DEGTORAD * angularSpeed < DEGTORAD * maxAngle)
+			{
+				pb_rightFlipper->body->SetAngularVelocity(angularSpeed);
+				LOG("go up");
+			}
+
+			if (pb_rightFlipper->body->GetAngle() + DEGTORAD * angularSpeed > DEGTORAD * maxAngle)
+			{
+				LOG("unacceptable");
+				pb_rightFlipper->body->SetAngularVelocity(0.0f);
+			}
+		}
+		else
+		{
+
+			if (pb_rightFlipper->body->GetAngle() > 0.0f)
+			{
+				if (pb_rightFlipper->body->GetAngle() > DEGTORAD * minAngle - DEGTORAD * angleMargin)
+				{
+					LOG("go down");
+					pb_rightFlipper->body->SetAngularVelocity(-angularSpeed);
+				}
+			}
+
+			if (pb_rightFlipper->body->GetAngle() - DEGTORAD * angularSpeed < DEGTORAD * minAngle - DEGTORAD * angleMargin)
+			{
+				LOG("unacceptable");
+				pb_rightFlipper->body->SetAngularVelocity(0.0f);
 			}
 		}
 		
 
-		if (pb_leftFlipper->body->GetAngle() * RADTODEG <= -maxAngle)
-		{
-			pb_leftFlipper->body->SetFixedRotation(DEGTORAD * -maxAngle);
-		}
-
-		if (pb_leftFlipper->body->GetAngle() * RADTODEG >= 0.0f)
-		{
-			pb_leftFlipper->body->SetFixedRotation(DEGTORAD * 0.0f);
-		}
+		//if (pb_leftFlipper->body->GetAngle() * RADTODEG <= -maxAngle)
+		//{
+		//	pb_leftFlipper->body->SetFixedRotation(DEGTORAD * -maxAngle);
+		//}
+		//
+		//if (pb_leftFlipper->body->GetAngle() * RADTODEG >= 0.0f)
+		//{
+		//	pb_leftFlipper->body->SetFixedRotation(DEGTORAD * 0.0f);
+		//}
 
 
 

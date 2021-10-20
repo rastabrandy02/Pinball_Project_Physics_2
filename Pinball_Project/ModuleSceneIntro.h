@@ -41,15 +41,16 @@ public:
 
 	p2List<PhysBody*> walls;
 	//p2List<b2RevoluteJoint*> flippers;
+	//b2RevoluteJoint a;
 	p2List<PhysBody*> leftFlipper_b;
-
+	
 	PhysBody* pb_leftFlipper;
 	PhysBody* pb_rightFlipper;
 	
 	float angularSpeed;
 	float maxAngle;
 	float minAngle;
-	
+	float angleMargin;
 
 	PhysBody* sensor;
 	bool sensed;
