@@ -150,8 +150,28 @@ bool ModuleSceneIntro::Start()
 		ballStartPositionerLeft[i] *= SCREEN_SIZE;
 		ballStartPositionerRight[i] *= SCREEN_SIZE;
 	}
+	for (int i = 0; i < 60; i++)
+	{
+		alienIsland[i] *= SCREEN_SIZE;
+	}
+	for (int i = 0; i < 14; i++)
+	{
+		blueCapsule[i] *= SCREEN_SIZE;
+		greenCapsule[i] *= SCREEN_SIZE;
+		yellowCapsule[i] *= SCREEN_SIZE;
+	}
+	bumper01.x = 580 * SCREEN_SIZE;
+	bumper01.y = 540 * SCREEN_SIZE;
+	bumper01.radius = 80 * SCREEN_SIZE;
+	
+	bumper02.x = 800 * SCREEN_SIZE;
+	bumper02.y = 500 * SCREEN_SIZE;
+	bumper02.radius = 80 * SCREEN_SIZE;
 
-	//Create all the walls
+	bumper03.x = 740 * SCREEN_SIZE;
+	bumper03.y = 680 * SCREEN_SIZE;
+	bumper03.radius = 80 * SCREEN_SIZE;
+	//Create all the walls,flippers, capsules
 	
 	PhysBody* pb_mainWalls = App->physics->CreateStaticChain(0, 0, mainWalls, 102);
 	PhysBody* pb_leftWall = App->physics->CreateStaticChain(0, 0, leftWall, 16);
@@ -160,9 +180,18 @@ bool ModuleSceneIntro::Start()
 	PhysBody* pb_rightRedIsland = App->physics->CreateStaticChain(0, 0, rightRedIsland, 12);
 	PhysBody* pb_bigIsland = App->physics->CreateStaticChain(0, 0, bigIsland, 24);
 	PhysBody* pb_littleIsland = App->physics->CreateStaticChain(0, 0, littleIsland, 18);
+	PhysBody* pb_alienIsland = App->physics->CreateStaticChain(0, 0, alienIsland, 60);
 	PhysBody* pb_ballStartPositionerLeft = App->physics->CreateStaticChain(0, 0, ballStartPositionerLeft, 6);
 	PhysBody* pb_ballStartPositionerRight = App->physics->CreateStaticChain(0, 0, ballStartPositionerRight, 6);
 	ballLauncherRectangle = App->physics->CreateKinematicRectangle(1090, 1771 + 25, 80, 50); //110 pixels until bottom
+
+	PhysBody* pb_blueCapsule = App->physics->CreateStaticChain(0, 0, blueCapsule, 14);
+	PhysBody* pb_greenCapsule = App->physics->CreateStaticChain(0, 0, greenCapsule, 14);
+	PhysBody* pb_yellowCapsule = App->physics->CreateStaticChain(0, 0, yellowCapsule, 14);
+
+	PhysBody* pb_bumper01 = App->physics->CreateStaticCircle(bumper01.x, bumper01.y, bumper01.radius);
+	PhysBody* pb_bumper02 = App->physics->CreateStaticCircle(bumper02.x, bumper02.y, bumper02.radius);
+	PhysBody* pb_bumper03 = App->physics->CreateStaticCircle(bumper03.x, bumper03.y, bumper03.radius);
 
 
 	walls.add(pb_mainWalls);
@@ -174,6 +203,15 @@ bool ModuleSceneIntro::Start()
 	walls.add(pb_littleIsland);
 	walls.add(pb_ballStartPositionerLeft);
 	walls.add(pb_ballStartPositionerRight);
+	walls.add(pb_alienIsland);
+
+	capsules.add(pb_blueCapsule);
+	capsules.add(pb_greenCapsule);
+	capsules.add(pb_yellowCapsule);
+
+	bumpers.add(pb_bumper01);
+	bumpers.add(pb_bumper02);
+	bumpers.add(pb_bumper03);
 
 	pb_leftFlipper = App->physics->CreateKinematicChain(326, 1700, leftFlipper, 20);
 	pb_rightFlipper = App->physics->CreateKinematicChain(718, 1700, rightFlipper, 20);
@@ -351,51 +389,8 @@ update_status ModuleSceneIntro::Update()
 			// TODO 8: Make sure to add yourself as collision callback to the circle you creates
 		}
 
-		if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
-		{
-			boxes.add(App->physics->CreateRectangle(App->input->GetMouseX(), App->input->GetMouseY(), 100, 50));
-		}
-
-		if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
-		{
-			// Pivot 0, 0
-			int rick_head[64] = {
-				14, 36,
-				42, 40,
-				40, 0,
-				75, 30,
-				88, 4,
-				94, 39,
-				111, 36,
-				104, 58,
-				107, 62,
-				117, 67,
-				109, 73,
-				110, 85,
-				106, 91,
-				109, 99,
-				103, 104,
-				100, 115,
-				106, 121,
-				103, 125,
-				98, 126,
-				95, 137,
-				83, 147,
-				67, 147,
-				53, 140,
-				46, 132,
-				34, 136,
-				38, 126,
-				23, 123,
-				30, 114,
-				10, 102,
-				29, 90,
-				0, 75,
-				30, 62
-			};
-
-			ricks.add(App->physics->CreateChain(App->input->GetMouseX(), App->input->GetMouseY(), rick_head, 64));
-		}
+	
+		
 
 
 		//MANAGE LEFT FLIPPER
@@ -506,9 +501,76 @@ update_status ModuleSceneIntro::Update()
 		// All draw functions ------------------------------------------------------
 		p2List_item<PhysBody*>* c = circles.getFirst();
 
+		//Background
 		App->renderer->Blit(pinball_bg, 0, 0, nullptr);
 		App->renderer->Blit(start_platform, SCREEN_WIDTH - 122, SCREEN_HEIGHT - 184, nullptr);
 		App->renderer->Blit(spring, 1067, 1786, nullptr);
+
+		//Alien
+		App->renderer->Blit(curve_tunnel, 340 * SCREEN_SIZE, 610 * SCREEN_SIZE, nullptr);
+		App->renderer->Blit(eye, 710 * SCREEN_SIZE, 1050 * SCREEN_SIZE, nullptr);
+
+		//Capsules
+		if(blueCapsuleCounter == true) App->renderer->Blit(capsule_1, 935 * SCREEN_SIZE, 445 * SCREEN_SIZE, &r_capsule_1[0]);
+		else App->renderer->Blit(capsule_1, 935 * SCREEN_SIZE, 445 * SCREEN_SIZE, &r_capsule_1[1]);
+
+		if (greenCapsuleCounter == true) App->renderer->Blit(capsule_2, 1175 * SCREEN_SIZE, 445 * SCREEN_SIZE, &r_capsule_2[0]);
+		else App->renderer->Blit(capsule_2, 1175 * SCREEN_SIZE, 445 * SCREEN_SIZE, &r_capsule_2[1]);
+
+		if (yellowCapsuleCounter == true) App->renderer->Blit(capsule_3, 1400 * SCREEN_SIZE, 400 * SCREEN_SIZE, &r_capsule_3[0]);
+		else App->renderer->Blit(capsule_3, 1400 * SCREEN_SIZE, 400 * SCREEN_SIZE, &r_capsule_3[1]);
+			
+		//Bumpers lighting
+
+		App->renderer->Blit(bumper, 490, 460, &r_bumper[0]);
+		App->renderer->Blit(bumper, 710, 420, &r_bumper[0]);
+		App->renderer->Blit(bumper, 650, 600, &r_bumper[0]);
+		/*if (bumper01Counter <= 20)
+		{
+		 App->renderer->Blit(bumper, 490 - 174*0, 460, &r_bumper[0]);	
+		 bumper01Counter++;
+		}
+		else if (bumper01Counter >= 20 && bumper01Counter < 40)
+		{
+			App->renderer->Blit(bumper, 490-174*1, 460, &r_bumper[1]);
+			bumper01Counter++;
+		}
+		else if (bumper01Counter >= 40 && bumper01Counter < 60)
+		{
+			App->renderer->Blit(bumper, 490-174*2, 460, &r_bumper[2]);
+			bumper01Counter++;
+		}
+		else if (bumper01Counter >= 60 && bumper01Counter < 80)
+		{
+			App->renderer->Blit(bumper, 490-174*3, 460, &r_bumper[3]);
+			bumper01Counter++;
+		}
+		else if (bumper01Counter >= 100 && bumper01Counter < 120)
+		{
+			App->renderer->Blit(bumper, 490-174*4, 460, &r_bumper[4]);
+			bumper01Counter++;
+		}
+		else if (bumper01Counter >= 120 && bumper01Counter < 140)
+		{
+			App->renderer->Blit(bumper, 490-174*5, 460, &r_bumper[5]);
+			bumper01Counter++;
+		}
+		else if (bumper01Counter >= 140 && bumper01Counter < 160)
+		{
+			App->renderer->Blit(bumper, 490-174*6, 460, &r_bumper[6]);
+			bumper01Counter++;
+		}
+		else if (bumper01Counter >= 160 && bumper01Counter < 180)
+		{
+			App->renderer->Blit(bumper, 490-174*7, 460, &r_bumper[7]);
+			bumper01Counter++;
+		}
+		else if (bumper01Counter >= 180 && bumper01Counter < 200)
+		{
+			App->renderer->Blit(bumper, 490, 460, &r_bumper[8]);
+			bumper01Counter++;
+		}
+		if(bumper01Counter == 200) bumper01Counter = 0;*/
 		
 
 		while (c != NULL)

@@ -5,7 +5,12 @@
 #include "Globals.h"
 
 class PhysBody;
-
+struct bumper_def
+{
+	int x;
+	int y;
+	int radius;
+};
 class ModuleSceneIntro : public Module
 {
 public:
@@ -41,6 +46,8 @@ public:
 	p2List<PhysBody*> ricks;
 
 	p2List<PhysBody*> walls;
+	p2List<PhysBody*> capsules;
+	p2List<PhysBody*> bumpers;
 	//p2List<b2RevoluteJoint*> flippers;
 	//b2RevoluteJoint a;
 	p2List<PhysBody*> leftFlipper_b;
@@ -303,7 +310,40 @@ public:
 	296, 769,
 	295, 791
 	};
+	int alienIsland[60] = {
+	405, 342,
+	422, 348,
+	442, 349,
+	444, 373,
+	443, 486,
+	444, 558,
+	455, 603,
+	504, 655,
+	548, 694,
+	581, 751,
+	601, 818,
+	586, 860,
+	557, 790,
+	525, 747,
+	473, 693,
+	419, 640,
+	382, 592,
+	339, 591,
+	302, 625,
+	266, 681,
+	240, 733,
+	219, 794,
+	212, 841,
+	171, 773,
+	179, 714,
+	210, 651,
+	250, 573,
+	323, 467,
+	369, 403,
+	398, 350
+	};
 
+	//Coordinates of the flippers
 	int leftFlipper[20] ={
 		 11, -21,
 		-10, -22,
@@ -330,8 +370,52 @@ public:
 		-136, 57
 
 	};
+	
+
+	// Coordinates of the capsules
+	int blueCapsule[14] = {
+	533, 260,
+	513, 277,
+	514, 356,
+	535, 370,
+	559, 351,
+	559, 278,
+	539, 261
+	};
+	int greenCapsule[14] = {
+	648, 262,
+	630, 280,
+	631, 361,
+	653, 369,
+	675, 358,
+	677, 273,
+	657, 260
+	};
+	int yellowCapsule[14] = {
+	764, 238,
+	743, 250,
+	743, 331,
+	767, 347,
+	789, 336,
+	791, 252,
+	770, 236
+	};
+
+	//Values for the bumpers
+	//400, 250, 40
+		bumper_def bumper01;
+		bumper_def bumper02;
+		bumper_def bumper03;
 
 	int margin = 20;
+
+	bool blueCapsuleCounter = false;
+	bool greenCapsuleCounter = false;
+	bool yellowCapsuleCounter = false;
+
+	int bumper01Counter = 0;
+	int bumper02Counter = 0;
+	int bumper03Counter = 0;
 
 	int ballStartPositionerLeft[6]
 	{	1050, 1771,
@@ -348,6 +432,6 @@ public:
 
 	float startForce;
 
-	//int rightFlipper[20];
+	
 
 };
