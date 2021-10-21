@@ -183,6 +183,7 @@ bool ModuleSceneIntro::Start()
 	PhysBody* pb_alienIsland = App->physics->CreateStaticChain(0, 0, alienIsland, 60);
 	PhysBody* pb_ballStartPositionerLeft = App->physics->CreateStaticChain(0, 0, ballStartPositionerLeft, 6);
 	PhysBody* pb_ballStartPositionerRight = App->physics->CreateStaticChain(0, 0, ballStartPositionerRight, 6);
+	
 	ballLauncherRectangle = App->physics->CreateKinematicRectangle(1090, 1771 + 25, 80, 50); //110 pixels until bottom
 
 	PhysBody* pb_blueCapsule = App->physics->CreateStaticChain(0, 0, blueCapsule, 14);
@@ -215,33 +216,6 @@ bool ModuleSceneIntro::Start()
 
 	pb_leftFlipper = App->physics->CreateKinematicChain(326, 1700, leftFlipper, 20);
 	pb_rightFlipper = App->physics->CreateKinematicChain(718, 1700, rightFlipper, 20);
-	b2Vec2 leftWallFlipperPivot = { 100,100 };//get position from the wall
-	b2Vec2 leftFlipperOrigin = { 0,0 };
-
-	//b2RevoluteJoint *flippJoint;
-	//flippJoint = App->physics->CreateFlipperJoint(
-	//	walls.findNode(pb_leftWall)->data->body,
-	//	leftWallFlipperPivot,
-	//	leftFlipper_pb->body,
-	//	leftFlipperOrigin
-	//);
-	//
-	//flippJoint->SetMotorSpeed(1.0f);
-	
-
-
-
-	
-
-
-
-
-	
-
-
-
-
-
 
 	//Set rects of multi-texture sprites
 	r_arrow_light_0[0] = { 0,0,230 / 2,140 };
@@ -253,11 +227,11 @@ bool ModuleSceneIntro::Start()
 
 	for (int i = 0; i < 7; i++)
 	{
-		r_bumper[i] = { 1218 / 7 * i,0,1218 / 7 * (i + 1),348 / 2 };
+		r_bumper[i] = { 1218 / 7 * i,0, 1218 / 7, 348 / 2 };
 	}
 	for (int i = 0; i < 7; i++)
 	{
-		r_bumper[i + 7] = { 1218 / 7 * i,348 / 2,1218 / 7 * (i + 1),348 };
+		r_bumper[i + 7] = { 1218 / 7 * i, 348 / 2, 1218 / 7, 348 / 2 };
 	}
 
 	r_bumper_button[0] = { 0,0,46 / 2,74 };
@@ -341,11 +315,11 @@ bool ModuleSceneIntro::Start()
 
 	for (int i = 0; i < 5; i++)
 	{
-		r_hand_anim[i] = { 1010 / 5 * i,0,1010 / 5 * (i+1),554 / 2 };
+		r_hand_anim[i] = { 1010 / 5 * i, 0, 1010 / 5, 554 / 2 };
 	}
 	for (int i = 0; i < 5; i++)
 	{
-		r_hand_anim[i + 5] = { 1010 / 5 * i,554 / 2,1010 / 5 * (i + 1),554 };
+		r_hand_anim[i + 5] = { 1010 / 5 * i, 554 / 2, 1010 / 5, 554 };
 	}
 
 	angleMargin = 10.0f;
@@ -373,8 +347,12 @@ bool ModuleSceneIntro::CleanUp()
 update_status ModuleSceneIntro::Update()
 {
 	//if not paused not update elements but still draw them 
-	//if (!gamePaused)
-	
+
+	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_UP)
+		gamePaused = !gamePaused;
+
+	if (!gamePaused)
+	{
 
 		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 		{
@@ -387,10 +365,11 @@ update_status ModuleSceneIntro::Update()
 		{
 			circles.add(App->physics->CreateCircle(App->input->GetMouseX(), App->input->GetMouseY(), 24 * SCREEN_SIZE));
 			// TODO 8: Make sure to add yourself as collision callback to the circle you creates
+
 		}
 
-	
-		
+
+
 
 
 		//MANAGE LEFT FLIPPER
@@ -464,13 +443,13 @@ update_status ModuleSceneIntro::Update()
 
 		//MANAGE START SPRING
 
-		if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_STATE::KEY_DOWN) 
+		if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_STATE::KEY_DOWN)
 		{
 			startForce = 0;
 		}
 		if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_STATE::KEY_REPEAT)
 		{
-			startForce += 0.05f;
+			startForce += 0.2f;
 		}
 		if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_STATE::KEY_UP)
 		{
@@ -481,14 +460,15 @@ update_status ModuleSceneIntro::Update()
 		{
 			if (ballLauncherRectangle->body->GetPosition().y < 1650)
 			{
-				b2Vec2 pos = { PIXEL_TO_METERS((1050 + 40) * SCREEN_SIZE),PIXEL_TO_METERS((1850 - 40) * SCREEN_SIZE)};
-				//b2Vec2 pos = { PIXEL_TO_METERS(ballLauncherRectangle->body->GetPosition().x) * SCREEN_SIZE, PIXEL_TO_METERS(1850)};
+				b2Vec2 pos = { PIXEL_TO_METERS((1050 + 40) * SCREEN_SIZE),PIXEL_TO_METERS((1850 - 40) * SCREEN_SIZE) };
 				ballLauncherRectangle->body->SetTransform(pos, 0.0f * DEGTORAD);
 				b2Vec2 zeroSpeed = { 0,0 };
 				ballLauncherRectangle->body->SetLinearVelocity(zeroSpeed);
 			}
 		}
-		
+
+	}
+
 		// Prepare for raycast ------------------------------------------------------
 
 		fPoint mouse;
@@ -507,25 +487,57 @@ update_status ModuleSceneIntro::Update()
 		App->renderer->Blit(spring, 1067, 1786, nullptr);
 
 		//Alien
-		App->renderer->Blit(curve_tunnel, 340 * SCREEN_SIZE, 610 * SCREEN_SIZE, nullptr);
-		App->renderer->Blit(eye, 710 * SCREEN_SIZE, 1050 * SCREEN_SIZE, nullptr);
+		App->renderer->Blit(curve_tunnel, 166 , 301 , nullptr);
+		App->renderer->Blit(eye, 354 , 511 , nullptr);
+
 
 		//Capsules
-		if(blueCapsuleCounter == true) App->renderer->Blit(capsule_1, 935 * SCREEN_SIZE, 445 * SCREEN_SIZE, &r_capsule_1[0]);
-		else App->renderer->Blit(capsule_1, 935 * SCREEN_SIZE, 445 * SCREEN_SIZE, &r_capsule_1[1]);
+		SDL_Rect r_temp = { 0 };
 
-		if (greenCapsuleCounter == true) App->renderer->Blit(capsule_2, 1175 * SCREEN_SIZE, 445 * SCREEN_SIZE, &r_capsule_2[0]);
-		else App->renderer->Blit(capsule_2, 1175 * SCREEN_SIZE, 445 * SCREEN_SIZE, &r_capsule_2[1]);
+			//blue
+		if (blueCapsuleCounter == true)
+		{
+			r_temp = r_capsule_1[0];
+		}
+		else
+		{
+			r_temp = r_capsule_1[1];
+		}
 
-		if (yellowCapsuleCounter == true) App->renderer->Blit(capsule_3, 1400 * SCREEN_SIZE, 400 * SCREEN_SIZE, &r_capsule_3[0]);
-		else App->renderer->Blit(capsule_3, 1400 * SCREEN_SIZE, 400 * SCREEN_SIZE, &r_capsule_3[1]);
+		App->renderer->Blit(capsule_1, 337 + 134 , 223 , &r_temp);
+
+			//green
+		if (greenCapsuleCounter == true)
+		{
+			r_temp = r_capsule_2[0];
+		}
+		else
+		{
+			r_temp = r_capsule_2[1];
+		}
+		
+		App->renderer->Blit(capsule_2, 454 + 134, 223, &r_temp);
+
+			//yellow
+		if (yellowCapsuleCounter == true)
+		{
+			r_temp = r_capsule_3[0];
+		}
+		else
+		{
+			r_temp = r_capsule_3[1];
+		}
+
+		App->renderer->Blit(capsule_3, 566 + 134 , 200 , &r_temp);
 			
 		//Bumpers lighting
 
 		App->renderer->Blit(bumper, 490, 460, &r_bumper[0]);
 		App->renderer->Blit(bumper, 710, 420, &r_bumper[0]);
 		App->renderer->Blit(bumper, 650, 600, &r_bumper[0]);
-		/*if (bumper01Counter <= 20)
+
+		/*
+		if (bumper01Counter <= 20)
 		{
 		 App->renderer->Blit(bumper, 490 - 174*0, 460, &r_bumper[0]);	
 		 bumper01Counter++;
@@ -570,7 +582,8 @@ update_status ModuleSceneIntro::Update()
 			App->renderer->Blit(bumper, 490, 460, &r_bumper[8]);
 			bumper01Counter++;
 		}
-		if(bumper01Counter == 200) bumper01Counter = 0;*/
+		if(bumper01Counter == 200) bumper01Counter = 0;
+		//*/
 		
 
 		while (c != NULL)
@@ -598,28 +611,29 @@ update_status ModuleSceneIntro::Update()
 			c = c->next;
 		}
 
-		c = ricks.getFirst();
-
-		while (c != NULL)
-		{
-			int x, y;
-			c->data->GetPosition(x, y);
-			App->renderer->Blit(rick, x, y, NULL, 1.0f, c->data->GetRotation());
-			c = c->next;
-		}
-
-		// ray -----------------
-		if (ray_on == true)
-		{
-			fVector destination(mouse.x - ray.x, mouse.y - ray.y);
-			destination.Normalize();
-			destination *= ray_hit;
-
-			App->renderer->DrawLine(ray.x, ray.y, ray.x + destination.x, ray.y + destination.y, 255, 255, 255);
-
-			if (normal.x != 0.0f)
-				App->renderer->DrawLine(ray.x + destination.x, ray.y + destination.y, ray.x + destination.x + normal.x * 25.0f, ray.y + destination.y + normal.y * 25.0f, 100, 255, 100);
-		}
+		//c = ricks.getFirst();
+		//
+		//while (c != NULL)
+		//{
+		//	int x, y;
+		//	c->data->GetPosition(x, y);
+		//	App->renderer->Blit(rick, x, y, NULL, 1.0f, c->data->GetRotation());
+		//	c = c->next;
+		//}
+		//
+		//// ray -----------------
+		//if (ray_on == true)
+		//{
+		//	fVector destination(mouse.x - ray.x, mouse.y - ray.y);
+		//	destination.Normalize();
+		//	destination *= ray_hit;
+		//
+		//	App->renderer->DrawLine(ray.x, ray.y, ray.x + destination.x, ray.y + destination.y, 255, 255, 255);
+		//
+		//	if (normal.x != 0.0f)
+		//		App->renderer->DrawLine(ray.x + destination.x, ray.y + destination.y, ray.x + destination.x + normal.x * 25.0f, ray.y + destination.y + normal.y * 25.0f, 100, 255, 100);
+		//}
+		
 		//right: 726  left: 326  y: 1706		
 		App->renderer->Blit(flipper, 310, 1680, nullptr, 1, 0, NULL, NULL, SDL_FLIP_HORIZONTAL);
 		App->renderer->Blit(flipper, 560, 1680, nullptr, 1, 0, NULL, NULL, SDL_FLIP_NONE);
