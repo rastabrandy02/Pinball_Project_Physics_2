@@ -30,149 +30,154 @@ bool ModuleSceneIntro::Start()
 	rick = App->textures->Load("pinball/rick_head.png");
 	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
 
+	//load images
 
-	//load UI elements
-	game_icon = App->textures->Load("pinball/UI_elements/icon.png");
-	audio_icon = App->textures->Load("pinball/UI_elements/audio_icon.png");
-	bestscore = App->textures->Load("pinball/UI_elements/bestscore.png");
-	bg_menu = App->textures->Load("pinball/UI_elements/bg_menu.png");
-	but_credits = App->textures->Load("pinball/UI_elements/but_credits.png");
-	but_exit = App->textures->Load("pinball/UI_elements/but_exit.png");
-	but_fullscreen = App->textures->Load("pinball/UI_elements/but_fullscreen.png");
-	but_home = App->textures->Load("pinball/UI_elements/but_home.png");
-	but_no = App->textures->Load("pinball/UI_elements/but_no.png");
-	but_yes = App->textures->Load("pinball/UI_elements/but_yes.png");
-	but_play = App->textures->Load("pinball/UI_elements/but_play.png");
-	but_restart = App->textures->Load("pinball/UI_elements/but_restart.png");
-	but_settings = App->textures->Load("pinball/UI_elements/but_settings.png");
-	but_start = App->textures->Load("pinball/UI_elements/but_start.png");
-	credits_panel = App->textures->Load("pinball/UI_elements/credits_panel.png");
-	ctl_logo = App->textures->Load("pinball/UI_elements/ctl_logo.png");
-	extra_ball = App->textures->Load("pinball/UI_elements/extra_ball.png");
-	hand_anim = App->textures->Load("pinball/UI_elements/hand_anim.png");
-	keys = App->textures->Load("pinball/UI_elements/keys.png");
-	msg_box = App->textures->Load("pinball/UI_elements/msg_box.png");
-	progress_bar = App->textures->Load("pinball/UI_elements/progress_bar.png");
-	score_panel = App->textures->Load("pinball/UI_elements/score_panel.png");
-	star = App->textures->Load("pinball/UI_elements/star.png");
+	if (true)
+	{
+		//load UI elements
+		game_icon = App->textures->Load("pinball/UI_elements/icon.png");
+		audio_icon = App->textures->Load("pinball/UI_elements/audio_icon.png");
+		bestscore = App->textures->Load("pinball/UI_elements/bestscore.png");
+		bg_menu = App->textures->Load("pinball/UI_elements/bg_menu.png");
+		but_credits = App->textures->Load("pinball/UI_elements/but_credits.png");
+		but_exit = App->textures->Load("pinball/UI_elements/but_exit.png");
+		but_fullscreen = App->textures->Load("pinball/UI_elements/but_fullscreen.png");
+		but_home = App->textures->Load("pinball/UI_elements/but_home.png");
+		but_no = App->textures->Load("pinball/UI_elements/but_no.png");
+		but_yes = App->textures->Load("pinball/UI_elements/but_yes.png");
+		but_play = App->textures->Load("pinball/UI_elements/but_play.png");
+		but_restart = App->textures->Load("pinball/UI_elements/but_restart.png");
+		but_settings = App->textures->Load("pinball/UI_elements/but_settings.png");
+		but_start = App->textures->Load("pinball/UI_elements/but_start.png");
+		credits_panel = App->textures->Load("pinball/UI_elements/credits_panel.png");
+		ctl_logo = App->textures->Load("pinball/UI_elements/ctl_logo.png");
+		extra_ball = App->textures->Load("pinball/UI_elements/extra_ball.png");
+		hand_anim = App->textures->Load("pinball/UI_elements/hand_anim.png");
+		keys = App->textures->Load("pinball/UI_elements/keys.png");
+		msg_box = App->textures->Load("pinball/UI_elements/msg_box.png");
+		progress_bar = App->textures->Load("pinball/UI_elements/progress_bar.png");
+		score_panel = App->textures->Load("pinball/UI_elements/score_panel.png");
+		star = App->textures->Load("pinball/UI_elements/star.png");
 
-	//load pinball elements
-	pinball_bg = App->textures->Load("pinball/pinball_elements/pinball_bg.png");
-	arrow_light_0 = App->textures->Load("pinball/pinball_elements/arrow_light_0.png");
-	arrow_light_1 = App->textures->Load("pinball/pinball_elements/arrow_light_1.png");
-	arrow_start = App->textures->Load("pinball/pinball_elements/arrow_start.png");
-	ball = App->textures->Load("pinball/pinball_elements/ball.png");
-	bumper = App->textures->Load("pinball/pinball_elements/bumper.png");
-	bumper_button = App->textures->Load("pinball/pinball_elements/bumper_button.png");
-	button_light_0 = App->textures->Load("pinball/pinball_elements/button_light_0.png");
-	button_light_1 = App->textures->Load("pinball/pinball_elements/button_light_1.png");
-	button_light_2 = App->textures->Load("pinball/pinball_elements/button_light_2.png");
-	button_light_3 = App->textures->Load("pinball/pinball_elements/button_light_3.png");
-	button_light_4 = App->textures->Load("pinball/pinball_elements/button_light_4.png");
-	button_light_5 = App->textures->Load("pinball/pinball_elements/button_light_5.png");
-	capsule_0 = App->textures->Load("pinball/pinball_elements/capsule_0.png");
-	capsule_1 = App->textures->Load("pinball/pinball_elements/capsule_1.png");
-	capsule_2 = App->textures->Load("pinball/pinball_elements/capsule_2.png");
-	capsule_3 = App->textures->Load("pinball/pinball_elements/capsule_3.png");
-	curve_light_button = App->textures->Load("pinball/pinball_elements/curve_light_button.png");
-	curve_tunnel = App->textures->Load("pinball/pinball_elements/curve_tunnel.png");
-	eye = App->textures->Load("pinball/pinball_elements/eye.png");
-	flipper = App->textures->Load("pinball/pinball_elements/flipper.png");
-	flipper_bumper = App->textures->Load("pinball/pinball_elements/flipper_bumper.png");
-	gate = App->textures->Load("pinball/pinball_elements/gate.png");
-	hole = App->textures->Load("pinball/pinball_elements/hole.png");
-	jackpot = App->textures->Load("pinball/pinball_elements/jackpot.png");
-	jumper = App->textures->Load("pinball/pinball_elements/jumper.png");
-	letter_P = App->textures->Load("pinball/pinball_elements/letter_0.png");
-	letter_I = App->textures->Load("pinball/pinball_elements/letter_1.png");
-	letter_N = App->textures->Load("pinball/pinball_elements/letter_2.png");
-	letter_B = App->textures->Load("pinball/pinball_elements/letter_3.png");
-	letter_A = App->textures->Load("pinball/pinball_elements/letter_4.png");
-	letter_L0 = App->textures->Load("pinball/pinball_elements/letter_5.png");
-	letter_L1 = App->textures->Load("pinball/pinball_elements/letter_6.png");
-	light_indicator_0 = App->textures->Load("pinball/pinball_elements/light_indicator_0.png");
-	light_indicator_1 = App->textures->Load("pinball/pinball_elements/light_indicator_1.png");
-	light_indicator_2 = App->textures->Load("pinball/pinball_elements/light_indicator_2.png");
-	logo = App->textures->Load("pinball/pinball_elements/logo.png");
-	multiplier_light = App->textures->Load("pinball/pinball_elements/multiplier_light.png");
-	multiplier_toggle_light = App->textures->Load("pinball/pinball_elements/multiplier_toggle_light.png");
-	router_light_0 = App->textures->Load("pinball/pinball_elements/router_light_0.png");
-	router_light_1 = App->textures->Load("pinball/pinball_elements/router_light_1.png");
-	router_light_2 = App->textures->Load("pinball/pinball_elements/router_light_2.png");
-	router_light_3 = App->textures->Load("pinball/pinball_elements/router_light_3.png");
-	router_light_4 = App->textures->Load("pinball/pinball_elements/router_light_4.png");
-	router_light_5 = App->textures->Load("pinball/pinball_elements/router_light_5.png");
-	router_light_6 = App->textures->Load("pinball/pinball_elements/router_light_6.png");
-	safe_pin = App->textures->Load("pinball/pinball_elements/safe_pin.png");
-	shield = App->textures->Load("pinball/pinball_elements/shield.png");
-	spring = App->textures->Load("pinball/pinball_elements/spring.png");
-	start_platform = App->textures->Load("pinball/pinball_elements/start_platform.png");
-	tunnel_start = App->textures->Load("pinball/pinball_elements/tunnel_start.png");
-
+		//load pinball elements
+		pinball_bg = App->textures->Load("pinball/pinball_elements/pinball_bg.png");
+		arrow_light_0 = App->textures->Load("pinball/pinball_elements/arrow_light_0.png");
+		arrow_light_1 = App->textures->Load("pinball/pinball_elements/arrow_light_1.png");
+		arrow_start = App->textures->Load("pinball/pinball_elements/arrow_start.png");
+		ball = App->textures->Load("pinball/pinball_elements/ball.png");
+		bumper = App->textures->Load("pinball/pinball_elements/bumper.png");
+		bumper_button = App->textures->Load("pinball/pinball_elements/bumper_button.png");
+		button_light_0 = App->textures->Load("pinball/pinball_elements/button_light_0.png");
+		button_light_1 = App->textures->Load("pinball/pinball_elements/button_light_1.png");
+		button_light_2 = App->textures->Load("pinball/pinball_elements/button_light_2.png");
+		button_light_3 = App->textures->Load("pinball/pinball_elements/button_light_3.png");
+		button_light_4 = App->textures->Load("pinball/pinball_elements/button_light_4.png");
+		button_light_5 = App->textures->Load("pinball/pinball_elements/button_light_5.png");
+		capsule_0 = App->textures->Load("pinball/pinball_elements/capsule_0.png");
+		capsule_1 = App->textures->Load("pinball/pinball_elements/capsule_1.png");
+		capsule_2 = App->textures->Load("pinball/pinball_elements/capsule_2.png");
+		capsule_3 = App->textures->Load("pinball/pinball_elements/capsule_3.png");
+		curve_light_button = App->textures->Load("pinball/pinball_elements/curve_light_button.png");
+		curve_tunnel = App->textures->Load("pinball/pinball_elements/curve_tunnel.png");
+		eye = App->textures->Load("pinball/pinball_elements/eye.png");
+		flipper = App->textures->Load("pinball/pinball_elements/flipper.png");
+		flipper_bumper = App->textures->Load("pinball/pinball_elements/flipper_bumper.png");
+		gate = App->textures->Load("pinball/pinball_elements/gate.png");
+		hole = App->textures->Load("pinball/pinball_elements/hole.png");
+		jackpot = App->textures->Load("pinball/pinball_elements/jackpot.png");
+		jumper = App->textures->Load("pinball/pinball_elements/jumper.png");
+		letter_P = App->textures->Load("pinball/pinball_elements/letter_0.png");
+		letter_I = App->textures->Load("pinball/pinball_elements/letter_1.png");
+		letter_N = App->textures->Load("pinball/pinball_elements/letter_2.png");
+		letter_B = App->textures->Load("pinball/pinball_elements/letter_3.png");
+		letter_A = App->textures->Load("pinball/pinball_elements/letter_4.png");
+		letter_L0 = App->textures->Load("pinball/pinball_elements/letter_5.png");
+		letter_L1 = App->textures->Load("pinball/pinball_elements/letter_6.png");
+		light_indicator_0 = App->textures->Load("pinball/pinball_elements/light_indicator_0.png");
+		light_indicator_1 = App->textures->Load("pinball/pinball_elements/light_indicator_1.png");
+		light_indicator_2 = App->textures->Load("pinball/pinball_elements/light_indicator_2.png");
+		logo = App->textures->Load("pinball/pinball_elements/logo.png");
+		multiplier_light = App->textures->Load("pinball/pinball_elements/multiplier_light.png");
+		multiplier_toggle_light = App->textures->Load("pinball/pinball_elements/multiplier_toggle_light.png");
+		router_light_0 = App->textures->Load("pinball/pinball_elements/router_light_0.png");
+		router_light_1 = App->textures->Load("pinball/pinball_elements/router_light_1.png");
+		router_light_2 = App->textures->Load("pinball/pinball_elements/router_light_2.png");
+		router_light_3 = App->textures->Load("pinball/pinball_elements/router_light_3.png");
+		router_light_4 = App->textures->Load("pinball/pinball_elements/router_light_4.png");
+		router_light_5 = App->textures->Load("pinball/pinball_elements/router_light_5.png");
+		router_light_6 = App->textures->Load("pinball/pinball_elements/router_light_6.png");
+		safe_pin = App->textures->Load("pinball/pinball_elements/safe_pin.png");
+		shield = App->textures->Load("pinball/pinball_elements/shield.png");
+		spring = App->textures->Load("pinball/pinball_elements/spring.png");
+		start_platform = App->textures->Load("pinball/pinball_elements/start_platform.png");
+		tunnel_start = App->textures->Load("pinball/pinball_elements/tunnel_start.png");
+	}
 
 	//adapt walls to screen size
+	if (true)
+	{
+		for (int i = 0; i < 102; i++)
+		{
+			mainWalls[i] *= SCREEN_SIZE;
+		}
 
-	for (int i = 0; i < 102; i++)
-	{
-		mainWalls[i] *= SCREEN_SIZE;
-	}
-	
-	for (int i = 0; i < 16; i++)
-	{
-		leftWall[i] *= SCREEN_SIZE;
-		rightWall[i] *= SCREEN_SIZE;
-	}
+		for (int i = 0; i < 16; i++)
+		{
+			leftWall[i] *= SCREEN_SIZE;
+			rightWall[i] *= SCREEN_SIZE;
+		}
 
 
-	for (int i = 0; i < 12; i++)
-	{
-		leftRedIsland[i] *= SCREEN_SIZE;
-		rightRedIsland[i] *= SCREEN_SIZE;
+		for (int i = 0; i < 12; i++)
+		{
+			leftRedIsland[i] *= SCREEN_SIZE;
+			rightRedIsland[i] *= SCREEN_SIZE;
+		}
+
+		for (int i = 0; i < 24; i++)
+		{
+			bigIsland[i] *= SCREEN_SIZE;
+		}
+		for (int i = 0; i < 18; i++)
+		{
+			littleIsland[i] *= SCREEN_SIZE;
+		}
+
+		for (int i = 0; i < 20; i++)
+		{
+			leftFlipper[i] *= SCREEN_SIZE;
+			rightFlipper[i] *= SCREEN_SIZE;
+		}
+
+		for (size_t i = 0; i < 6; i++)
+		{
+			ballStartPositionerLeft[i] *= SCREEN_SIZE;
+			ballStartPositionerRight[i] *= SCREEN_SIZE;
+		}
+		for (int i = 0; i < 60; i++)
+		{
+			alienIsland[i] *= SCREEN_SIZE;
+		}
+		for (int i = 0; i < 14; i++)
+		{
+			blueCapsule[i] *= SCREEN_SIZE;
+			greenCapsule[i] *= SCREEN_SIZE;
+			yellowCapsule[i] *= SCREEN_SIZE;
+		}
+		bumper01.x = 580 * SCREEN_SIZE;
+		bumper01.y = 540 * SCREEN_SIZE;
+		bumper01.radius = 80 * SCREEN_SIZE;
+
+		bumper02.x = 800 * SCREEN_SIZE;
+		bumper02.y = 500 * SCREEN_SIZE;
+		bumper02.radius = 80 * SCREEN_SIZE;
+
+		bumper03.x = 740 * SCREEN_SIZE;
+		bumper03.y = 680 * SCREEN_SIZE;
+		bumper03.radius = 80 * SCREEN_SIZE;
 	}
 
-	for (int i = 0; i < 24; i++)
-	{
-		bigIsland[i] *= SCREEN_SIZE;
-	}
-	for (int i = 0; i < 18; i++)
-	{
-		littleIsland[i] *= SCREEN_SIZE;
-	}
-
-	for (int i = 0; i < 20; i++)
-	{
-		leftFlipper[i] *= SCREEN_SIZE;
-		rightFlipper[i] *= SCREEN_SIZE;
-	}
-
-	for (size_t i = 0; i < 6; i++)
-	{
-		ballStartPositionerLeft[i] *= SCREEN_SIZE;
-		ballStartPositionerRight[i] *= SCREEN_SIZE;
-	}
-	for (int i = 0; i < 60; i++)
-	{
-		alienIsland[i] *= SCREEN_SIZE;
-	}
-	for (int i = 0; i < 14; i++)
-	{
-		blueCapsule[i] *= SCREEN_SIZE;
-		greenCapsule[i] *= SCREEN_SIZE;
-		yellowCapsule[i] *= SCREEN_SIZE;
-	}
-	bumper01.x = 580 * SCREEN_SIZE;
-	bumper01.y = 540 * SCREEN_SIZE;
-	bumper01.radius = 80 * SCREEN_SIZE;
-	
-	bumper02.x = 800 * SCREEN_SIZE;
-	bumper02.y = 500 * SCREEN_SIZE;
-	bumper02.radius = 80 * SCREEN_SIZE;
-
-	bumper03.x = 740 * SCREEN_SIZE;
-	bumper03.y = 680 * SCREEN_SIZE;
-	bumper03.radius = 80 * SCREEN_SIZE;
 	//Create all the walls,flippers, capsules
-	
 	PhysBody* pb_mainWalls = App->physics->CreateStaticChain(0, 0, mainWalls, 102);
 	PhysBody* pb_leftWall = App->physics->CreateStaticChain(0, 0, leftWall, 16);
 	PhysBody* pb_rightWall = App->physics->CreateStaticChain(0, 0, rightWall, 16);
@@ -185,6 +190,8 @@ bool ModuleSceneIntro::Start()
 	PhysBody* pb_ballStartPositionerRight = App->physics->CreateStaticChain(0, 0, ballStartPositionerRight, 6);
 	
 	ballLauncherRectangle = App->physics->CreateKinematicRectangle(1090, 1771 + 25, 80, 50); //110 pixels until bottom
+	ballLauncherRecInitPosX = ballLauncherRectangle->body->GetPosition().x;
+	ballLauncherRecInitPosY = ballLauncherRectangle->body->GetPosition().y;
 
 	PhysBody* pb_blueCapsule = App->physics->CreateStaticChain(0, 0, blueCapsule, 14);
 	PhysBody* pb_greenCapsule = App->physics->CreateStaticChain(0, 0, greenCapsule, 14);
@@ -218,108 +225,113 @@ bool ModuleSceneIntro::Start()
 	pb_rightFlipper = App->physics->CreateKinematicChain(718, 1700, rightFlipper, 20);
 
 	//Set rects of multi-texture sprites
-	r_arrow_light_0[0] = { 0,0,230 / 2,140 };
-	r_arrow_light_0[1] = { 230 / 2,0,230,140 };
-	r_arrow_light_1[0] = { 0,0,230 / 2,140 };
-	r_arrow_light_1[1] = { 230 / 2,0,230,140 };
-	r_arrow_start[0] = { 0,0,148 / 2,67 };
-	r_arrow_start[1] = { 148 / 2,0,148,67 };
 
-	for (int i = 0; i < 7; i++)
+	if (true)
 	{
-		r_bumper[i] = { 1218 / 7 * i,0, 1218 / 7, 348 / 2 };
-	}
-	for (int i = 0; i < 7; i++)
-	{
-		r_bumper[i + 7] = { 1218 / 7 * i, 348 / 2, 1218 / 7, 348 / 2 };
-	}
+		r_arrow_light_0[0] = { 0,0,230 / 2,140 };
+		r_arrow_light_0[1] = { 230 / 2,0,230,140 };
+		r_arrow_light_1[0] = { 0,0,230 / 2,140 };
+		r_arrow_light_1[1] = { 230 / 2,0,230,140 };
+		r_arrow_start[0] = { 0,0,148 / 2,67 };
+		r_arrow_start[1] = { 148 / 2,0,148,67 };
 
-	r_bumper_button[0] = { 0,0,46 / 2,74 };
-	r_bumper_button[1] = { 46 / 2,0,46 / 2,74 };
-	r_button_light_0[0] = { 0,0,188 / 2,94 };
-	r_button_light_0[1] = { 188 / 2,0,188 / 2,94 };
-	r_button_light_1[0] = { 0,0,188 / 2,94 };
-	r_button_light_1[1] = { 188 / 2,0,188 / 2,94 };
-	r_button_light_2[0] = { 0,0,188 / 2,94 };
-	r_button_light_2[1] = { 188 / 2,0,188 / 2,94 };
-	r_button_light_3[0] = { 0,0,188 / 2,94 };
-	r_button_light_3[1] = { 188 / 2,0,188 / 2,94 };
-	r_button_light_4[0] = { 0,0,188 / 2,94 };
-	r_button_light_4[1] = { 188 / 2,0,188 / 2,94 };
-	r_button_light_5[0] = { 0,0,188 / 2,94 };
-	r_button_light_5[1] = { 188 / 2,0,188 / 2,94 };
-	r_capsule_0[0] = { 0,0, 268 / 2,198 };
-	r_capsule_0[1] = { 268 / 2,0,268 / 2,198 };
-	r_capsule_1[0] = { 0,0, 268 / 2,198 };
-	r_capsule_1[1] = { 268 / 2,0,268 / 2,198 };
-	r_capsule_2[0] = { 0,0, 268 / 2,198 };
-	r_capsule_2[1] = { 268 / 2,0,268 / 2,198 };
-	r_capsule_3[0] = { 0,0, 268 / 2,198 };
-	r_capsule_3[1] = { 268 / 2,0,268 / 2,198 };
-	r_curve_light_button[0] = { 0,0, 234 / 2,107 };
-	r_curve_light_button[1] = { 234 / 2,0,234 / 2,107 };
-	r_flipper_bumper[0] = { 0,0, 256 / 2,264 };
-	r_flipper_bumper[1] = { 256 / 2,0,256 / 2,264 };
-	r_jackpot[0] = { 0,0, 230 / 2,197 };
-	r_jackpot[1] = { 230 / 2,0,230 / 2,197 };
-	r_jumper[0];
-	r_jumper[1];
-	r_letter_P[0] = { 0,0, 200 / 2,100 };
-	r_letter_P[1] = { 200 / 2,0,200 / 2,100 };
-	r_letter_I[0] = { 0,0, 200 / 2,100 };
-	r_letter_I[1] = { 200 / 2,0,200 / 2,100 };
-	r_letter_N[0] = { 0,0, 200 / 2,100 };
-	r_letter_N[1] = { 200 / 2,0,200 / 2,100 };
-	r_letter_B[0] = { 0,0, 200 / 2,100 };
-	r_letter_B[1] = { 200 / 2,0,200 / 2,100 };
-	r_letter_A[0] = { 0,0, 200 / 2,100 };
-	r_letter_A[1] = { 200 / 2,0,200 / 2,100 };
-	r_letter_L0[0] = { 0,0, 200 / 2,100 };
-	r_letter_L0[1] = { 200 / 2,0,200 / 2,100 };
-	r_letter_L1[0] = { 0,0, 200 / 2,100 };
-	r_letter_L1[1] = { 200 / 2,0,200 / 2,100 };
-	r_light_indicator_0[0] = { 0,0, 314 / 2,139 };
-	r_light_indicator_0[1] = { 314 / 2,0,314 / 2,139 };
-	r_light_indicator_1[0] = { 0,0, 314 / 2,139 };
-	r_light_indicator_1[1] = { 314 / 2,0,314 / 2,139 };
-	r_light_indicator_2[0] = { 0,0, 314 / 2,139 };
-	r_light_indicator_2[1] = { 314 / 2,0,314 / 2,139 };
-	r_logo[0] = { 0,0, 816 / 2,310 };
-	r_logo[1] = { 816 / 2,0,816 / 2,310 };
-	r_bultiplier_light[0] = { 0,0, 314 / 2,139 };
-	r_bultiplier_light[1] = { 314 / 2,0,314 / 2,139 };
-	r_multiplier_toggle_light[0] = { 0,0, 226 / 2,110 };
-	r_multiplier_toggle_light[1] = { 226 / 2,0,226 / 2,110 };
-	r_router_light_0[0] = { 0,0, 236 / 2,118 };
-	r_router_light_0[1] = { 236 / 2,0,236 / 2,118 };
-	r_router_light_1[0] = { 0,0, 236 / 2,118 };
-	r_router_light_1[1] = { 236 / 2,0,236 / 2,118 };
-	r_router_light_2[0] = { 0,0, 236 / 2,118 };
-	r_router_light_2[1] = { 236 / 2,0,236 / 2,118 };
-	r_router_light_3[0] = { 0,0, 236 / 2,118 };
-	r_router_light_3[1] = { 236 / 2,0,236 / 2,118 };
-	r_router_light_4[0] = { 0,0, 236 / 2,118 };
-	r_router_light_4[1] = { 236 / 2,0,236 / 2,118 };
-	r_router_light_5[0] = { 0,0, 236 / 2,118 };
-	r_router_light_5[1] = { 236 / 2,0,236 / 2,118 };
-	r_router_light_6[0] = { 0,0, 236 / 2,118 };
-	r_router_light_6[1] = { 236 / 2,0,236 / 2,118 };
-	r_shield[0] = { 0,0, 80 / 2,40 };
-	r_shield[1] = { 80 / 2,0,80 / 2,40 };
+		for (int i = 0; i < 7; i++)
+		{
+			r_bumper[i] = { 1218 / 7 * i,0, 1218 / 7, 348 / 2 };
+		}
+		for (int i = 0; i < 7; i++)
+		{
+			r_bumper[i + 7] = { 1218 / 7 * i, 348 / 2, 1218 / 7, 348 / 2 };
+		}
 
-	r_audio_icon[0] = { 0,0,184 / 2,100 };
-	r_audio_icon[1] = { 184 / 2,0,184 / 2,100 };
-	
-	r_but_fullscreen[0] = { 0,0,184 / 2,100 };
-	r_but_fullscreen[1] = { 184 / 2,0,184 / 2,100 };
+		r_bumper_button[0] = { 0,0,46 / 2,74 };
+		r_bumper_button[1] = { 46 / 2,0,46 / 2,74 };
+		r_button_light_0[0] = { 0,0,188 / 2,94 };
+		r_button_light_0[1] = { 188 / 2,0,188 / 2,94 };
+		r_button_light_1[0] = { 0,0,188 / 2,94 };
+		r_button_light_1[1] = { 188 / 2,0,188 / 2,94 };
+		r_button_light_2[0] = { 0,0,188 / 2,94 };
+		r_button_light_2[1] = { 188 / 2,0,188 / 2,94 };
+		r_button_light_3[0] = { 0,0,188 / 2,94 };
+		r_button_light_3[1] = { 188 / 2,0,188 / 2,94 };
+		r_button_light_4[0] = { 0,0,188 / 2,94 };
+		r_button_light_4[1] = { 188 / 2,0,188 / 2,94 };
+		r_button_light_5[0] = { 0,0,188 / 2,94 };
+		r_button_light_5[1] = { 188 / 2,0,188 / 2,94 };
+		r_capsule_0[0] = { 0,0, 268 / 2,198 };
+		r_capsule_0[1] = { 268 / 2,0,268 / 2,198 };
+		r_capsule_1[0] = { 0,0, 268 / 2,198 };
+		r_capsule_1[1] = { 268 / 2,0,268 / 2,198 };
+		r_capsule_2[0] = { 0,0, 268 / 2,198 };
+		r_capsule_2[1] = { 268 / 2,0,268 / 2,198 };
+		r_capsule_3[0] = { 0,0, 268 / 2,198 };
+		r_capsule_3[1] = { 268 / 2,0,268 / 2,198 };
+		r_curve_light_button[0] = { 0,0, 234 / 2,107 };
+		r_curve_light_button[1] = { 234 / 2,0,234 / 2,107 };
+		r_flipper_bumper[0] = { 0,0, 256 / 2,264 };
+		r_flipper_bumper[1] = { 256 / 2,0,256 / 2,264 };
+		r_jackpot[0] = { 0,0, 230 / 2,197 };
+		r_jackpot[1] = { 230 / 2,0,230 / 2,197 };
+		r_jumper[0];
+		r_jumper[1];
+		r_letter_P[0] = { 0,0, 200 / 2,100 };
+		r_letter_P[1] = { 200 / 2,0,200 / 2,100 };
+		r_letter_I[0] = { 0,0, 200 / 2,100 };
+		r_letter_I[1] = { 200 / 2,0,200 / 2,100 };
+		r_letter_N[0] = { 0,0, 200 / 2,100 };
+		r_letter_N[1] = { 200 / 2,0,200 / 2,100 };
+		r_letter_B[0] = { 0,0, 200 / 2,100 };
+		r_letter_B[1] = { 200 / 2,0,200 / 2,100 };
+		r_letter_A[0] = { 0,0, 200 / 2,100 };
+		r_letter_A[1] = { 200 / 2,0,200 / 2,100 };
+		r_letter_L0[0] = { 0,0, 200 / 2,100 };
+		r_letter_L0[1] = { 200 / 2,0,200 / 2,100 };
+		r_letter_L1[0] = { 0,0, 200 / 2,100 };
+		r_letter_L1[1] = { 200 / 2,0,200 / 2,100 };
+		r_light_indicator_0[0] = { 0,0, 314 / 2,139 };
+		r_light_indicator_0[1] = { 314 / 2,0,314 / 2,139 };
+		r_light_indicator_1[0] = { 0,0, 314 / 2,139 };
+		r_light_indicator_1[1] = { 314 / 2,0,314 / 2,139 };
+		r_light_indicator_2[0] = { 0,0, 314 / 2,139 };
+		r_light_indicator_2[1] = { 314 / 2,0,314 / 2,139 };
+		r_logo[0] = { 0,0, 816 / 2,310 };
+		r_logo[1] = { 816 / 2,0,816 / 2,310 };
+		r_bultiplier_light[0] = { 0,0, 314 / 2,139 };
+		r_bultiplier_light[1] = { 314 / 2,0,314 / 2,139 };
+		r_multiplier_toggle_light[0] = { 0,0, 226 / 2,110 };
+		r_multiplier_toggle_light[1] = { 226 / 2,0,226 / 2,110 };
+		r_router_light_0[0] = { 0,0, 236 / 2,118 };
+		r_router_light_0[1] = { 236 / 2,0,236 / 2,118 };
+		r_router_light_1[0] = { 0,0, 236 / 2,118 };
+		r_router_light_1[1] = { 236 / 2,0,236 / 2,118 };
+		r_router_light_2[0] = { 0,0, 236 / 2,118 };
+		r_router_light_2[1] = { 236 / 2,0,236 / 2,118 };
+		r_router_light_3[0] = { 0,0, 236 / 2,118 };
+		r_router_light_3[1] = { 236 / 2,0,236 / 2,118 };
+		r_router_light_4[0] = { 0,0, 236 / 2,118 };
+		r_router_light_4[1] = { 236 / 2,0,236 / 2,118 };
+		r_router_light_5[0] = { 0,0, 236 / 2,118 };
+		r_router_light_5[1] = { 236 / 2,0,236 / 2,118 };
+		r_router_light_6[0] = { 0,0, 236 / 2,118 };
+		r_router_light_6[1] = { 236 / 2,0,236 / 2,118 };
+		r_shield[0] = { 0,0, 80 / 2,40 };
+		r_shield[1] = { 80 / 2,0,80 / 2,40 };
 
-	for (int i = 0; i < 5; i++)
-	{
-		r_hand_anim[i] = { 1010 / 5 * i, 0, 1010 / 5, 554 / 2 };
-	}
-	for (int i = 0; i < 5; i++)
-	{
-		r_hand_anim[i + 5] = { 1010 / 5 * i, 554 / 2, 1010 / 5, 554 };
+		r_audio_icon[0] = { 0,0,184 / 2,100 };
+		r_audio_icon[1] = { 184 / 2,0,184 / 2,100 };
+
+		r_but_fullscreen[0] = { 0,0,184 / 2,100 };
+		r_but_fullscreen[1] = { 184 / 2,0,184 / 2,100 };
+
+		for (int i = 0; i < 5; i++)
+		{
+			r_hand_anim[i] = { 1010 / 5 * i, 0, 1010 / 5, 554 / 2 };
+		}
+		for (int i = 0; i < 5; i++)
+		{
+			r_hand_anim[i + 5] = { 1010 / 5 * i, 554 / 2, 1010 / 5, 554 };
+		}
+
 	}
 
 	angleMargin = 10.0f;
@@ -449,24 +461,41 @@ update_status ModuleSceneIntro::Update()
 		}
 		if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_STATE::KEY_REPEAT)
 		{
-			startForce += 0.2f;
+			if (startForce < 0.5f)
+			{
+				startForce += 0.005f;
+			}
+			b2Vec2 relativePos = { ballLauncherRecInitPosX , ballLauncherRecInitPosY + startForce };
+			ballLauncherRectangle->body->SetTransform(relativePos, 0.0f);
 		}
 		if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_STATE::KEY_UP)
 		{
-			b2Vec2 force = { 0,-startForce };
+			//LOG("%i", METERS_TO_PIXELS(ballLauncherRectangle->body->GetPosition().y * SCREEN_SIZE));
+			//LOG("%i", METERS_TO_PIXELS(ballLauncherRecInitPosY * SCREEN_SIZE));
+			float y1 = METERS_TO_PIXELS(ballLauncherRecInitPosY );
+			float y2 = METERS_TO_PIXELS(ballLauncherRectangle->body->GetPosition().y);
+
+			//LOG("%f", (y2 - y1 + startForce * 2));
+
+			b2Vec2 force = { 0,-( y2 - y1 + startForce * 2) };
 			ballLauncherRectangle->body->SetLinearVelocity(force);
+
+			//LOG("%f", (y2 - y1 + startForce * 2));
 		}
 		if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_STATE::KEY_IDLE)
 		{
-			if (ballLauncherRectangle->body->GetPosition().y < 1650)
+			//
+			if (METERS_TO_PIXELS(ballLauncherRectangle->body->GetPosition().y) < 1850 * SCREEN_SIZE)
 			{
-				b2Vec2 pos = { PIXEL_TO_METERS((1050 + 40) * SCREEN_SIZE),PIXEL_TO_METERS((1850 - 40) * SCREEN_SIZE) };
-				ballLauncherRectangle->body->SetTransform(pos, 0.0f * DEGTORAD);
+				//LOG("%f", METERS_TO_PIXELS(ballLauncherRectangle->body->GetPosition().y))
+				//b2Vec2 pos = { PIXEL_TO_METERS((1050 + 40) * SCREEN_SIZE),PIXEL_TO_METERS((1850 - 40) * SCREEN_SIZE) };
+				//ballLauncherRectangle->body->SetTransform(pos, 0.0f * DEGTORAD);
 				b2Vec2 zeroSpeed = { 0,0 };
 				ballLauncherRectangle->body->SetLinearVelocity(zeroSpeed);
+				b2Vec2 initPos = { ballLauncherRecInitPosX,ballLauncherRecInitPosY };
+				ballLauncherRectangle->body->SetTransform(initPos, 0.0f);
 			}
 		}
-
 	}
 
 		// Prepare for raycast ------------------------------------------------------
@@ -483,8 +512,10 @@ update_status ModuleSceneIntro::Update()
 
 		//Background
 		App->renderer->Blit(pinball_bg, 0, 0, nullptr);
+		App->renderer->Blit(spring, 1067, 1786 + startForce * 200, nullptr);
+		LOG("startforce: %f", startForce);
+
 		App->renderer->Blit(start_platform, SCREEN_WIDTH - 122, SCREEN_HEIGHT - 184, nullptr);
-		App->renderer->Blit(spring, 1067, 1786, nullptr);
 
 		//Alien
 		App->renderer->Blit(curve_tunnel, 166 , 301 , nullptr);

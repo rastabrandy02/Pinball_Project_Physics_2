@@ -40,6 +40,8 @@ public:
 
 	
 	PhysBody* ballLauncherRectangle;
+	float ballLauncherRecInitPosX;
+	float ballLauncherRecInitPosY;
 
 	p2List<PhysBody*> circles;
 	p2List<PhysBody*> boxes;
