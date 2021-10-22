@@ -512,7 +512,9 @@ update_status ModuleSceneIntro::Update()
 
 		//Background
 		App->renderer->Blit(pinball_bg, 0, 0, nullptr);
-		App->renderer->Blit(spring, 1067, 1786 + startForce * 200, nullptr);
+		
+		App->renderer->Blit(spring, 1069, (METERS_TO_PIXELS(ballLauncherRectangle->body->GetPosition().y) -3) / SCREEN_SIZE , nullptr);
+		
 		LOG("startforce: %f", startForce);
 
 		App->renderer->Blit(start_platform, SCREEN_WIDTH - 122, SCREEN_HEIGHT - 184, nullptr);
