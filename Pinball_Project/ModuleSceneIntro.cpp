@@ -668,9 +668,13 @@ update_status ModuleSceneIntro::Update()
 		//}
 		
 		//right: 726  left: 326  y: 1706		
-		App->renderer->Blit(flipper, 310, 1680, nullptr, 1, 0, NULL, NULL, SDL_FLIP_HORIZONTAL);
-		App->renderer->Blit(flipper, 560, 1680, nullptr, 1, 0, NULL, NULL, SDL_FLIP_NONE);
 
+		//App->renderer->Blit(flipper, 310, 1680, nullptr, 1, METERS_TO_PIXELS(pb_leftFlipper->body->GetAngle()), 0, 0, SDL_FLIP_HORIZONTAL);
+		App->renderer->Blit(flipper, 300, 1675, nullptr, 1, METERS_TO_PIXELS(pb_leftFlipper->body->GetAngle()) , 8, 17, SDL_FLIP_HORIZONTAL);
+		//App->renderer->Blit(flipper, 560, 1680, nullptr, 1, METERS_TO_PIXELS(pb_rightFlipper->body->GetAngle()), 176, 118, SDL_FLIP_NONE);
+		App->renderer->Blit(flipper, 565, 1675, nullptr, 1, METERS_TO_PIXELS(pb_rightFlipper->body->GetAngle())  , 80, 13, SDL_FLIP_NONE);
+		
+		
 		
 		//right: 840  left: 240  y: 1460
 		App->renderer->Blit(flipper_bumper, 240 - GetCenterX(r_flipper_bumper[0]), 1460 - GetCenterY(r_flipper_bumper[0]), &r_flipper_bumper[1], 1, 0, NULL, NULL, SDL_FLIP_HORIZONTAL);
