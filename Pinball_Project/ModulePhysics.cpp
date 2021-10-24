@@ -290,6 +290,10 @@ update_status ModulePhysics::PostUpdate()
 	if(!debug)
 		return UPDATE_CONTINUE;
 
+	b2Body* clickedBody = NULL;
+	b2Vec2 mousePos = { PIXEL_TO_METERS(App->input->GetMouseX()), PIXEL_TO_METERS(App->input->GetMouseY()) };
+	
+
 	// Bonus code: this will iterate all objects in the world and draw the circles
 	// You need to provide your own macro to translate meters to pixels
 	for(b2Body* b = world->GetBodyList(); b; b = b->GetNext())
@@ -360,8 +364,67 @@ update_status ModulePhysics::PostUpdate()
 				break;
 			}
 		}
-	}
+		if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
+		{
 
+			if (b->GetFixtureList()->GetShape()->TestPoint(b->GetTransform(), mousePos)) clickedBody = b;
+		}
+		/*if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+		{
+
+			if (b->GetFixtureList()->GetShape()->TestPoint(b->GetTransform(), mousePos)) clickedBody = b;
+		}*/
+	}
+	if (clickedBody != NULL)
+	{
+		b2MouseJointDef mJoint;
+		ground = ModulePhysics::CreateStaticCircle(400, 800, 10);
+		mJoint.bodyA = ground->body;
+		
+		mJoint.bodyB = clickedBody;
+		mJoint.target = mousePos;
+		mJoint.dampingRatio = 0.5f;
+		mJoint.frequencyHz = 2.0f;
+		mJoint.maxForce = 100.0f * clickedBody->GetMass();
+		mouseJoint = (b2MouseJoint*)world->CreateJoint(&mJoint);
+
+		clickedBodyPos.x = clickedBody->GetPosition().x;
+		clickedBodyPos.y = clickedBody->GetPosition().y;
+
+
+
+
+	}
+	// TODO 3: If the player keeps pressing the mouse button, update
+// target position and draw a red line between both anchor points
+	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT)
+	{
+		mouseJoint->SetTarget(mousePos);
+		if (clickedBody != NULL)
+		{
+			App->renderer->DrawLine(mousePos.x, mousePos.y, clickedBodyPos.x, clickedBodyPos.y, 255, 0, 0, 255);
+		}
+
+
+
+
+	}
+	// TODO 4: If the player releases the mouse button, destroy the joint
+	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP)
+	{
+		//delete mouseJoint
+		world->DestroyJoint(mouseJoint);
+		mouseJoint = NULL;
+		clickedBody = NULL;
+	}
+	//if (App->input->GetKey(SDL_SCANCODE_2) == KEY_UP)
+	//{
+	//	//delete mouseJoint;
+	//	world->DestroyJoint(mouseJoint);
+	//	mouseJoint = NULL;
+	//	clickedBody = NULL;
+	//}
+	
 	return UPDATE_CONTINUE;
 }
 

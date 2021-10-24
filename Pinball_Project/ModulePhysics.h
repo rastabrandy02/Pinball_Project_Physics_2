@@ -67,4 +67,7 @@ private:
 
 	bool debug;
 	b2World* world;
+	b2MouseJoint* mouseJoint;
+	PhysBody* ground;
+	b2Vec2 clickedBodyPos;
 };
