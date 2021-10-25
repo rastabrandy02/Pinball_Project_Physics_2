@@ -380,7 +380,12 @@ update_status ModuleSceneIntro::Update()
 
 		}
 
+		if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN)
+		{
+			circles.add(App->physics->CreateCircle(545, 865, 24 * SCREEN_SIZE));
+			// TODO 8: Make sure to add yourself as collision callback to the circle you creates
 
+		}
 
 
 
