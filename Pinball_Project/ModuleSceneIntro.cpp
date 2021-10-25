@@ -532,75 +532,73 @@ update_status ModuleSceneIntro::Update()
 
 
 	//BUMPERS
-	if (pb_bumper01->body->GetContactList() != nullptr)
-
+	p2List_item <PhysBody*>* bumperPointer = bumpers.getFirst();
+	while (bumperPointer != nullptr)
 	{
-		if (pb_bumper01->body->GetContactList()->contact->IsTouching())
+		if (bumperPointer->data->body->GetContactList() != nullptr)
+
 		{
-			b2Body* ball = pb_bumper01->body->GetContactList()->contact->GetFixtureB()->GetBody();
-			
-			b2Vec2 bumpForceVec = {
-				ball->GetPosition().x - pb_bumper01->body->GetPosition().x,
-				ball->GetPosition().y - pb_bumper01->body->GetPosition().y
-			};
+			if (bumperPointer->data->body->GetContactList()->contact->IsTouching())
+			{
+				b2Body* ball = bumperPointer->data->body->GetContactList()->contact->GetFixtureB()->GetBody();
 
-			bumpForceVec.Normalize();
-			bumpForceVec *= bumperForce;
-			b2Vec2 zero = { 0,0 };
-			ball->SetLinearVelocity(zero);
+				b2Vec2 bumpForceVec = {
+					ball->GetPosition().x - bumperPointer->data->body->GetPosition().x,
+					ball->GetPosition().y - bumperPointer->data->body->GetPosition().y
+				};
 
-			ball->SetLinearVelocity(bumpForceVec);
-			//LOG("x: %f, y: %f", bumpForceVec.x, bumpForceVec.y);
+				bumpForceVec.Normalize();
+				bumpForceVec *= bumperForce;
+				b2Vec2 zero = { 0,0 };
+				ball->SetLinearVelocity(zero);
+
+				ball->SetLinearVelocity(bumpForceVec);
+
+				App->player->score += 100;
+				LOG("SCORE: %i", App->player->score);
+				//LOG("x: %f, y: %f", bumpForceVec.x, bumpForceVec.y);
 
 
+			}
 		}
+		bumperPointer = bumperPointer->next;
 	}
-
-	if (pb_bumper02->body->GetContactList() != nullptr)
-
+	p2List_item <PhysBody*>* capsulePointer = capsules.getFirst();
+	while (capsulePointer != nullptr)
 	{
-		if (pb_bumper02->body->GetContactList()->contact->IsTouching())
+		if (capsulePointer->data->body->GetContactList() != nullptr)
+
 		{
-			b2Body* ball = pb_bumper02->body->GetContactList()->contact->GetFixtureB()->GetBody();
-			
-			b2Vec2 bumpForceVec = {
-				ball->GetPosition().x - pb_bumper02->body->GetPosition().x,
-				ball->GetPosition().y - pb_bumper02->body->GetPosition().y
-			};
+			if (capsulePointer->data->body->GetContactList()->contact->IsTouching())
+			{
+				b2Body* ball = capsulePointer->data->body->GetContactList()->contact->GetFixtureB()->GetBody();
 
-			bumpForceVec.Normalize();
-			bumpForceVec *= bumperForce;
-			b2Vec2 zero = { 0,0 };
-			ball->SetLinearVelocity(zero);
+				/*b2Vec2 bumpForceVec = {
+					ball->GetPosition().x - bumperPointer->data->body->GetPosition().x,
+					ball->GetPosition().y - bumperPointer->data->body->GetPosition().y
+				};
 
-			ball->SetLinearVelocity(bumpForceVec);
-			//LOG("x: %f, y: %f", bumpForceVec.x, bumpForceVec.y);
+				bumpForceVec.Normalize();
+				bumpForceVec *= bumperForce;
+				b2Vec2 zero = { 0,0 };*/
 
+
+				//Bumping force ignored (?)
+				//ball->SetLinearVelocity(zero);
+				//ball->SetLinearVelocity(bumpForceVec);
+
+				App->player->score += 100;
+				LOG("SCORE: %i", App->player->score);
+				//LOG("x: %f, y: %f", bumpForceVec.x, bumpForceVec.y);
+
+
+			}
 		}
+		capsulePointer = capsulePointer->next;
 	}
+	
 
-	if (pb_bumper03->body->GetContactList() != nullptr)
-
-	{
-		if (pb_bumper03->body->GetContactList()->contact->IsTouching())
-		{
-			b2Body* ball = pb_bumper03->body->GetContactList()->contact->GetFixtureB()->GetBody();
-			
-			b2Vec2 bumpForceVec = {
-				ball->GetPosition().x - pb_bumper03->body->GetPosition().x,
-				ball->GetPosition().y - pb_bumper03->body->GetPosition().y
-			};
-
-			bumpForceVec.Normalize();
-			bumpForceVec *= bumperForce;
-			b2Vec2 zero = { 0,0 };
-			ball->SetLinearVelocity(zero);
-
-			ball->SetLinearVelocity(bumpForceVec);
-			//LOG("x: %f, y: %f", bumpForceVec.x, bumpForceVec.y);
-
-		}
-	}
+	
 		
 	//END BUMPERS
 
