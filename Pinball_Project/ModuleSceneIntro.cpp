@@ -363,6 +363,12 @@ update_status ModuleSceneIntro::Update()
 	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_UP)
 		gamePaused = !gamePaused;
 
+	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
+	{
+		App->player->RestartPlayer();
+
+	}
+
 	if (!gamePaused && (App->player->playerLives>0))
 	{
 
@@ -393,7 +399,10 @@ update_status ModuleSceneIntro::Update()
 			App->player->playerLives--;
 			circles.clear();
 			App->player->ballsInGame = 0;
+		
 		}
+
+		
 
 
 
