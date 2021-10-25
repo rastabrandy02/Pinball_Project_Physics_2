@@ -372,12 +372,12 @@ update_status ModuleSceneIntro::Update()
 	if (!gamePaused && (App->player->playerLives>0))
 	{
 
-		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+		/*if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 		{
 			ray_on = !ray_on;
 			ray.x = App->input->GetMouseX();
 			ray.y = App->input->GetMouseY();
-		}
+		}*/
 
 		if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 		{
@@ -717,6 +717,7 @@ update_status ModuleSceneIntro::Update()
 				App->renderer->Blit(circle, x, y, NULL, 1.0f, c->data->GetRotation());
 				
 			}
+			
 			App->renderer->Blit(ball, x / SCREEN_SIZE, y / SCREEN_SIZE, NULL);
 			c = c->next;
 		}

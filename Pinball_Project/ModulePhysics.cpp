@@ -28,8 +28,10 @@ bool ModulePhysics::Start()
 	LOG("Creating Physics 2D environment");
 
 	world = new b2World(b2Vec2(GRAVITY_X, -GRAVITY_Y));
-	b2BodyDef groundBD;
-	world->CreateBody(&groundBD);
+	/*b2BodyDef groundBD;
+	groundBD.type = b2_staticBody;
+	groundBD.position.Set(100, 100);
+	world->CreateBody(&groundBD);*/
 	// TODO 3: You need to make ModulePhysics class a contact listener
 
 	// big static circle as "ground" in the middle of the screen
@@ -367,7 +369,7 @@ update_status ModulePhysics::PostUpdate()
 				break;
 			}
 
-			if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
+			if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 			{
 				b2Vec2 p = { PIXEL_TO_METERS(App->input->GetMouseX()), PIXEL_TO_METERS(App->input->GetMouseY()) };
 				if (f->GetShape()->TestPoint(b->GetTransform(), p) == true)
@@ -378,6 +380,11 @@ update_status ModulePhysics::PostUpdate()
 					mousePosition.x = p.x;
 					mousePosition.y = p.y;
 
+					b2BodyDef groundBD;
+					groundBD.type = b2_staticBody;
+					groundBD.position.Set(100, 100);
+					ground = world->CreateBody(&groundBD);
+
 					b2MouseJointDef def;
 					def.bodyA = ground; // First body must be a static ground
 					def.bodyB = mouseBody; // Second body will be the body to attach to the mouse
@@ -385,7 +392,7 @@ update_status ModulePhysics::PostUpdate()
 					def.dampingRatio = 0.5f; // Play with this value
 					def.frequencyHz = 2.0f; // Play with this value
 					def.maxForce = 200.0f * mouseBody->GetMass(); // Play with this value
-
+					
 					// Add the new mouse joint into the World
 					mouseJoint = (b2MouseJoint*)world->CreateJoint(&def);
 				}
@@ -395,7 +402,7 @@ update_status ModulePhysics::PostUpdate()
 	}
 	if (mouseBody != nullptr && mouseJoint != nullptr)
 	{
-		if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT)
+		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT)
 		{
 			// Get new mouse position and re-target mouse_joint there
 			b2Vec2 mousePosition;
@@ -411,7 +418,7 @@ update_status ModulePhysics::PostUpdate()
 	// TODO 4: If the player releases the mouse button, destroy the joint
 	if (mouseBody != nullptr && mouseJoint != nullptr)
 	{
-		if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP)
+		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP)
 		{
 			// Tell Box2D to destroy the mouse_joint
 			world->DestroyJoint(mouseJoint);
