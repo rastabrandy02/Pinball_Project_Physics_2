@@ -13,6 +13,6 @@ public:
 	update_status Update();
 	bool CleanUp();
 
-public:
+	int playerLives = 3;
 
 };

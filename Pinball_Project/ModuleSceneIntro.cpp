@@ -6,7 +6,7 @@
 #include "ModuleTextures.h"
 #include "ModuleAudio.h"
 #include "ModulePhysics.h"
-
+#include "ModulePlayer.h"
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	circle = box = rick = NULL;
@@ -363,7 +363,7 @@ update_status ModuleSceneIntro::Update()
 	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_UP)
 		gamePaused = !gamePaused;
 
-	if (!gamePaused)
+	if (!gamePaused && (App->player->playerLives>0))
 	{
 
 		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
@@ -384,6 +384,12 @@ update_status ModuleSceneIntro::Update()
 		{
 			circles.add(App->physics->CreateCircle(545, 865, 24 * SCREEN_SIZE));
 			// TODO 8: Make sure to add yourself as collision callback to the circle you creates
+
+		}
+		
+		if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
+		{
+			App->player->playerLives--;
 
 		}
 
