@@ -82,6 +82,9 @@ bool Application::Init()
 // Call PreUpdate, Update and PostUpdate on all modules
 update_status Application::Update()
 {
+
+	init = SDL_GetTicks();
+
 	update_status ret = UPDATE_CONTINUE;
 	p2List_item<Module*>* item = list_modules.getFirst();
 
@@ -109,6 +112,21 @@ update_status Application::Update()
 			ret = item->data->PostUpdate();
 		item = item->next;
 	}
+
+	end = SDL_GetTicks();
+
+	long elapsedTime = (float)(end - init);
+	(float)SDL_GetPerformanceFrequency();
+
+	float frameSpeed = 1000 / limitFrames;
+
+	LOG("Current FPS: %5f", (1000.0f / elapsedTime)); 
+	//LOG("time left: %f", frameSpeed - elapsedTime);
+	if ((frameSpeed - elapsedTime) > 0.0f)
+	{
+		SDL_Delay(fabs(floor((long)frameSpeed - elapsedTime)));
+	}
+
 
 	return ret;
 }

@@ -29,6 +29,11 @@ private:
 
 	p2List<Module*> list_modules;
 
+	
+	float limitFrames = 60;
+	float init;
+	float end;
+
 public:
 
 	Application();

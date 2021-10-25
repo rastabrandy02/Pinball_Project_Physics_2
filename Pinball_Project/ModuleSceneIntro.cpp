@@ -528,9 +528,8 @@ update_status ModuleSceneIntro::Update()
 		
 		App->renderer->Blit(spring, 1069, (METERS_TO_PIXELS(ballLauncherRectangle->body->GetPosition().y) -3) / SCREEN_SIZE , nullptr);
 		
-		LOG("startforce: %f", startForce);
+		//LOG("startforce: %f", startForce);
 
-		App->renderer->Blit(start_platform, SCREEN_WIDTH - 122, SCREEN_HEIGHT - 184, nullptr);
 
 		//Alien
 		App->renderer->Blit(curve_tunnel, 166 , 301 , nullptr);
@@ -637,7 +636,11 @@ update_status ModuleSceneIntro::Update()
 			int x, y;
 			c->data->GetPosition(x, y);
 			if (c->data->Contains(App->input->GetMouseX(), App->input->GetMouseY()))
+			{
 				App->renderer->Blit(circle, x, y, NULL, 1.0f, c->data->GetRotation());
+				
+			}
+			App->renderer->Blit(ball, x / SCREEN_SIZE, y / SCREEN_SIZE, NULL);
 			c = c->next;
 		}
 
@@ -656,6 +659,7 @@ update_status ModuleSceneIntro::Update()
 			}
 			c = c->next;
 		}
+		App->renderer->Blit(start_platform, SCREEN_WIDTH - 122, SCREEN_HEIGHT - 184, nullptr);
 
 		//c = ricks.getFirst();
 		//
