@@ -14,5 +14,6 @@ public:
 	bool CleanUp();
 
 	int playerLives = 3;
+	int ballsInGame = 0;
 
 };

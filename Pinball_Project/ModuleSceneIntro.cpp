@@ -380,17 +380,19 @@ update_status ModuleSceneIntro::Update()
 
 		}
 
-		if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN)
+		if ((App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN)&&(App->player->ballsInGame==0))
 		{
 			circles.add(App->physics->CreateCircle(545, 865, 24 * SCREEN_SIZE));
+			App->player->ballsInGame++;
 			// TODO 8: Make sure to add yourself as collision callback to the circle you creates
-
+			
 		}
 		
 		if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
 		{
 			App->player->playerLives--;
-
+			circles.clear();
+			App->player->ballsInGame = 0;
 		}
 
 
