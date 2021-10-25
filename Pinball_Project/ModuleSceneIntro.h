@@ -413,13 +413,17 @@ public:
 		PhysBody* pb_bumper02;
 		PhysBody* pb_bumper03;
 
+		PhysBody* pb_blueCapsule;
+		PhysBody* pb_greenCapsule;
+		PhysBody* pb_yellowCapsule;
+
 		float bumperForce;
 
 	int margin = 20;
 
-	bool blueCapsuleCounter = false;
+	/*bool blueCapsuleCounter = false;
 	bool greenCapsuleCounter = false;
-	bool yellowCapsuleCounter = false;
+	bool yellowCapsuleCounter = false;*/
 
 	int bumper01Counter = 0;
 	int bumper02Counter = 0;

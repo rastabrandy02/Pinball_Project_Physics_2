@@ -193,11 +193,11 @@ bool ModuleSceneIntro::Start()
 	ballLauncherRecInitPosX = ballLauncherRectangle->body->GetPosition().x;
 	ballLauncherRecInitPosY = ballLauncherRectangle->body->GetPosition().y;
 
-	PhysBody* pb_blueCapsule = App->physics->CreateStaticChain(0, 0, blueCapsule, 14);
+    pb_blueCapsule = App->physics->CreateStaticChain(0, 0, blueCapsule, 14);
 	pb_blueCapsule->type = TYPE_SCORE;
-	PhysBody* pb_greenCapsule = App->physics->CreateStaticChain(0, 0, greenCapsule, 14);
+    pb_greenCapsule = App->physics->CreateStaticChain(0, 0, greenCapsule, 14);
 	pb_greenCapsule->type = TYPE_SCORE;
-	PhysBody* pb_yellowCapsule = App->physics->CreateStaticChain(0, 0, yellowCapsule, 14);
+    pb_yellowCapsule = App->physics->CreateStaticChain(0, 0, yellowCapsule, 14);
 	pb_yellowCapsule->type = TYPE_SCORE;
 
 	pb_bumper01 = App->physics->CreateSensorCircle(bumper01.x, bumper01.y, bumper01.radius);
@@ -208,6 +208,8 @@ bool ModuleSceneIntro::Start()
 	PhysBody* pb_bumper02Interior = App->physics->CreateStaticCircle(bumper02.x, bumper02.y, bumper02.radius - 2);
 	PhysBody* pb_bumper03Interior = App->physics->CreateStaticCircle(bumper03.x, bumper03.y, bumper03.radius - 2);
 
+
+	
 
 	walls.add(pb_mainWalls);
 	walls.add(pb_leftWall);
@@ -389,9 +391,10 @@ update_status ModuleSceneIntro::Update()
 		if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 		{
 			pb_currentBall = App->physics->CreateCircle(App->input->GetMouseX(), App->input->GetMouseY(), 24 * SCREEN_SIZE);
+			
 			pb_currentBall->type == TYPE_BALL;
 			// TODO 8: Make sure to add yourself as collision callback to the circle you creates
-
+			circles.add(pb_currentBall);
 		}
 
 		if ((App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN)&&(App->player->ballsInGame==0))
@@ -400,7 +403,7 @@ update_status ModuleSceneIntro::Update()
 			pb_currentBall->type == TYPE_BALL;
 			App->player->ballsInGame++;
 			// TODO 8: Make sure to add yourself as collision callback to the circle you creates
-			
+			circles.add(pb_currentBall);
 		}
 		
 		if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
@@ -572,7 +575,7 @@ update_status ModuleSceneIntro::Update()
 			if (capsulePointer->data->body->GetContactList()->contact->IsTouching())
 			{
 				b2Body* ball = capsulePointer->data->body->GetContactList()->contact->GetFixtureB()->GetBody();
-
+				
 				/*b2Vec2 bumpForceVec = {
 					ball->GetPosition().x - bumperPointer->data->body->GetPosition().x,
 					ball->GetPosition().y - bumperPointer->data->body->GetPosition().y
@@ -588,6 +591,7 @@ update_status ModuleSceneIntro::Update()
 				//ball->SetLinearVelocity(bumpForceVec);
 
 				App->player->score += 100;
+				capsulePointer->data->playAnimation = true;
 				LOG("SCORE: %i", App->player->score);
 				//LOG("x: %f, y: %f", bumpForceVec.x, bumpForceVec.y);
 
@@ -612,7 +616,7 @@ update_status ModuleSceneIntro::Update()
 		fVector normal(0.0f, 0.0f);
 	
 		// All draw functions ------------------------------------------------------
-		p2List_item<PhysBody*>* c = circles.getFirst();
+		
 
 		//Background
 		App->renderer->Blit(pinball_bg, 0, 0, nullptr);
@@ -631,7 +635,7 @@ update_status ModuleSceneIntro::Update()
 		SDL_Rect r_temp = { 0 };
 
 			//blue
-		if (blueCapsuleCounter == true)
+		if (pb_blueCapsule->playAnimation == true)
 		{
 			r_temp = r_capsule_1[0];
 		}
@@ -643,7 +647,7 @@ update_status ModuleSceneIntro::Update()
 		App->renderer->Blit(capsule_1, 337 + 134 , 223 , &r_temp);
 
 			//green
-		if (greenCapsuleCounter == true)
+		if (pb_greenCapsule->playAnimation == true)
 		{
 			r_temp = r_capsule_2[0];
 		}
@@ -655,7 +659,7 @@ update_status ModuleSceneIntro::Update()
 		App->renderer->Blit(capsule_2, 454 + 134, 223, &r_temp);
 
 			//yellow
-		if (yellowCapsuleCounter == true)
+		if (pb_yellowCapsule->playAnimation == true)
 		{
 			r_temp = r_capsule_3[0];
 		}
@@ -721,11 +725,12 @@ update_status ModuleSceneIntro::Update()
 		if(bumper01Counter == 200) bumper01Counter = 0;
 		//*/
 		
-
+		p2List_item<PhysBody*>* c = circles.getFirst();
 		while (c != NULL)
 		{
 			int x, y;
 			c->data->GetPosition(x, y);
+
 			if (c->data->Contains(App->input->GetMouseX(), App->input->GetMouseY()))
 			{
 				//App->renderer->Blit(circle, x, y, NULL, 1.0f, c->data->GetRotation());
@@ -734,12 +739,14 @@ update_status ModuleSceneIntro::Update()
 
 			App->renderer->Blit(ball, x / SCREEN_SIZE, y / SCREEN_SIZE, NULL);
 
-			App->renderer->Blit(ball, 200 / SCREEN_SIZE, 500 / SCREEN_SIZE, nullptr);
+			
 
 
 			c = c->next;
 		}
-		App->renderer->Blit(ball, 200 / SCREEN_SIZE, 510 / SCREEN_SIZE, nullptr);
+		
+		
+		
 
 		c = boxes.getFirst();
 
@@ -804,11 +811,11 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 	// Play Audio FX on every collision, regardless of who is colliding
 
 	//App->audio->PlayFx(bonus_fx);
-	LOG("EYYYYYYY");
+	
 
 	// Do something else. You can also check which bodies are colliding (sensor? ball? player?)
 	if ((bodyA->type == TYPE_BALL && bodyB->type == TYPE_SCORE) ||(bodyA->type == TYPE_SCORE && bodyB->type == TYPE_BALL))
 	{
-		LOG("EYYYYYYY");
+		
 	}
 }
