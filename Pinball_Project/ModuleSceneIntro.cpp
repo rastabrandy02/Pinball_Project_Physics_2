@@ -197,9 +197,13 @@ bool ModuleSceneIntro::Start()
 	PhysBody* pb_greenCapsule = App->physics->CreateStaticChain(0, 0, greenCapsule, 14);
 	PhysBody* pb_yellowCapsule = App->physics->CreateStaticChain(0, 0, yellowCapsule, 14);
 
-	pb_bumper01 = App->physics->CreateStaticCircle(bumper01.x, bumper01.y, bumper01.radius);
-	pb_bumper02 = App->physics->CreateStaticCircle(bumper02.x, bumper02.y, bumper02.radius);
-	pb_bumper03 = App->physics->CreateStaticCircle(bumper03.x, bumper03.y, bumper03.radius);
+	pb_bumper01 = App->physics->CreateSensorCircle(bumper01.x, bumper01.y, bumper01.radius);
+	pb_bumper02 = App->physics->CreateSensorCircle(bumper02.x, bumper02.y, bumper02.radius);
+	pb_bumper03 = App->physics->CreateSensorCircle(bumper03.x, bumper03.y, bumper03.radius);
+
+	PhysBody* pb_bumper01Interior = App->physics->CreateStaticCircle(bumper01.x, bumper01.y, bumper01.radius - 2);
+	PhysBody* pb_bumper02Interior = App->physics->CreateStaticCircle(bumper02.x, bumper02.y, bumper02.radius - 2);
+	PhysBody* pb_bumper03Interior = App->physics->CreateStaticCircle(bumper03.x, bumper03.y, bumper03.radius - 2);
 
 
 	walls.add(pb_mainWalls);
@@ -340,7 +344,7 @@ bool ModuleSceneIntro::Start()
 	minAngle = 0.0f;
 	maxAngle = 60.0f;
 
-	bumperForce = 7.0f;
+	bumperForce = 5.0f;
 	// TODO: Homework - create a sensor
 
 
@@ -520,11 +524,13 @@ update_status ModuleSceneIntro::Update()
 		}
 	}
 
+
+
+	//BUMPERS
 	if (pb_bumper01->body->GetContactList() != nullptr)
 
 	{
-		bool isTouching = pb_bumper01->body->GetContactList()->contact->IsTouching();
-		if (isTouching)
+		if (pb_bumper01->body->GetContactList()->contact->IsTouching())
 		{
 			b2Body* ball = pb_bumper01->body->GetContactList()->contact->GetFixtureB()->GetBody();
 			
@@ -535,9 +541,12 @@ update_status ModuleSceneIntro::Update()
 
 			bumpForceVec.Normalize();
 			bumpForceVec *= bumperForce;
+			b2Vec2 zero = { 0,0 };
+			ball->SetLinearVelocity(zero);
 
 			ball->SetLinearVelocity(bumpForceVec);
-			LOG("x: %f, y: %f", bumpForceVec.x, bumpForceVec.y);
+			//LOG("x: %f, y: %f", bumpForceVec.x, bumpForceVec.y);
+
 
 		}
 	}
@@ -545,8 +554,7 @@ update_status ModuleSceneIntro::Update()
 	if (pb_bumper02->body->GetContactList() != nullptr)
 
 	{
-		bool isTouching = pb_bumper02->body->GetContactList()->contact->IsTouching();
-		if (isTouching)
+		if (pb_bumper02->body->GetContactList()->contact->IsTouching())
 		{
 			b2Body* ball = pb_bumper02->body->GetContactList()->contact->GetFixtureB()->GetBody();
 			
@@ -557,9 +565,11 @@ update_status ModuleSceneIntro::Update()
 
 			bumpForceVec.Normalize();
 			bumpForceVec *= bumperForce;
+			b2Vec2 zero = { 0,0 };
+			ball->SetLinearVelocity(zero);
 
 			ball->SetLinearVelocity(bumpForceVec);
-			LOG("x: %f, y: %f", bumpForceVec.x, bumpForceVec.y);
+			//LOG("x: %f, y: %f", bumpForceVec.x, bumpForceVec.y);
 
 		}
 	}
@@ -567,8 +577,7 @@ update_status ModuleSceneIntro::Update()
 	if (pb_bumper03->body->GetContactList() != nullptr)
 
 	{
-		bool isTouching = pb_bumper03->body->GetContactList()->contact->IsTouching();
-		if (isTouching)
+		if (pb_bumper03->body->GetContactList()->contact->IsTouching())
 		{
 			b2Body* ball = pb_bumper03->body->GetContactList()->contact->GetFixtureB()->GetBody();
 			
@@ -579,14 +588,16 @@ update_status ModuleSceneIntro::Update()
 
 			bumpForceVec.Normalize();
 			bumpForceVec *= bumperForce;
+			b2Vec2 zero = { 0,0 };
+			ball->SetLinearVelocity(zero);
 
 			ball->SetLinearVelocity(bumpForceVec);
-			LOG("x: %f, y: %f", bumpForceVec.x, bumpForceVec.y);
+			//LOG("x: %f, y: %f", bumpForceVec.x, bumpForceVec.y);
 
 		}
 	}
 		
-
+	//END BUMPERS
 
 		// Prepare for raycast ------------------------------------------------------
 
