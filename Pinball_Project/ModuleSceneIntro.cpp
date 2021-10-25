@@ -392,7 +392,7 @@ update_status ModuleSceneIntro::Update()
 
 		if ((App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN)&&(App->player->ballsInGame==0))
 		{
-			pb_currentBall = App->physics->CreateCircle(545, 865, 24 * SCREEN_SIZE);
+			pb_currentBall = App->physics->CreateCircle(1090 * SCREEN_SIZE, 1730 * SCREEN_SIZE, 24 * SCREEN_SIZE);
 			App->player->ballsInGame++;
 			// TODO 8: Make sure to add yourself as collision callback to the circle you creates
 			
