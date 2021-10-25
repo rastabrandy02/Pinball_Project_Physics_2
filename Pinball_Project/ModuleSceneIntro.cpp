@@ -31,7 +31,6 @@ bool ModuleSceneIntro::Start()
 	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
 
 	//load images
-
 	if (true)
 	{
 		//load UI elements
@@ -164,17 +163,18 @@ bool ModuleSceneIntro::Start()
 			greenCapsule[i] *= SCREEN_SIZE;
 			yellowCapsule[i] *= SCREEN_SIZE;
 		}
-		bumper01.x = 580 * SCREEN_SIZE;
-		bumper01.y = 540 * SCREEN_SIZE;
-		bumper01.radius = 80 * SCREEN_SIZE;
+
+		bumper01.x = 578 * SCREEN_SIZE;
+		bumper01.y = 545 * SCREEN_SIZE;
+		bumper01.radius = 77 * SCREEN_SIZE;
 
 		bumper02.x = 800 * SCREEN_SIZE;
-		bumper02.y = 500 * SCREEN_SIZE;
-		bumper02.radius = 80 * SCREEN_SIZE;
+		bumper02.y = 504 * SCREEN_SIZE;
+		bumper02.radius = 77 * SCREEN_SIZE;
 
-		bumper03.x = 740 * SCREEN_SIZE;
-		bumper03.y = 680 * SCREEN_SIZE;
-		bumper03.radius = 80 * SCREEN_SIZE;
+		bumper03.x = 738 * SCREEN_SIZE;
+		bumper03.y = 688 * SCREEN_SIZE;
+		bumper03.radius = 77 * SCREEN_SIZE;
 	}
 
 	//Create all the walls,flippers, capsules
@@ -197,9 +197,9 @@ bool ModuleSceneIntro::Start()
 	PhysBody* pb_greenCapsule = App->physics->CreateStaticChain(0, 0, greenCapsule, 14);
 	PhysBody* pb_yellowCapsule = App->physics->CreateStaticChain(0, 0, yellowCapsule, 14);
 
-	PhysBody* pb_bumper01 = App->physics->CreateStaticCircle(bumper01.x, bumper01.y, bumper01.radius);
-	PhysBody* pb_bumper02 = App->physics->CreateStaticCircle(bumper02.x, bumper02.y, bumper02.radius);
-	PhysBody* pb_bumper03 = App->physics->CreateStaticCircle(bumper03.x, bumper03.y, bumper03.radius);
+	pb_bumper01 = App->physics->CreateStaticCircle(bumper01.x, bumper01.y, bumper01.radius);
+	pb_bumper02 = App->physics->CreateStaticCircle(bumper02.x, bumper02.y, bumper02.radius);
+	pb_bumper03 = App->physics->CreateStaticCircle(bumper03.x, bumper03.y, bumper03.radius);
 
 
 	walls.add(pb_mainWalls);
@@ -340,7 +340,7 @@ bool ModuleSceneIntro::Start()
 	minAngle = 0.0f;
 	maxAngle = 60.0f;
 
-
+	bumperForce = 7.0f;
 	// TODO: Homework - create a sensor
 
 
@@ -381,14 +381,14 @@ update_status ModuleSceneIntro::Update()
 
 		if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 		{
-			circles.add(App->physics->CreateCircle(App->input->GetMouseX(), App->input->GetMouseY(), 24 * SCREEN_SIZE));
+			pb_currentBall = App->physics->CreateCircle(App->input->GetMouseX(), App->input->GetMouseY(), 24 * SCREEN_SIZE);
 			// TODO 8: Make sure to add yourself as collision callback to the circle you creates
 
 		}
 
 		if ((App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN)&&(App->player->ballsInGame==0))
 		{
-			circles.add(App->physics->CreateCircle(545, 865, 24 * SCREEN_SIZE));
+			pb_currentBall = App->physics->CreateCircle(545, 865, 24 * SCREEN_SIZE);
 			App->player->ballsInGame++;
 			// TODO 8: Make sure to add yourself as collision callback to the circle you creates
 			
@@ -519,6 +519,74 @@ update_status ModuleSceneIntro::Update()
 			}
 		}
 	}
+
+	if (pb_bumper01->body->GetContactList() != nullptr)
+
+	{
+		bool isTouching = pb_bumper01->body->GetContactList()->contact->IsTouching();
+		if (isTouching)
+		{
+			b2Body* ball = pb_bumper01->body->GetContactList()->contact->GetFixtureB()->GetBody();
+			
+			b2Vec2 bumpForceVec = {
+				ball->GetPosition().x - pb_bumper01->body->GetPosition().x,
+				ball->GetPosition().y - pb_bumper01->body->GetPosition().y
+			};
+
+			bumpForceVec.Normalize();
+			bumpForceVec *= bumperForce;
+
+			ball->SetLinearVelocity(bumpForceVec);
+			LOG("x: %f, y: %f", bumpForceVec.x, bumpForceVec.y);
+
+		}
+	}
+
+	if (pb_bumper02->body->GetContactList() != nullptr)
+
+	{
+		bool isTouching = pb_bumper02->body->GetContactList()->contact->IsTouching();
+		if (isTouching)
+		{
+			b2Body* ball = pb_bumper02->body->GetContactList()->contact->GetFixtureB()->GetBody();
+			
+			b2Vec2 bumpForceVec = {
+				ball->GetPosition().x - pb_bumper02->body->GetPosition().x,
+				ball->GetPosition().y - pb_bumper02->body->GetPosition().y
+			};
+
+			bumpForceVec.Normalize();
+			bumpForceVec *= bumperForce;
+
+			ball->SetLinearVelocity(bumpForceVec);
+			LOG("x: %f, y: %f", bumpForceVec.x, bumpForceVec.y);
+
+		}
+	}
+
+	if (pb_bumper03->body->GetContactList() != nullptr)
+
+	{
+		bool isTouching = pb_bumper03->body->GetContactList()->contact->IsTouching();
+		if (isTouching)
+		{
+			b2Body* ball = pb_bumper03->body->GetContactList()->contact->GetFixtureB()->GetBody();
+			
+			b2Vec2 bumpForceVec = {
+				ball->GetPosition().x - pb_bumper03->body->GetPosition().x,
+				ball->GetPosition().y - pb_bumper03->body->GetPosition().y
+			};
+
+			bumpForceVec.Normalize();
+			bumpForceVec *= bumperForce;
+
+			ball->SetLinearVelocity(bumpForceVec);
+			LOG("x: %f, y: %f", bumpForceVec.x, bumpForceVec.y);
+
+		}
+	}
+		
+
 
 		// Prepare for raycast ------------------------------------------------------
 

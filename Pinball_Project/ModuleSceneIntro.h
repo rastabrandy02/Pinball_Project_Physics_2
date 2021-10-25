@@ -38,7 +38,7 @@ public:
 
 	bool gamePaused = false;
 
-	
+	PhysBody* pb_currentBall;
 	PhysBody* ballLauncherRectangle;
 	float ballLauncherRecInitPosX;
 	float ballLauncherRecInitPosY;
@@ -408,6 +408,12 @@ public:
 		bumper_def bumper01;
 		bumper_def bumper02;
 		bumper_def bumper03;
+
+		PhysBody* pb_bumper01;
+		PhysBody* pb_bumper02;
+		PhysBody* pb_bumper03;
+
+		float bumperForce;
 
 	int margin = 20;
 

@@ -120,6 +120,7 @@ PhysBody* ModulePhysics::CreateStaticCircle(int x, int y, int radius)
 	b2FixtureDef fixture;
 	fixture.shape = &shape;
 	fixture.density = 5.0f;
+	fixture.isSensor = true;
 
 	b->CreateFixture(&fixture);
 
