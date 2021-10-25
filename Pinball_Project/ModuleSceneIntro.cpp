@@ -696,9 +696,9 @@ update_status ModuleSceneIntro::Update()
 		//right: 726  left: 326  y: 1706		
 
 		//App->renderer->Blit(flipper, 310, 1680, nullptr, 1, METERS_TO_PIXELS(pb_leftFlipper->body->GetAngle()), 0, 0, SDL_FLIP_HORIZONTAL);
-		App->renderer->Blit(flipper, 300, 1675, nullptr, 1, METERS_TO_PIXELS(pb_leftFlipper->body->GetAngle()) , 8, 17, SDL_FLIP_HORIZONTAL);
+		App->renderer->Blit(flipper, 300, 1675, nullptr, 1, pb_leftFlipper->body->GetAngle() / DEGTORAD , 30 * SCREEN_SIZE, 25 * SCREEN_SIZE, SDL_FLIP_HORIZONTAL);
 		//App->renderer->Blit(flipper, 560, 1680, nullptr, 1, METERS_TO_PIXELS(pb_rightFlipper->body->GetAngle()), 176, 118, SDL_FLIP_NONE);
-		App->renderer->Blit(flipper, 565, 1675, nullptr, 1, METERS_TO_PIXELS(pb_rightFlipper->body->GetAngle())  , 80, 13, SDL_FLIP_NONE);
+		App->renderer->Blit(flipper, 572, 1675, nullptr, 1, pb_rightFlipper->body->GetAngle() / DEGTORAD  , 145 * SCREEN_SIZE, 25 * SCREEN_SIZE, SDL_FLIP_NONE);
 		
 		
 		
