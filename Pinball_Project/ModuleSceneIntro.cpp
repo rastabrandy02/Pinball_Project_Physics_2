@@ -557,6 +557,7 @@ update_status ModuleSceneIntro::Update()
 
 				ball->SetLinearVelocity(bumpForceVec);
 
+				bumperPointer->data->playAnimation = true;
 				App->player->score += 100;
 				LOG("SCORE: %i", App->player->score);
 				//LOG("x: %f, y: %f", bumpForceVec.x, bumpForceVec.y);
@@ -564,6 +565,7 @@ update_status ModuleSceneIntro::Update()
 
 			}
 		}
+
 		bumperPointer = bumperPointer->next;
 	}
 	p2List_item <PhysBody*>* capsulePointer = capsules.getFirst();
@@ -590,7 +592,7 @@ update_status ModuleSceneIntro::Update()
 				//ball->SetLinearVelocity(zero);
 				//ball->SetLinearVelocity(bumpForceVec);
 
-				App->player->score += 100;
+				App->player->score += 1000;
 				capsulePointer->data->playAnimation = true;
 				LOG("SCORE: %i", App->player->score);
 				//LOG("x: %f, y: %f", bumpForceVec.x, bumpForceVec.y);
@@ -670,16 +672,331 @@ update_status ModuleSceneIntro::Update()
 
 		App->renderer->Blit(capsule_3, 566 + 134 , 200 , &r_temp);
 			
+		
+		
+		p2List_item<PhysBody*>* c = circles.getFirst();
+		while (c != NULL)
+		{
+			int x, y;
+			c->data->GetPosition(x, y);
+
+			if (c->data->Contains(App->input->GetMouseX(), App->input->GetMouseY()))
+			{
+				//App->renderer->Blit(circle, x, y, NULL, 1.0f, c->data->GetRotation());
+			}
+			
+
+			App->renderer->Blit(ball, x / SCREEN_SIZE, y / SCREEN_SIZE, NULL);
+
+			
+
+
+			c = c->next;
+		}
+		
+		
+		
+
+		c = boxes.getFirst();
+
+		while (c != NULL)
+		{
+			int x, y;
+			c->data->GetPosition(x, y);
+			App->renderer->Blit(box, x, y, NULL, 1.0f, c->data->GetRotation());
+			if (ray_on)
+			{
+				int hit = c->data->RayCast(ray.x, ray.y, mouse.x, mouse.y, normal.x, normal.y);
+				if (hit >= 0)
+					ray_hit = hit;
+			}
+			c = c->next;
+		}
+		App->renderer->Blit(start_platform, SCREEN_WIDTH - 122, SCREEN_HEIGHT - 184, nullptr);
+
+		
+		
+		//right: 726  left: 326  y: 1706		
+
+		//App->renderer->Blit(flipper, 310, 1680, nullptr, 1, METERS_TO_PIXELS(pb_leftFlipper->body->GetAngle()), 0, 0, SDL_FLIP_HORIZONTAL);
+		App->renderer->Blit(flipper, 300, 1675, nullptr, 1, pb_leftFlipper->body->GetAngle() / DEGTORAD , 30 * SCREEN_SIZE, 25 * SCREEN_SIZE, SDL_FLIP_HORIZONTAL);
+		//App->renderer->Blit(flipper, 560, 1680, nullptr, 1, METERS_TO_PIXELS(pb_rightFlipper->body->GetAngle()), 176, 118, SDL_FLIP_NONE);
+		App->renderer->Blit(flipper, 572, 1675, nullptr, 1, pb_rightFlipper->body->GetAngle() / DEGTORAD  , 145 * SCREEN_SIZE, 25 * SCREEN_SIZE, SDL_FLIP_NONE);
+		
+		
+		
+		//right: 840  left: 240  y: 1460
+		App->renderer->Blit(flipper_bumper, 240 - GetCenterX(r_flipper_bumper[0]), 1460 - GetCenterY(r_flipper_bumper[0]), &r_flipper_bumper[1], 1, 0, NULL, NULL, SDL_FLIP_HORIZONTAL);
+		App->renderer->Blit(flipper_bumper, 840 - GetCenterX(r_flipper_bumper[0]), 1460 - GetCenterY(r_flipper_bumper[0]), &r_flipper_bumper[1], 1, 0, NULL, NULL, SDL_FLIP_NONE);
+
 		//Bumpers lighting
 
-		App->renderer->Blit(bumper, 490, 460, &r_bumper[0]);
-		App->renderer->Blit(bumper, 710, 420, &r_bumper[0]);
-		App->renderer->Blit(bumper, 650, 600, &r_bumper[0]);
+
+		//App->renderer->Blit(bumper, 490, 460, &r_bumper[0]);
+		if (pb_bumper01->playAnimation == true)
+		{
+			
+			int x = 490;
+			int y = 460;
+			if (bumper01Counter < 10)
+			{
+				App->renderer->Blit(bumper, x, y, &r_bumper[0]);
+				bumper01Counter++;
+			}
+			if (bumper01Counter >= 10 && bumper01Counter < 20)
+			{
+				App->renderer->Blit(bumper, x, y, &r_bumper[1]);
+				bumper01Counter++;
+			}
+			if (bumper01Counter >= 20 && bumper01Counter < 30)
+			{
+				App->renderer->Blit(bumper, x, y, &r_bumper[2]);
+				bumper01Counter++;
+			}
+			if (bumper01Counter >= 30 && bumper01Counter < 40)
+			{
+				App->renderer->Blit(bumper, x, y, &r_bumper[3]);
+				bumper01Counter++;
+			}
+			if (bumper01Counter >= 40 && bumper01Counter < 50)
+			{
+				App->renderer->Blit(bumper, x, y, &r_bumper[4]);
+				bumper01Counter++;
+			}
+			if (bumper01Counter >= 50 && bumper01Counter < 60)
+			{
+				App->renderer->Blit(bumper, x, y, &r_bumper[5]);
+				bumper01Counter++;
+			}
+			if (bumper01Counter >= 60 && bumper01Counter < 70)
+			{
+				App->renderer->Blit(bumper, x, y, &r_bumper[6]);
+				bumper01Counter++;
+			}
+			if (bumper01Counter >= 70 && bumper01Counter < 80)
+			{
+				App->renderer->Blit(bumper, x, y, &r_bumper[7]);
+				bumper01Counter++;
+			}
+			if (bumper01Counter >= 80 && bumper01Counter < 90)
+			{
+				App->renderer->Blit(bumper, x, y, &r_bumper[8]);
+				bumper01Counter++;
+			}
+			if (bumper01Counter >= 90 && bumper01Counter < 100)
+			{
+				App->renderer->Blit(bumper, x, y, &r_bumper[9]);
+				bumper01Counter++;
+			}
+			if (bumper01Counter >= 100 && bumper01Counter < 110)
+			{
+				App->renderer->Blit(bumper, x, y, &r_bumper[10]);
+				bumper01Counter++;
+			}
+			if (bumper01Counter >= 110 && bumper01Counter < 120)
+			{
+				App->renderer->Blit(bumper, x, y, &r_bumper[11]);
+				bumper01Counter++;
+			}
+			if (bumper01Counter >= 120 && bumper01Counter < 130)
+			{
+				App->renderer->Blit(bumper, x, y, &r_bumper[12]);
+				bumper01Counter++;
+			}
+			if (bumper01Counter >= 130 && bumper01Counter < 140)
+			{
+				App->renderer->Blit(bumper, x, y, &r_bumper[13]);
+				bumper01Counter++;
+			}
+			if (bumper01Counter >= 140)
+			{
+				App->renderer->Blit(bumper, x, y, &r_bumper[0]);
+				bumper01Counter=0;
+				pb_bumper01->playAnimation = false;
+			}
+		}
+		else App->renderer->Blit(bumper, 490, 460, &r_bumper[0]);
+		
+
+
+		//App->renderer->Blit(bumper, 710, 420, &r_bumper[0]);
+
+		if (pb_bumper02->playAnimation == true)
+		{
+
+			int x = 710;
+			int y = 420;
+			if (bumper02Counter < 10)
+			{
+				App->renderer->Blit(bumper, x, y, &r_bumper[0]);
+				bumper02Counter++;
+			}
+			if (bumper02Counter >= 10 && bumper02Counter < 20)
+			{
+				App->renderer->Blit(bumper, x, y, &r_bumper[1]);
+				bumper02Counter++;
+			}
+			if (bumper02Counter >= 20 && bumper02Counter < 30)
+			{
+				App->renderer->Blit(bumper, x, y, &r_bumper[2]);
+				bumper02Counter++;
+			}
+			if (bumper02Counter >= 30 && bumper02Counter < 40)
+			{
+				App->renderer->Blit(bumper, x, y, &r_bumper[3]);
+				bumper02Counter++;
+			}
+			if (bumper02Counter >= 40 && bumper02Counter < 50)
+			{
+				App->renderer->Blit(bumper, x, y, &r_bumper[4]);
+				bumper02Counter++;
+			}
+			if (bumper02Counter >= 50 && bumper02Counter < 60)
+			{
+				App->renderer->Blit(bumper, x, y, &r_bumper[5]);
+				bumper02Counter++;
+			}
+			if (bumper02Counter >= 60 && bumper02Counter < 70)
+			{
+				App->renderer->Blit(bumper, x, y, &r_bumper[6]);
+				bumper02Counter++;
+			}
+			if (bumper02Counter >= 70 && bumper02Counter < 80)
+			{
+				App->renderer->Blit(bumper, x, y, &r_bumper[7]);
+				bumper02Counter++;
+			}
+			if (bumper02Counter >= 80 && bumper02Counter < 90)
+			{
+				App->renderer->Blit(bumper, x, y, &r_bumper[8]);
+				bumper02Counter++;
+			}
+			if (bumper02Counter >= 90 && bumper02Counter < 100)
+			{
+				App->renderer->Blit(bumper, x, y, &r_bumper[9]);
+				bumper02Counter++;
+			}
+			if (bumper02Counter >= 100 && bumper02Counter < 110)
+			{
+				App->renderer->Blit(bumper, x, y, &r_bumper[10]);
+				bumper02Counter++;
+			}
+			if (bumper02Counter >= 110 && bumper02Counter < 120)
+			{
+				App->renderer->Blit(bumper, x, y, &r_bumper[11]);
+				bumper02Counter++;
+			}
+			if (bumper02Counter >= 120 && bumper02Counter < 130)
+			{
+				App->renderer->Blit(bumper, x, y, &r_bumper[12]);
+				bumper02Counter++;
+			}
+			if (bumper02Counter >= 130 && bumper02Counter < 140)
+			{
+				App->renderer->Blit(bumper, x, y, &r_bumper[13]);
+				bumper02Counter++;
+			}
+			if (bumper02Counter >= 140)
+			{
+				App->renderer->Blit(bumper, x, y, &r_bumper[0]);
+				bumper02Counter = 0;
+				pb_bumper02->playAnimation = false;
+			}
+		}
+		else App->renderer->Blit(bumper, 710, 420, &r_bumper[0]);
+
+
+
+		//App->renderer->Blit(bumper, 650, 600, &r_bumper[0]);
+
+		if (pb_bumper03->playAnimation == true)
+		{
+
+			int x = 650;
+			int y = 600;
+			if (bumper03Counter < 10)
+			{
+				App->renderer->Blit(bumper, x, y, &r_bumper[0]);
+				bumper03Counter++;
+			}
+			if (bumper03Counter >= 10 && bumper03Counter < 20)
+			{
+				App->renderer->Blit(bumper, x, y, &r_bumper[1]);
+				bumper03Counter++;
+			}
+			if (bumper03Counter >= 20 && bumper03Counter < 30)
+			{
+				App->renderer->Blit(bumper, x, y, &r_bumper[2]);
+				bumper03Counter++;
+			}
+			if (bumper03Counter >= 30 && bumper03Counter < 40)
+			{
+				App->renderer->Blit(bumper, x, y, &r_bumper[3]);
+				bumper03Counter++;
+			}
+			if (bumper03Counter >= 40 && bumper03Counter < 50)
+			{
+				App->renderer->Blit(bumper, x, y, &r_bumper[4]);
+				bumper03Counter++;
+			}
+			if (bumper03Counter >= 50 && bumper03Counter < 60)
+			{
+				App->renderer->Blit(bumper, x, y, &r_bumper[5]);
+				bumper03Counter++;
+			}
+			if (bumper03Counter >= 60 && bumper03Counter < 70)
+			{
+				App->renderer->Blit(bumper, x, y, &r_bumper[6]);
+				bumper03Counter++;
+			}
+			if (bumper03Counter >= 70 && bumper03Counter < 80)
+			{
+				App->renderer->Blit(bumper, x, y, &r_bumper[7]);
+				bumper03Counter++;
+			}
+			if (bumper03Counter >= 80 && bumper03Counter < 90)
+			{
+				App->renderer->Blit(bumper, x, y, &r_bumper[8]);
+				bumper03Counter++;
+			}
+			if (bumper03Counter >= 90 && bumper03Counter < 100)
+			{
+				App->renderer->Blit(bumper, x, y, &r_bumper[9]);
+				bumper03Counter++;
+			}
+			if (bumper03Counter >= 100 && bumper03Counter < 110)
+			{
+				App->renderer->Blit(bumper, x, y, &r_bumper[10]);
+				bumper03Counter++;
+			}
+			if (bumper03Counter >= 110 && bumper03Counter < 120)
+			{
+				App->renderer->Blit(bumper, x, y, &r_bumper[11]);
+				bumper03Counter++;
+			}
+			if (bumper03Counter >= 120 && bumper03Counter < 130)
+			{
+				App->renderer->Blit(bumper, x, y, &r_bumper[12]);
+				bumper03Counter++;
+			}
+			if (bumper03Counter >= 130 && bumper03Counter < 140)
+			{
+				App->renderer->Blit(bumper, x, y, &r_bumper[13]);
+				bumper03Counter++;
+			}
+			if (bumper03Counter >= 140)
+			{
+				App->renderer->Blit(bumper, x, y, &r_bumper[0]);
+				bumper03Counter = 0;
+				pb_bumper03->playAnimation = false;
+			}
+		}
+		else App->renderer->Blit(bumper, 650, 600, &r_bumper[0]);
 
 		/*
 		if (bumper01Counter <= 20)
 		{
-		 App->renderer->Blit(bumper, 490 - 174*0, 460, &r_bumper[0]);	
+		 App->renderer->Blit(bumper, 490 - 174*0, 460, &r_bumper[0]);
 		 bumper01Counter++;
 		}
 		else if (bumper01Counter >= 20 && bumper01Counter < 40)
@@ -724,84 +1041,6 @@ update_status ModuleSceneIntro::Update()
 		}
 		if(bumper01Counter == 200) bumper01Counter = 0;
 		//*/
-		
-		p2List_item<PhysBody*>* c = circles.getFirst();
-		while (c != NULL)
-		{
-			int x, y;
-			c->data->GetPosition(x, y);
-
-			if (c->data->Contains(App->input->GetMouseX(), App->input->GetMouseY()))
-			{
-				//App->renderer->Blit(circle, x, y, NULL, 1.0f, c->data->GetRotation());
-			}
-			
-
-			App->renderer->Blit(ball, x / SCREEN_SIZE, y / SCREEN_SIZE, NULL);
-
-			
-
-
-			c = c->next;
-		}
-		
-		
-		
-
-		c = boxes.getFirst();
-
-		while (c != NULL)
-		{
-			int x, y;
-			c->data->GetPosition(x, y);
-			App->renderer->Blit(box, x, y, NULL, 1.0f, c->data->GetRotation());
-			if (ray_on)
-			{
-				int hit = c->data->RayCast(ray.x, ray.y, mouse.x, mouse.y, normal.x, normal.y);
-				if (hit >= 0)
-					ray_hit = hit;
-			}
-			c = c->next;
-		}
-		App->renderer->Blit(start_platform, SCREEN_WIDTH - 122, SCREEN_HEIGHT - 184, nullptr);
-
-		//c = ricks.getFirst();
-		//
-		//while (c != NULL)
-		//{
-		//	int x, y;
-		//	c->data->GetPosition(x, y);
-		//	App->renderer->Blit(rick, x, y, NULL, 1.0f, c->data->GetRotation());
-		//	c = c->next;
-		//}
-		//
-		//// ray -----------------
-		//if (ray_on == true)
-		//{
-		//	fVector destination(mouse.x - ray.x, mouse.y - ray.y);
-		//	destination.Normalize();
-		//	destination *= ray_hit;
-		//
-		//	App->renderer->DrawLine(ray.x, ray.y, ray.x + destination.x, ray.y + destination.y, 255, 255, 255);
-		//
-		//	if (normal.x != 0.0f)
-		//		App->renderer->DrawLine(ray.x + destination.x, ray.y + destination.y, ray.x + destination.x + normal.x * 25.0f, ray.y + destination.y + normal.y * 25.0f, 100, 255, 100);
-		//}
-		
-		//right: 726  left: 326  y: 1706		
-
-		//App->renderer->Blit(flipper, 310, 1680, nullptr, 1, METERS_TO_PIXELS(pb_leftFlipper->body->GetAngle()), 0, 0, SDL_FLIP_HORIZONTAL);
-		App->renderer->Blit(flipper, 300, 1675, nullptr, 1, pb_leftFlipper->body->GetAngle() / DEGTORAD , 30 * SCREEN_SIZE, 25 * SCREEN_SIZE, SDL_FLIP_HORIZONTAL);
-		//App->renderer->Blit(flipper, 560, 1680, nullptr, 1, METERS_TO_PIXELS(pb_rightFlipper->body->GetAngle()), 176, 118, SDL_FLIP_NONE);
-		App->renderer->Blit(flipper, 572, 1675, nullptr, 1, pb_rightFlipper->body->GetAngle() / DEGTORAD  , 145 * SCREEN_SIZE, 25 * SCREEN_SIZE, SDL_FLIP_NONE);
-		
-		
-		
-		//right: 840  left: 240  y: 1460
-		App->renderer->Blit(flipper_bumper, 240 - GetCenterX(r_flipper_bumper[0]), 1460 - GetCenterY(r_flipper_bumper[0]), &r_flipper_bumper[1], 1, 0, NULL, NULL, SDL_FLIP_HORIZONTAL);
-		App->renderer->Blit(flipper_bumper, 840 - GetCenterX(r_flipper_bumper[0]), 1460 - GetCenterY(r_flipper_bumper[0]), &r_flipper_bumper[1], 1, 0, NULL, NULL, SDL_FLIP_NONE);
-
-
 	return UPDATE_CONTINUE;
 }
 
