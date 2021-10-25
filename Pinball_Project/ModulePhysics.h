@@ -13,6 +13,13 @@
 #define PIXEL_TO_METERS(p)  ((float) METER_PER_PIXEL * p)
 
 // Small class to return to other modules to track position and rotation of physics bodies
+enum BodyType
+{
+	TYPE_NULL = 0,
+	TYPE_SCORE,
+	TYPE_BALL,
+
+};
 class PhysBody
 {
 public:
@@ -27,6 +34,7 @@ public:
 public:
 	int width, height;
 	b2Body* body;
+	BodyType type;
 	// TODO 6: Add a pointer to a module that might want to listen to a collision from this body
 };
 

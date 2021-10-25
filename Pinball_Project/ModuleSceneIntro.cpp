@@ -194,8 +194,11 @@ bool ModuleSceneIntro::Start()
 	ballLauncherRecInitPosY = ballLauncherRectangle->body->GetPosition().y;
 
 	PhysBody* pb_blueCapsule = App->physics->CreateStaticChain(0, 0, blueCapsule, 14);
+	pb_blueCapsule->type = TYPE_SCORE;
 	PhysBody* pb_greenCapsule = App->physics->CreateStaticChain(0, 0, greenCapsule, 14);
+	pb_greenCapsule->type = TYPE_SCORE;
 	PhysBody* pb_yellowCapsule = App->physics->CreateStaticChain(0, 0, yellowCapsule, 14);
+	pb_yellowCapsule->type = TYPE_SCORE;
 
 	pb_bumper01 = App->physics->CreateSensorCircle(bumper01.x, bumper01.y, bumper01.radius);
 	pb_bumper02 = App->physics->CreateSensorCircle(bumper02.x, bumper02.y, bumper02.radius);
@@ -386,13 +389,15 @@ update_status ModuleSceneIntro::Update()
 		if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 		{
 			pb_currentBall = App->physics->CreateCircle(App->input->GetMouseX(), App->input->GetMouseY(), 24 * SCREEN_SIZE);
+			pb_currentBall->type == TYPE_BALL;
 			// TODO 8: Make sure to add yourself as collision callback to the circle you creates
 
 		}
 
 		if ((App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN)&&(App->player->ballsInGame==0))
 		{
-			pb_currentBall = App->physics->CreateCircle(545, 865, 24 * SCREEN_SIZE);
+			pb_currentBall = App->physics->CreateCircle(1090 * SCREEN_SIZE, 1730 * SCREEN_SIZE, 24 * SCREEN_SIZE);
+			pb_currentBall->type == TYPE_BALL;
 			App->player->ballsInGame++;
 			// TODO 8: Make sure to add yourself as collision callback to the circle you creates
 			
@@ -796,3 +801,16 @@ update_status ModuleSceneIntro::Update()
 }
 
 // TODO 8: Now just define collision callback for the circle and play bonus_fx audio
+void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
+{
+	// Play Audio FX on every collision, regardless of who is colliding
+
+	//App->audio->PlayFx(bonus_fx);
+	LOG("EYYYYYYY");
+
+	// Do something else. You can also check which bodies are colliding (sensor? ball? player?)
+	if ((bodyA->type == TYPE_BALL && bodyB->type == TYPE_SCORE) ||(bodyA->type == TYPE_SCORE && bodyB->type == TYPE_BALL))
+	{
+		LOG("EYYYYYYY");
+	}
+}
