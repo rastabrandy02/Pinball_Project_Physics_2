@@ -194,11 +194,24 @@ bool ModuleSceneIntro::Start()
 	ballLauncherRecInitPosY = ballLauncherRectangle->body->GetPosition().y;
 
     pb_blueCapsule = App->physics->CreateStaticChain(0, 0, blueCapsule, 14);
-	pb_blueCapsule->type = TYPE_SCORE;
+	//pb_blueCapsule->type = TYPE_SCORE;
     pb_greenCapsule = App->physics->CreateStaticChain(0, 0, greenCapsule, 14);
-	pb_greenCapsule->type = TYPE_SCORE;
+	//pb_greenCapsule->type = TYPE_SCORE;
     pb_yellowCapsule = App->physics->CreateStaticChain(0, 0, yellowCapsule, 14);
-	pb_yellowCapsule->type = TYPE_SCORE;
+	//pb_yellowCapsule->type = TYPE_SCORE;
+
+	pb_blueCapsuleSensor = App->physics->CreateStaticChain(0, 0, blueCapsule, 14);
+	pb_blueCapsuleSensor->type = TYPE_SCORE;
+	pb_blueCapsuleSensor->body->GetFixtureList()->SetSensor(true);
+
+	pb_greenCapsuleSensor = App->physics->CreateStaticChain(0, 0, greenCapsule, 14);
+	pb_greenCapsuleSensor->type = TYPE_SCORE;
+	pb_greenCapsuleSensor->body->GetFixtureList()->SetSensor(true);
+
+	pb_yellowCapsuleSensor = App->physics->CreateStaticChain(0, 0, yellowCapsule, 14);
+	pb_yellowCapsuleSensor->type = TYPE_SCORE;
+	pb_yellowCapsuleSensor->body->GetFixtureList()->SetSensor(true);
+
 
 	pb_bumper01 = App->physics->CreateSensorCircle(bumper01.x, bumper01.y, bumper01.radius);
 	pb_bumper02 = App->physics->CreateSensorCircle(bumper02.x, bumper02.y, bumper02.radius);
@@ -225,6 +238,9 @@ bool ModuleSceneIntro::Start()
 	capsules.add(pb_blueCapsule);
 	capsules.add(pb_greenCapsule);
 	capsules.add(pb_yellowCapsule);
+	capsules.add(pb_blueCapsuleSensor);
+	capsules.add(pb_greenCapsuleSensor);
+	capsules.add(pb_yellowCapsuleSensor);
 
 	bumpers.add(pb_bumper01);
 	bumpers.add(pb_bumper02);
@@ -349,7 +365,7 @@ bool ModuleSceneIntro::Start()
 	minAngle = 0.0f;
 	maxAngle = 60.0f;
 
-	bumperForce = 5.0f;
+	bumperForce = 7.0f;
 	// TODO: Homework - create a sensor
 
 
@@ -539,7 +555,6 @@ update_status ModuleSceneIntro::Update()
 	while (bumperPointer != nullptr)
 	{
 		if (bumperPointer->data->body->GetContactList() != nullptr)
-
 		{
 			if (bumperPointer->data->body->GetContactList()->contact->IsTouching())
 			{
@@ -552,8 +567,6 @@ update_status ModuleSceneIntro::Update()
 
 				bumpForceVec.Normalize();
 				bumpForceVec *= bumperForce;
-				b2Vec2 zero = { 0,0 };
-				ball->SetLinearVelocity(zero);
 
 				ball->SetLinearVelocity(bumpForceVec);
 
@@ -568,10 +581,11 @@ update_status ModuleSceneIntro::Update()
 
 		bumperPointer = bumperPointer->next;
 	}
+	//capsules
 	p2List_item <PhysBody*>* capsulePointer = capsules.getFirst();
 	while (capsulePointer != nullptr)
 	{
-		if (capsulePointer->data->body->GetContactList() != nullptr)
+		if (capsulePointer->data->body->GetContactList() != nullptr && capsulePointer->data->body->GetFixtureList()->IsSensor() == true)
 
 		{
 			if (capsulePointer->data->body->GetContactList()->contact->IsTouching())
@@ -584,12 +598,9 @@ update_status ModuleSceneIntro::Update()
 				};
 
 				bumpForceVec.Normalize();
-				bumpForceVec *= bumperForce;
-				b2Vec2 zero = { 0,0 };*/
-
+				bumpForceVec *= bumperForce;*/
 
 				//Bumping force ignored (?)
-				//ball->SetLinearVelocity(zero);
 				//ball->SetLinearVelocity(bumpForceVec);
 
 				App->player->score += 1000;
@@ -637,7 +648,7 @@ update_status ModuleSceneIntro::Update()
 		SDL_Rect r_temp = { 0 };
 
 			//blue
-		if (pb_blueCapsule->playAnimation == true)
+		if (pb_blueCapsuleSensor->playAnimation == true)
 		{
 			r_temp = r_capsule_1[0];
 		}
@@ -649,7 +660,7 @@ update_status ModuleSceneIntro::Update()
 		App->renderer->Blit(capsule_1, 337 + 134 , 223 , &r_temp);
 
 			//green
-		if (pb_greenCapsule->playAnimation == true)
+		if (pb_greenCapsuleSensor->playAnimation == true)
 		{
 			r_temp = r_capsule_2[0];
 		}
@@ -661,7 +672,7 @@ update_status ModuleSceneIntro::Update()
 		App->renderer->Blit(capsule_2, 454 + 134, 223, &r_temp);
 
 			//yellow
-		if (pb_yellowCapsule->playAnimation == true)
+		if (pb_yellowCapsuleSensor->playAnimation == true)
 		{
 			r_temp = r_capsule_3[0];
 		}

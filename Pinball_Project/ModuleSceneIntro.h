@@ -316,7 +316,7 @@ public:
 	};
 	int alienIsland[60] = {
 	405, 342,
-	422, 348,
+	422, 338,
 	442, 349,
 	444, 373,
 	443, 486,
@@ -418,6 +418,11 @@ public:
 		PhysBody* pb_blueCapsule;
 		PhysBody* pb_greenCapsule;
 		PhysBody* pb_yellowCapsule;
+
+		PhysBody* pb_blueCapsuleSensor;
+		PhysBody* pb_greenCapsuleSensor;
+		PhysBody* pb_yellowCapsuleSensor;
+
 
 		float bumperForce;
 
