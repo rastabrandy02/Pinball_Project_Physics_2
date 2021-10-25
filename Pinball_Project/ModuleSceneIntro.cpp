@@ -177,7 +177,7 @@ bool ModuleSceneIntro::Start()
 		bumper03.radius = 77 * SCREEN_SIZE;
 	}
 
-	//Create all the walls,flippers, capsules
+	//Create all the walls, flippers, capsules, bumpers
 	PhysBody* pb_mainWalls = App->physics->CreateStaticChain(0, 0, mainWalls, 102);
 	PhysBody* pb_leftWall = App->physics->CreateStaticChain(0, 0, leftWall, 16);
 	PhysBody* pb_rightWall = App->physics->CreateStaticChain(0, 0, rightWall, 16);
@@ -725,13 +725,18 @@ update_status ModuleSceneIntro::Update()
 			c->data->GetPosition(x, y);
 			if (c->data->Contains(App->input->GetMouseX(), App->input->GetMouseY()))
 			{
-				App->renderer->Blit(circle, x, y, NULL, 1.0f, c->data->GetRotation());
-				
+				//App->renderer->Blit(circle, x, y, NULL, 1.0f, c->data->GetRotation());
 			}
 			
+
 			App->renderer->Blit(ball, x / SCREEN_SIZE, y / SCREEN_SIZE, NULL);
+
+			App->renderer->Blit(ball, 200 / SCREEN_SIZE, 500 / SCREEN_SIZE, nullptr);
+
+
 			c = c->next;
 		}
+		App->renderer->Blit(ball, 200 / SCREEN_SIZE, 510 / SCREEN_SIZE, nullptr);
 
 		c = boxes.getFirst();
 
