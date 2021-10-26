@@ -37,6 +37,10 @@ public:
 
 
 	//audio
+	bool masterAudioOn;
+	bool MusicOn;
+	bool SfxOn;
+
 	uint sfx_flipper;
 	uint bg_music;
 	//List of the different bodies

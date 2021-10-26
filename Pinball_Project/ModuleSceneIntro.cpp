@@ -24,9 +24,15 @@ bool ModuleSceneIntro::Start()
 	bool ret = true;
 
 	//set sounds
-	
+	masterAudioOn = true;
+	SfxOn = true;
+	MusicOn = true;
+
 	bg_music = App->audio->LoadFx("pinball/pinball_elements/Music/pinball_music.ogg");
 	sfx_flipper = App->audio->LoadFx("pinball/pinball_elements/Sounds/sfx_flipper.wav");
+	if (masterAudioOn)
+		if (MusicOn)
+				App->audio->PlayFx(bg_music);
 	// 
 
 	// TODO: Homework - create a sensor
@@ -379,7 +385,7 @@ bool ModuleSceneIntro::Start()
 	}
 
 	angleMargin = 10.0f;
-	App->audio->PlayFx(bg_music);
+	
 
 	angularSpeed = 15.0f;
 	minAngle = 0.0f;
@@ -471,7 +477,9 @@ update_status ModuleSceneIntro::Update()
 		//MANAGE LEFT FLIPPER
 		if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_STATE::KEY_DOWN)
 		{
-			App->audio->PlayFx(sfx_flipper);
+			if (masterAudioOn)
+				if (SfxOn)
+					App->audio->PlayFx(sfx_flipper);
 		}
 
 		if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_STATE::KEY_REPEAT)
@@ -512,7 +520,9 @@ update_status ModuleSceneIntro::Update()
 
 		if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_STATE::KEY_DOWN)
 		{
-			App->audio->PlayFx(sfx_flipper);
+			if (masterAudioOn)
+				if (SfxOn)
+					App->audio->PlayFx(sfx_flipper);
 		}
 		if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_STATE::KEY_REPEAT)
 		{
