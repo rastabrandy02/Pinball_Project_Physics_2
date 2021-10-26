@@ -221,8 +221,14 @@ bool ModuleSceneIntro::Start()
 	PhysBody* pb_bumper02Interior = App->physics->CreateStaticCircle(bumper02.x, bumper02.y, bumper02.radius - 2);
 	PhysBody* pb_bumper03Interior = App->physics->CreateStaticCircle(bumper03.x, bumper03.y, bumper03.radius - 2);
 
+	pb_rightLateralBumper = App->physics->CreateKinematicRectangle(818 , 1472 , 10 , 215);
+	pb_rightLateralBumper->body->SetTransform(pb_rightLateralBumper->body->GetPosition(), 24 * DEGTORAD);
+	pb_rightLateralBumper->body->GetFixtureList()->SetSensor(true);
 
-	
+	pb_leftLatearlBumper = App->physics->CreateKinematicRectangle(260, 1472, 10, 215);
+	pb_leftLatearlBumper->body->SetTransform(pb_leftLatearlBumper->body->GetPosition(), -24 * DEGTORAD);
+	pb_leftLatearlBumper->body->GetFixtureList()->SetSensor(true);
+
 
 	walls.add(pb_mainWalls);
 	walls.add(pb_leftWall);
@@ -245,6 +251,7 @@ bool ModuleSceneIntro::Start()
 	bumpers.add(pb_bumper01);
 	bumpers.add(pb_bumper02);
 	bumpers.add(pb_bumper03);
+
 
 	pb_leftFlipper = App->physics->CreateKinematicChain(326, 1700, leftFlipper, 20);
 	pb_rightFlipper = App->physics->CreateKinematicChain(718, 1700, rightFlipper, 20);
@@ -365,7 +372,8 @@ bool ModuleSceneIntro::Start()
 	minAngle = 0.0f;
 	maxAngle = 60.0f;
 
-	bumperForce = 7.0f;
+	bumperForce = 8.0f;
+	lateralBumperForce = 15.0f;
 	// TODO: Homework - create a sensor
 
 
@@ -415,13 +423,24 @@ update_status ModuleSceneIntro::Update()
 
 		if ((App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN)&&(App->player->ballsInGame==0))
 		{
+			pb_currentBall = NULL;
 			pb_currentBall = App->physics->CreateCircle(1090 * SCREEN_SIZE, 1730 * SCREEN_SIZE, 24 * SCREEN_SIZE);
 			pb_currentBall->type == TYPE_BALL;
 			App->player->ballsInGame++;
 			// TODO 8: Make sure to add yourself as collision callback to the circle you creates
 			circles.add(pb_currentBall);
 		}
-		
+		//LOG("ball count: %i", App->player->ballsInGame);
+		//
+		//if (pb_currentBall != nullptr)
+		//{
+		//	LOG("ball y: %i", pb_currentBall->body->GetPosition().y);
+		//}
+		if (pb_currentBall != nullptr && pb_currentBall->body->GetPosition().y + 24 > PIXEL_TO_METERS(SCREEN_HEIGHT * SCREEN_SIZE))
+		{
+			App->player->ballsInGame--;
+		}
+
 		if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
 		{
 			App->player->playerLives--;
@@ -548,7 +567,38 @@ update_status ModuleSceneIntro::Update()
 		}
 	}
 
+	//LATERAL BUMPERS
+	if (pb_leftLatearlBumper->body->GetContactList() != nullptr)
+	{
+		if (pb_leftLatearlBumper->body->GetContactList()->contact->IsTouching())
+		{
+			b2Body* ball = pb_leftLatearlBumper->body->GetContactList()->contact->GetFixtureB()->GetBody();
 
+			b2Vec2 bumpForceVec = { 24, -35};
+
+			bumpForceVec.Normalize();
+			bumpForceVec *= lateralBumperForce;
+
+			ball->SetLinearVelocity(bumpForceVec);
+
+		}
+	}
+
+	if (pb_rightLateralBumper->body->GetContactList() != nullptr)
+	{
+		if (pb_rightLateralBumper->body->GetContactList()->contact->IsTouching())
+		{
+			b2Body* ball = pb_rightLateralBumper->body->GetContactList()->contact->GetFixtureB()->GetBody();
+
+			b2Vec2 bumpForceVec = { -24, -35 };
+
+			bumpForceVec.Normalize();
+			bumpForceVec *= lateralBumperForce;
+
+			ball->SetLinearVelocity(bumpForceVec);
+
+		}
+	}
 
 	//BUMPERS
 	p2List_item <PhysBody*>* bumperPointer = bumpers.getFirst();
@@ -693,14 +743,10 @@ update_status ModuleSceneIntro::Update()
 
 			if (c->data->Contains(App->input->GetMouseX(), App->input->GetMouseY()))
 			{
-				//App->renderer->Blit(circle, x, y, NULL, 1.0f, c->data->GetRotation());
+				App->renderer->Blit(circle, x, y, NULL, 1.0f, c->data->GetRotation());
 			}
 			
-
 			App->renderer->Blit(ball, x / SCREEN_SIZE, y / SCREEN_SIZE, NULL);
-
-			
-
 
 			c = c->next;
 		}

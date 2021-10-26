@@ -64,6 +64,37 @@ public:
 	float minAngle;
 	float angleMargin;
 
+	//Values for the bumpers
+	//400, 250, 40
+	bumper_def bumper01;
+	bumper_def bumper02;
+	bumper_def bumper03;
+
+	PhysBody* pb_bumper01;
+	PhysBody* pb_bumper02;
+	PhysBody* pb_bumper03;
+
+	PhysBody* pb_blueCapsule;
+	PhysBody* pb_greenCapsule;
+	PhysBody* pb_yellowCapsule;
+
+	PhysBody* pb_blueCapsuleSensor;
+	PhysBody* pb_greenCapsuleSensor;
+	PhysBody* pb_yellowCapsuleSensor;
+
+
+	float bumperForce;
+
+	//rectangle sensor lateral bumpers
+	//angle = 23 deg
+	// 215 height
+	// 5 width
+
+	PhysBody* pb_rightLateralBumper;
+	PhysBody* pb_leftLatearlBumper;
+
+	float lateralBumperForce;
+
 	PhysBody* sensor;
 	bool sensed;
 
@@ -405,26 +436,7 @@ public:
 	770, 236
 	};
 
-	//Values for the bumpers
-	//400, 250, 40
-		bumper_def bumper01;
-		bumper_def bumper02;
-		bumper_def bumper03;
-
-		PhysBody* pb_bumper01;
-		PhysBody* pb_bumper02;
-		PhysBody* pb_bumper03;
-
-		PhysBody* pb_blueCapsule;
-		PhysBody* pb_greenCapsule;
-		PhysBody* pb_yellowCapsule;
-
-		PhysBody* pb_blueCapsuleSensor;
-		PhysBody* pb_greenCapsuleSensor;
-		PhysBody* pb_yellowCapsuleSensor;
-
-
-		float bumperForce;
+	
 
 	int margin = 20;
 
