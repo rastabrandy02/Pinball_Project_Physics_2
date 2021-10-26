@@ -162,6 +162,11 @@ bool ModuleSceneIntro::Start()
 			blueCapsule[i] *= SCREEN_SIZE;
 			greenCapsule[i] *= SCREEN_SIZE;
 			yellowCapsule[i] *= SCREEN_SIZE;
+
+			blueCapsuleSensor[i] *= SCREEN_SIZE;
+			greenCapsuleSensor[i] *= SCREEN_SIZE;
+			yellowCapsuleSensor[i] *= SCREEN_SIZE;
+
 		}
 
 		bumper01.x = 578 * SCREEN_SIZE;
@@ -193,22 +198,22 @@ bool ModuleSceneIntro::Start()
 	ballLauncherRecInitPosX = ballLauncherRectangle->body->GetPosition().x;
 	ballLauncherRecInitPosY = ballLauncherRectangle->body->GetPosition().y;
 
-    pb_blueCapsule = App->physics->CreateStaticChain(0, 0, blueCapsule, 14);
-	//pb_blueCapsule->type = TYPE_SCORE;
-    pb_greenCapsule = App->physics->CreateStaticChain(0, 0, greenCapsule, 14);
-	//pb_greenCapsule->type = TYPE_SCORE;
-    pb_yellowCapsule = App->physics->CreateStaticChain(0, 0, yellowCapsule, 14);
-	//pb_yellowCapsule->type = TYPE_SCORE;
+    //pb_blueCapsule = App->physics->CreateStaticChain(0, 0, blueCapsule, 14);
+	////pb_blueCapsule->type = TYPE_SCORE;
+    //pb_greenCapsule = App->physics->CreateStaticChain(0, 0, greenCapsule, 14);
+	////pb_greenCapsule->type = TYPE_SCORE;
+    //pb_yellowCapsule = App->physics->CreateStaticChain(0, 0, yellowCapsule, 14);
+	////pb_yellowCapsule->type = TYPE_SCORE;
 
-	pb_blueCapsuleSensor = App->physics->CreateStaticChain(0, 0, blueCapsule, 14);
+	pb_blueCapsuleSensor = App->physics->CreateStaticChain(0, 0, blueCapsuleSensor, 14);
 	pb_blueCapsuleSensor->type = TYPE_SCORE;
 	pb_blueCapsuleSensor->body->GetFixtureList()->SetSensor(true);
 
-	pb_greenCapsuleSensor = App->physics->CreateStaticChain(0, 0, greenCapsule, 14);
+	pb_greenCapsuleSensor = App->physics->CreateStaticChain(0, 0, greenCapsuleSensor, 14);
 	pb_greenCapsuleSensor->type = TYPE_SCORE;
 	pb_greenCapsuleSensor->body->GetFixtureList()->SetSensor(true);
 
-	pb_yellowCapsuleSensor = App->physics->CreateStaticChain(0, 0, yellowCapsule, 14);
+	pb_yellowCapsuleSensor = App->physics->CreateStaticChain(0, 0, yellowCapsuleSensor, 14);
 	pb_yellowCapsuleSensor->type = TYPE_SCORE;
 	pb_yellowCapsuleSensor->body->GetFixtureList()->SetSensor(true);
 
@@ -373,7 +378,7 @@ bool ModuleSceneIntro::Start()
 	maxAngle = 60.0f;
 
 	bumperForce = 8.0f;
-	lateralBumperForce = 15.0f;
+	lateralBumperForce = 9.0f;
 	// TODO: Homework - create a sensor
 
 
@@ -636,7 +641,7 @@ update_status ModuleSceneIntro::Update()
 	p2List_item <PhysBody*>* capsulePointer = capsules.getFirst();
 	while (capsulePointer != nullptr)
 	{
-		if (capsulePointer->data->body->GetContactList() != nullptr && capsulePointer->data->body->GetFixtureList()->IsSensor() == true)
+		if (capsulePointer->data != nullptr &&  capsulePointer->data->body->GetContactList() != nullptr && capsulePointer->data->body->GetFixtureList()->IsSensor() == true)
 
 		{
 			if (capsulePointer->data->body->GetContactList()->contact->IsTouching())

@@ -406,9 +406,38 @@ public:
 
 	};
 	
+	int sep = 10;
 
 	// Coordinates of the capsules
 	int blueCapsule[14] = {
+	533, 260 + sep,
+	513 + sep, 277,
+	514 + sep, 356,
+	535, 370 - sep,
+	559 - sep, 351,
+	559 - sep, 278,
+	539, 261 + sep
+	};
+	int greenCapsule[14] = {
+	648, 262 + sep,
+	630 + sep, 280,
+	631 + sep, 361,
+	653, 372 - sep,
+	675 - sep, 358,
+	677 - sep, 273,
+	657, 260 + sep
+	};
+	int yellowCapsule[14] = {
+	764, 238 + sep,
+	743 + sep, 250,
+	743 + sep, 331,
+	767, 347 - sep,
+	789 - sep, 336,
+	791 - sep, 252,
+	770, 236 + sep
+	};
+
+	int blueCapsuleSensor[14] = {
 	533, 260,
 	513, 277,
 	514, 356,
@@ -417,16 +446,16 @@ public:
 	559, 278,
 	539, 261
 	};
-	int greenCapsule[14] = {
+	int greenCapsuleSensor[14] = {
 	648, 262,
 	630, 280,
 	631, 361,
-	653, 369,
+	653, 372,
 	675, 358,
 	677, 273,
 	657, 260
 	};
-	int yellowCapsule[14] = {
+	int yellowCapsuleSensor[14] = {
 	764, 238,
 	743, 250,
 	743, 331,
