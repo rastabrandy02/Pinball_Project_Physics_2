@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleWindow.h"
 
+
 ModuleWindow::ModuleWindow(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	window = NULL;
@@ -63,6 +64,22 @@ bool ModuleWindow::Init()
 			//Get window surface
 			screen_surface = SDL_GetWindowSurface(window);
 		}
+
+		
+		const char* image_path = "pinball/UI_elements/icon.bmp";
+		SDL_Surface* image = IMG_Load(image_path);
+
+		/* Let the user know if the file failed to load */
+		if (!image) {
+			printf("Failed to load image at %s: %s\n", image_path, SDL_GetError());
+			
+		}
+
+	//SDL_Surface* iconSurface = SDL_LoadBMP("pinball/UI_elements/icon.bmp");
+	SDL_SetWindowIcon(window, image);
+		
+	SDL_FreeSurface(image);
+	
 	}
 
 	return ret;

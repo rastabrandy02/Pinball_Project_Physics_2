@@ -24,7 +24,7 @@ bool ModuleSceneIntro::Start()
 	bool ret = true;
 
 	//set sounds
-	masterAudioOn = true;
+	masterAudioOn = false;
 	SfxOn = true;
 	MusicOn = true;
 
@@ -33,7 +33,7 @@ bool ModuleSceneIntro::Start()
 	if (masterAudioOn)
 		if (MusicOn)
 				App->audio->PlayFx(bg_music);
-	// 
+	
 
 	// TODO: Homework - create a sensor
 	App->renderer->camera.x = App->renderer->camera.y = 0;

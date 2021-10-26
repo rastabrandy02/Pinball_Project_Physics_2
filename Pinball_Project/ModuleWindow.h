@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "SDL/include/SDL.h"
+#include "SDL_image/include/SDL_image.h"
 
 class Application;
 
