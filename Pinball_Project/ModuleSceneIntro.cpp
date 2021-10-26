@@ -367,7 +367,7 @@ bool ModuleSceneIntro::Start()
 	}
 
 	angleMargin = 10.0f;
-
+	App->audio->PlayMusic("pinball/pinball_elements/Music/pinball_music.wav", 1.0f);
 	angularSpeed = 15.0f;
 	minAngle = 0.0f;
 	maxAngle = 60.0f;
@@ -392,6 +392,7 @@ bool ModuleSceneIntro::CleanUp()
 update_status ModuleSceneIntro::Update()
 {
 	//if not paused not update elements but still draw them 
+	
 
 	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_UP)
 		gamePaused = !gamePaused;
