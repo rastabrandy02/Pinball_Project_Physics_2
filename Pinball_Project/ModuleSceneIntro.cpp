@@ -22,6 +22,13 @@ bool ModuleSceneIntro::Start()
 {
 	LOG("Loading Intro assets");
 	bool ret = true;
+
+	//set sounds
+	
+	bg_music = App->audio->LoadFx("pinball/pinball_elements/Music/pinball_music.ogg");
+	sfx_flipper = App->audio->LoadFx("pinball/pinball_elements/Sounds/sfx_flipper.wav");
+	// 
+
 	// TODO: Homework - create a sensor
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 
@@ -372,7 +379,8 @@ bool ModuleSceneIntro::Start()
 	}
 
 	angleMargin = 10.0f;
-	App->audio->PlayMusic("pinball/pinball_elements/Music/pinball_music.wav", 1.0f);
+	App->audio->PlayFx(bg_music);
+
 	angularSpeed = 15.0f;
 	minAngle = 0.0f;
 	maxAngle = 60.0f;
@@ -397,6 +405,7 @@ bool ModuleSceneIntro::CleanUp()
 update_status ModuleSceneIntro::Update()
 {
 	//if not paused not update elements but still draw them 
+	
 	
 
 	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_UP)
@@ -460,6 +469,11 @@ update_status ModuleSceneIntro::Update()
 
 
 		//MANAGE LEFT FLIPPER
+		if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_STATE::KEY_DOWN)
+		{
+			App->audio->PlayFx(sfx_flipper);
+		}
+
 		if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_STATE::KEY_REPEAT)
 		{
 			if (pb_leftFlipper->body->GetAngle() - DEGTORAD * angularSpeed > -DEGTORAD * maxAngle)
@@ -495,6 +509,11 @@ update_status ModuleSceneIntro::Update()
 		}
 
 		//MANAGE RIGHT FLIPPER
+
+		if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_STATE::KEY_DOWN)
+		{
+			App->audio->PlayFx(sfx_flipper);
+		}
 		if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_STATE::KEY_REPEAT)
 		{
 			if (pb_rightFlipper->body->GetAngle() + DEGTORAD * angularSpeed < DEGTORAD * maxAngle)

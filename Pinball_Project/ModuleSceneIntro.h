@@ -35,6 +35,10 @@ public:
 
 public:
 
+
+	//audio
+	uint sfx_flipper;
+	uint bg_music;
 	//List of the different bodies
 
 
