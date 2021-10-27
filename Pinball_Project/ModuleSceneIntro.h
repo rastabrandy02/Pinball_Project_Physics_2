@@ -396,6 +396,19 @@ public:
 	398, 350
 	};
 
+	int leftBallImpairer[6]
+	{
+		300,100,
+		330,130,
+		330,100
+	};
+	int rightBallImpairer[6]
+	{
+		850, 100,
+		880,100,
+		850,120
+	};
+
 	//Coordinates of the flippers
 	int leftFlipper[20] ={
 		 11, -21,

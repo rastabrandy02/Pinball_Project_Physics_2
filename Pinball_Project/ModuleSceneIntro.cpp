@@ -183,6 +183,11 @@ bool ModuleSceneIntro::Start()
 			pinkCapsuleSensor[i] *= SCREEN_SIZE;
 
 		}
+		for (int i = 0; i < 6; i++)
+		{
+			leftBallImpairer[i] *= SCREEN_SIZE;
+			rightBallImpairer[i] *= SCREEN_SIZE;
+		}
 
 		bumper01.x = 578 * SCREEN_SIZE;
 		bumper01.y = 545 * SCREEN_SIZE;
@@ -208,6 +213,8 @@ bool ModuleSceneIntro::Start()
 	PhysBody* pb_alienIsland = App->physics->CreateStaticChain(0, 0, alienIsland, 60);
 	PhysBody* pb_ballStartPositionerLeft = App->physics->CreateStaticChain(0, 0, ballStartPositionerLeft, 6);
 	PhysBody* pb_ballStartPositionerRight = App->physics->CreateStaticChain(0, 0, ballStartPositionerRight, 6);
+	PhysBody* pb_leftBallImpairer = App->physics->CreateStaticChain(0, 0, leftBallImpairer, 6);
+	PhysBody* pb_rightBallImpairer = App->physics->CreateStaticChain(0, 0, rightBallImpairer, 6);
 	
 	ballLauncherRectangle = App->physics->CreateKinematicRectangle(1090, 1771 + 25, 80, 50); //110 pixels until bottom
 	ballLauncherRecInitPosX = ballLauncherRectangle->body->GetPosition().x;
@@ -755,6 +762,11 @@ update_status ModuleSceneIntro::Update()
 		
 		//LOG("startforce: %f", startForce);
 
+		//Impairers
+		App->renderer->Blit(gate, 590 * SCREEN_SIZE, 280 * SCREEN_SIZE);
+		App->renderer->Blit(gate, 2140 * SCREEN_SIZE, 280 * SCREEN_SIZE,nullptr,NULL,NULL,NULL,NULL, SDL_FLIP_HORIZONTAL);
+		App->renderer->Blit(gate, 590 * SCREEN_SIZE, 1370 * SCREEN_SIZE, nullptr, NULL, 90, NULL, NULL, SDL_FLIP_VERTICAL);
+		//App->renderer->Blit();
 
 		//Alien
 		App->renderer->Blit(curve_tunnel, 166 , 301 , nullptr);
