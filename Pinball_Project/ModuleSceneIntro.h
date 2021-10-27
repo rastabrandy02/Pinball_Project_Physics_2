@@ -109,10 +109,15 @@ public:
 	bool leftMiniBumperActive;
 	PhysBody* pb_leftMiniBumper;
 	float leftMiniBumperForce;
+	int miniLateralBumperCounter;
 
+
+	int lateralBumperCounterRef;
 	
 	PhysBody* pb_rightLateralBumper;
-	PhysBody* pb_leftLatearlBumper;
+	int rightLateralBumperCounter;
+	PhysBody* pb_leftLateralBumper;
+	int leftLateralBumperCounter;
 
 	float lateralBumperForce;
 

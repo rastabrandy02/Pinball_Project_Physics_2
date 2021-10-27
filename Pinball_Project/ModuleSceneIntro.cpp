@@ -287,9 +287,9 @@ bool ModuleSceneIntro::Start()
 	pb_rightLateralBumper->body->SetTransform(pb_rightLateralBumper->body->GetPosition(), 24 * DEGTORAD);
 	pb_rightLateralBumper->body->GetFixtureList()->SetSensor(true);
 
-	pb_leftLatearlBumper = App->physics->CreateKinematicRectangle(260, 1472, 10, 215);
-	pb_leftLatearlBumper->body->SetTransform(pb_leftLatearlBumper->body->GetPosition(), -24 * DEGTORAD);
-	pb_leftLatearlBumper->body->GetFixtureList()->SetSensor(true);
+	pb_leftLateralBumper = App->physics->CreateKinematicRectangle(260, 1472, 10, 215);
+	pb_leftLateralBumper->body->SetTransform(pb_leftLateralBumper->body->GetPosition(), -24 * DEGTORAD);
+	pb_leftLateralBumper->body->GetFixtureList()->SetSensor(true);
 
 	pb_leftMiniBumper = App->physics->CreateKinematicRectangle(64, 1224, 100, 20);
 	pb_leftMiniBumper->body->SetTransform(pb_leftMiniBumper->body->GetPosition(), 45 * DEGTORAD);
@@ -448,6 +448,8 @@ bool ModuleSceneIntro::Start()
 	leftMiniBumperForce = 9.0f;
 
 	ballIsAlive = false;
+
+	lateralBumperCounterRef = 20;
 	// TODO: Homework - create a sensor
 
 
@@ -720,15 +722,16 @@ update_status ModuleSceneIntro::Update()
 			bumpForceVec *= leftMiniBumperForce;
 
 			ball->SetLinearVelocity(bumpForceVec);
+			miniLateralBumperCounter = lateralBumperCounterRef;
 
 		}
 	}
 
-	if (pb_leftLatearlBumper->body->GetContactList() != nullptr)
+	if (pb_leftLateralBumper->body->GetContactList() != nullptr)
 	{
-		if (pb_leftLatearlBumper->body->GetContactList()->contact->IsTouching())
+		if (pb_leftLateralBumper->body->GetContactList()->contact->IsTouching())
 		{
-			b2Body* ball = pb_leftLatearlBumper->body->GetContactList()->contact->GetFixtureB()->GetBody();
+			b2Body* ball = pb_leftLateralBumper->body->GetContactList()->contact->GetFixtureB()->GetBody();
 
 			b2Vec2 bumpForceVec = { 24, -35};
 
@@ -739,6 +742,7 @@ update_status ModuleSceneIntro::Update()
 			bumpForceVec *= lateralBumperForce;
 
 			ball->SetLinearVelocity(bumpForceVec);
+			leftLateralBumperCounter = lateralBumperCounterRef;
 
 		}
 	}
@@ -757,6 +761,7 @@ update_status ModuleSceneIntro::Update()
 			bumpForceVec *= lateralBumperForce;
 
 			ball->SetLinearVelocity(bumpForceVec);
+			rightLateralBumperCounter = lateralBumperCounterRef;
 
 		}
 	}
@@ -859,10 +864,8 @@ update_status ModuleSceneIntro::Update()
 		App->renderer->Blit(gate, 590 * SCREEN_SIZE, 1370 * SCREEN_SIZE, nullptr, NULL, 90, NULL, NULL, SDL_FLIP_VERTICAL);
 		//App->renderer->Blit();
 
-		//Alien
-		App->renderer->Blit(curve_tunnel, 166 , 301 , nullptr);
-		App->renderer->Blit(eye, 354 , 511 , nullptr);
-
+		
+		
 
 		//Capsules
 		SDL_Rect r_temp = { 0 };
@@ -912,7 +915,9 @@ update_status ModuleSceneIntro::Update()
 
 		App->renderer->Blit(capsule_3, 566 + 134 , 200 , &r_temp);
 			
-		
+		//Alien
+		App->renderer->Blit(curve_tunnel, 166, 301, nullptr);
+		App->renderer->Blit(eye, 354, 511, nullptr);
 		
 		p2List_item<PhysBody*>* c = circles.getFirst();
 		while (c != NULL)
@@ -962,12 +967,40 @@ update_status ModuleSceneIntro::Update()
 		
 		
 		//right: 840  left: 240  y: 1460
-		App->renderer->Blit(flipper_bumper, 240 - GetCenterX(r_flipper_bumper[0]), 1460 - GetCenterY(r_flipper_bumper[0]), &r_flipper_bumper[1], 1, 0, NULL, NULL, SDL_FLIP_HORIZONTAL);
-		App->renderer->Blit(flipper_bumper, 840 - GetCenterX(r_flipper_bumper[0]), 1460 - GetCenterY(r_flipper_bumper[0]), &r_flipper_bumper[1], 1, 0, NULL, NULL, SDL_FLIP_NONE);
+		if (leftLateralBumperCounter > 0)
+		{
+			App->renderer->Blit(flipper_bumper, 240 - GetCenterX(r_flipper_bumper[0]), 1460 - GetCenterY(r_flipper_bumper[0]), &r_flipper_bumper[0], 1, 0, NULL, NULL, SDL_FLIP_HORIZONTAL);
+			leftLateralBumperCounter--;
+		}
+		else
+		{
+			App->renderer->Blit(flipper_bumper, 240 - GetCenterX(r_flipper_bumper[0]), 1460 - GetCenterY(r_flipper_bumper[0]), &r_flipper_bumper[1], 1, 0, NULL, NULL, SDL_FLIP_HORIZONTAL);
+
+		}
+		
+		if (rightLateralBumperCounter > 0)
+		{
+			App->renderer->Blit(flipper_bumper, 840 - GetCenterX(r_flipper_bumper[0]), 1460 - GetCenterY(r_flipper_bumper[0]), &r_flipper_bumper[0], 1, 0, NULL, NULL, SDL_FLIP_NONE);
+			rightLateralBumperCounter--;
+		}
+		else
+		{
+			App->renderer->Blit(flipper_bumper, 840 - GetCenterX(r_flipper_bumper[0]), 1460 - GetCenterY(r_flipper_bumper[0]), &r_flipper_bumper[1], 1, 0, NULL, NULL, SDL_FLIP_NONE);
+
+		}
+
 
 		if (leftMiniBumperActive)
 		{
-			App->renderer->Blit(jumper, 16, 1224 - 16, &r_jumper[0], 1.0f, 45.0f);
+			if (miniLateralBumperCounter > 0)
+			{
+				App->renderer->Blit(jumper, 16, 1224 - 16, &r_jumper[0], 1.0f, 45.0f);
+				miniLateralBumperCounter--;
+			}
+			else
+			{
+				App->renderer->Blit(jumper, 16, 1224 - 16, &r_jumper[1], 1.0f, 45.0f);
+			}
 		}
 
 		//Bumpers lighting
