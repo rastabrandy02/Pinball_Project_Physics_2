@@ -30,6 +30,11 @@ bool ModuleSceneIntro::Start()
 
 	bg_music = App->audio->LoadFx("pinball/pinball_elements/Music/pinball_music.ogg");
 	sfx_flipper = App->audio->LoadFx("pinball/pinball_elements/Sounds/sfx_flipper.wav");
+	App->player->ballStart = App->audio->LoadFx("pinball/pinball_elements/Sounds/102811__relwin__sportsman-2.wav");
+	App->player->ballCollider = App->audio->LoadFx("pinball/pinball_elements/Sounds/171059__relwin__harbor-pc1f059-clickbuzz.wav");
+	App->player->ballDeath = App->audio->LoadFx("pinball/pinball_elements/Sounds/Drain7.wav");
+	App->player->ballRefill = App->audio->LoadFx("pinball/pinball_elements/Sounds/sfx_refill_ball_start.wav");
+
 	if (masterAudioOn)
 		if (MusicOn)
 				App->audio->PlayFx(bg_music);
@@ -470,6 +475,7 @@ update_status ModuleSceneIntro::Update()
 			pb_currentBall = App->physics->CreateCircle(1090 * SCREEN_SIZE, 1730 * SCREEN_SIZE, 24 * SCREEN_SIZE);
 			pb_currentBall->type == TYPE_BALL;
 			App->player->ballsInGame++;
+			App->audio->PlayFx(App->player->ballStart);
 			// TODO 8: Make sure to add yourself as collision callback to the circle you creates
 			circles.add(pb_currentBall);
 		}
@@ -481,7 +487,8 @@ update_status ModuleSceneIntro::Update()
 		//}
 		if (pb_currentBall != nullptr && pb_currentBall->body->GetPosition().y + 24 > PIXEL_TO_METERS(SCREEN_HEIGHT * SCREEN_SIZE))
 		{
-			App->player->ballsInGame--;
+			App->player->ballsInGame=0;
+			
 		}
 
 		if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
@@ -489,6 +496,8 @@ update_status ModuleSceneIntro::Update()
 			App->player->playerLives--;
 			circles.clear();
 			App->player->ballsInGame = 0;
+			App->player->ballStart = App->player->ballRefill;
+			App->audio->PlayFx(App->player->ballDeath);
 		
 		}
 

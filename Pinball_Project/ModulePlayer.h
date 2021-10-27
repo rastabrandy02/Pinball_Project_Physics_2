@@ -15,6 +15,11 @@ public:
 	int playerLives = 3;
 	int ballsInGame = 0;
 	int score = 0;
+	uint ballStart = 0;
+	uint ballCollider = 0;
+	uint ballRefill = 0;
+	uint ballDeath = 0;
+
 	void RestartPlayer()
 	{
 		score = 0;
