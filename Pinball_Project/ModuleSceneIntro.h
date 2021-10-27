@@ -98,10 +98,18 @@ public:
 	// 215 height
 	// 5 width
 
+	//activated when all 4 left sensor are activated
+	bool leftMiniBumperActive;
+	PhysBody* pb_leftMiniBumper;
+	float leftMiniBumperForce;
+
+	
 	PhysBody* pb_rightLateralBumper;
 	PhysBody* pb_leftLatearlBumper;
 
 	float lateralBumperForce;
+
+	
 
 	PhysBody* sensor;
 	bool sensed;

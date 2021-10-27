@@ -120,7 +120,7 @@ update_status Application::Update()
 
 	float frameSpeed = 1000 / limitFrames;
 
-	//LOG("Current FPS: %5f", (1000.0f / elapsedTime)); 
+	//LOG("Current FPS: %5f", (1000.0f / elapsedTime));
 	//LOG("time left: %f", frameSpeed - elapsedTime);
 	if ((frameSpeed - elapsedTime) > 0.0f)
 	{
