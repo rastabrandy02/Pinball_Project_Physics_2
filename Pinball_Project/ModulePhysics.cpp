@@ -100,7 +100,7 @@ PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius)
 	b2FixtureDef fixture;
 	fixture.shape = &shape;
 	fixture.density = 5.0f;
-	fixture.restitution = 0.3f;
+	fixture.restitution = 0.25f;
 
 	b->CreateFixture(&fixture);
 
@@ -557,9 +557,17 @@ bool ModulePhysics::CleanUp()
 
 void PhysBody::GetPosition(int& x, int &y) const
 {
-	b2Vec2 pos = body->GetPosition();
-	x = METERS_TO_PIXELS(pos.x) - (width);
-	y = METERS_TO_PIXELS(pos.y) - (height);
+	if (body != nullptr)
+	{
+		b2Vec2 pos = body->GetPosition();
+		x = METERS_TO_PIXELS(pos.x) - (width);
+		y = METERS_TO_PIXELS(pos.y) - (height);
+	}
+	else
+	{
+		LOG("body does not exist!");
+	}
+	
 }
 
 float PhysBody::GetRotation() const

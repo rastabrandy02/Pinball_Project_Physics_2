@@ -23,8 +23,14 @@ bool ModuleSceneIntro::Start()
 	LOG("Loading Intro assets");
 	bool ret = true;
 
+	//player
+	App->player->ballStart = 0;
+	App->player->ballCollider = 0;
+	App->player->ballRefill = 0;
+	App->player->ballDeath = 0;
+
 	//set sounds
-	masterAudioOn = false;
+	masterAudioOn = true;
 	SfxOn = true;
 	MusicOn = true;
 
@@ -219,8 +225,18 @@ bool ModuleSceneIntro::Start()
 	PhysBody* pb_ballStartPositionerLeft = App->physics->CreateStaticChain(0, 0, ballStartPositionerLeft, 6);
 	PhysBody* pb_ballStartPositionerRight = App->physics->CreateStaticChain(0, 0, ballStartPositionerRight, 6);
 	PhysBody* pb_leftBallImpairer = App->physics->CreateStaticChain(0, 0, leftBallImpairer, 6);
-	PhysBody* pb_rightBallImpairer = App->physics->CreateStaticChain(0, 0, rightBallImpairer, 6);
+	//PhysBody* pb_rightBallImpairer = App->physics->CreateStaticChain(0, 0, rightBallImpairer, 6);
 	
+	pb_startExitSensor = App->physics->CreateKinematicRectangle(835, 150, 20, 150);
+	pb_startExitSensor->body->GetFixtureList()->SetSensor(true);
+
+	pb_startExit = App->physics->CreateKinematicRectangle(868, 150, 20, 150);
+	pb_startExit->body->GetFixtureList()->SetSensor(true);
+
+	//pb_startExit->body->GetFixtureList()->SetSensor(true);
+
+	//pb_startExit = App->physics->CreateKinematicRectangle(1090, 1771 + 25, 80, 50);
+
 	ballLauncherRectangle = App->physics->CreateKinematicRectangle(1090, 1771 + 25, 80, 50); //110 pixels until bottom
 	ballLauncherRecInitPosX = ballLauncherRectangle->body->GetPosition().x;
 	ballLauncherRecInitPosY = ballLauncherRectangle->body->GetPosition().y;
@@ -420,6 +436,8 @@ bool ModuleSceneIntro::Start()
 
 	leftMiniBumperActive = true;
 	leftMiniBumperForce = 12.0f;
+
+	ballIsAlive = false;
 	// TODO: Homework - create a sensor
 
 
@@ -471,25 +489,49 @@ update_status ModuleSceneIntro::Update()
 
 		if ((App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN)&&(App->player->ballsInGame==0))
 		{
-			pb_currentBall = NULL;
+			ballIsAlive = true;
 			pb_currentBall = App->physics->CreateCircle(1090 * SCREEN_SIZE, 1730 * SCREEN_SIZE, 24 * SCREEN_SIZE);
 			pb_currentBall->type == TYPE_BALL;
 			App->player->ballsInGame++;
-			App->audio->PlayFx(App->player->ballStart);
+			if (masterAudioOn)
+				if (SfxOn)
+					App->audio->PlayFx(App->player->ballStart);
 			// TODO 8: Make sure to add yourself as collision callback to the circle you creates
 			circles.add(pb_currentBall);
 		}
-		//LOG("ball count: %i", App->player->ballsInGame);
+		LOG("player lifes: %i", App->player->playerLives);
 		//
 		//if (pb_currentBall != nullptr)
 		//{
 		//	LOG("ball y: %i", pb_currentBall->body->GetPosition().y);
 		//}
-		if (pb_currentBall != nullptr && pb_currentBall->body->GetPosition().y + 24 > PIXEL_TO_METERS(SCREEN_HEIGHT * SCREEN_SIZE))
+
+		int h = (SCREEN_HEIGHT + 30) * SCREEN_SIZE;
+		int ballPos;
+		if (pb_currentBall != nullptr && pb_currentBall->body != nullptr)
+			ballPos = METERS_TO_PIXELS(pb_currentBall->body->GetPosition().y + 24);
+		
+		//LOG("h: %i", h);
+		//LOG("h: %i", ballPos);
+
+		if (pb_currentBall != nullptr && pb_currentBall->body != nullptr && ballIsAlive == true)
 		{
-			App->player->ballsInGame=0;
-			
+			if ( ballPos > h)
+			{
+				App->player->ballsInGame--;
+				App->player->playerLives--;
+				
+				pb_startExit->body->GetFixtureList()->SetSensor(true);
+				if (masterAudioOn)
+					if (SfxOn)
+						App->audio->PlayFx(App->player->ballDeath);
+				circles.clear();
+				ballIsAlive = false;
+				
+			}
 		}
+
+		//LOG("ball alive: %i", ballIsAlive);
 
 		if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
 		{
@@ -501,8 +543,26 @@ update_status ModuleSceneIntro::Update()
 		
 		}
 
-		
+		if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
+		{
+			App->player->playerLives = 3;
+			circles.clear();
+			App->player->ballStart = App->player->ballRefill;
+			App->audio->PlayFx(App->player->ballDeath);
 
+		}
+		
+		//MANAGE START EXIT
+		if (pb_startExitSensor->body->GetContactList() != nullptr)
+		{
+			if (pb_startExitSensor->body->GetContactList()->contact->IsTouching())
+			{
+				pb_startExit->body->GetFixtureList()->SetSensor(false);
+
+
+			}
+		}
+		
 
 
 		//MANAGE LEFT FLIPPER
@@ -705,6 +765,7 @@ update_status ModuleSceneIntro::Update()
 
 				bumperPointer->data->playAnimation = true;
 				App->player->score += 100;
+				//playerscore
 				LOG("SCORE: %i", App->player->score);
 				//LOG("x: %f, y: %f", bumpForceVec.x, bumpForceVec.y);
 
@@ -738,7 +799,7 @@ update_status ModuleSceneIntro::Update()
 
 				App->player->score += 1000;
 				capsulePointer->data->playAnimation = true;
-				LOG("SCORE: %i", App->player->score);
+				//LOG("SCORE: %i", App->player->score);
 				//LOG("x: %f, y: %f", bumpForceVec.x, bumpForceVec.y);
 
 

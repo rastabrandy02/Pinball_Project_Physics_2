@@ -45,10 +45,13 @@ public:
 	uint bg_music;
 	//List of the different bodies
 
+	PhysBody* pb_startExit;
+	PhysBody* pb_startExitSensor;
 
 	bool gamePaused = false;
 
 	PhysBody* pb_currentBall;
+	bool ballIsAlive;
 	PhysBody* ballLauncherRectangle;
 	float ballLauncherRecInitPosX;
 	float ballLauncherRecInitPosY;
@@ -398,9 +401,9 @@ public:
 
 	int leftBallImpairer[6]
 	{
-		300,100,
-		330,130,
-		330,100
+		200,160,
+		320,120,
+		280,80
 	};
 	int rightBallImpairer[6]
 	{
