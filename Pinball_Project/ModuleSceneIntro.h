@@ -82,10 +82,12 @@ public:
 	PhysBody* pb_bumper02;
 	PhysBody* pb_bumper03;
 
+	PhysBody* pb_pinkCapsule;
 	PhysBody* pb_blueCapsule;
 	PhysBody* pb_greenCapsule;
 	PhysBody* pb_yellowCapsule;
 
+	PhysBody* pb_pinkCapsuleSensor;
 	PhysBody* pb_blueCapsuleSensor;
 	PhysBody* pb_greenCapsuleSensor;
 	PhysBody* pb_yellowCapsuleSensor;
@@ -444,6 +446,15 @@ public:
 	791 - sep, 252,
 	770, 236 + sep
 	};
+	int pinkCapsule[14] = {
+	430, 342 + sep,
+	447 + sep, 326,
+	445 + sep, 249,
+	424, 230 - sep,
+	399 - sep, 248,
+	399 - sep, 322,
+	412, 343 + sep
+	};
 
 	int blueCapsuleSensor[14] = {
 	533, 260,
@@ -472,7 +483,15 @@ public:
 	791, 252,
 	770, 236
 	};
-
+	int pinkCapsuleSensor[14] = {
+	440, 342,
+	447, 316,
+	445, 249,
+	424, 230,
+	399, 248,
+	399, 322,
+	412, 343
+	};
 	
 
 	int margin = 20;

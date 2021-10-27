@@ -175,10 +175,12 @@ bool ModuleSceneIntro::Start()
 			blueCapsule[i] *= SCREEN_SIZE;
 			greenCapsule[i] *= SCREEN_SIZE;
 			yellowCapsule[i] *= SCREEN_SIZE;
+			pinkCapsule[i] *= SCREEN_SIZE;
 
 			blueCapsuleSensor[i] *= SCREEN_SIZE;
 			greenCapsuleSensor[i] *= SCREEN_SIZE;
 			yellowCapsuleSensor[i] *= SCREEN_SIZE;
+			pinkCapsuleSensor[i] *= SCREEN_SIZE;
 
 		}
 
@@ -230,6 +232,10 @@ bool ModuleSceneIntro::Start()
 	pb_yellowCapsuleSensor->type = TYPE_SCORE;
 	pb_yellowCapsuleSensor->body->GetFixtureList()->SetSensor(true);
 
+	pb_pinkCapsuleSensor = App->physics->CreateStaticChain(0, 0, pinkCapsuleSensor, 14);
+	pb_pinkCapsuleSensor->type = TYPE_SCORE;
+	pb_pinkCapsuleSensor->body->GetFixtureList()->SetSensor(true);
+
 
 	pb_bumper01 = App->physics->CreateSensorCircle(bumper01.x, bumper01.y, bumper01.radius);
 	pb_bumper02 = App->physics->CreateSensorCircle(bumper02.x, bumper02.y, bumper02.radius);
@@ -262,9 +268,11 @@ bool ModuleSceneIntro::Start()
 	capsules.add(pb_blueCapsule);
 	capsules.add(pb_greenCapsule);
 	capsules.add(pb_yellowCapsule);
+	capsules.add(pb_pinkCapsule);
 	capsules.add(pb_blueCapsuleSensor);
 	capsules.add(pb_greenCapsuleSensor);
 	capsules.add(pb_yellowCapsuleSensor);
+	capsules.add(pb_pinkCapsuleSensor);
 
 	bumpers.add(pb_bumper01);
 	bumpers.add(pb_bumper02);
@@ -731,7 +739,16 @@ update_status ModuleSceneIntro::Update()
 
 		//Capsules
 		SDL_Rect r_temp = { 0 };
-
+			//pink
+		if (pb_pinkCapsuleSensor->playAnimation == true)
+		{
+			r_temp = r_capsule_0[0];
+		}
+		else
+		{
+			r_temp = r_capsule_0[1];
+		}
+		App->renderer->Blit(capsule_0, 357, 203, &r_temp);
 			//blue
 		if (pb_blueCapsuleSensor->playAnimation == true)
 		{
