@@ -253,6 +253,10 @@ bool ModuleSceneIntro::Start()
 	pb_leftLatearlBumper->body->SetTransform(pb_leftLatearlBumper->body->GetPosition(), -24 * DEGTORAD);
 	pb_leftLatearlBumper->body->GetFixtureList()->SetSensor(true);
 
+	pb_leftMiniBumper = App->physics->CreateKinematicRectangle(64, 1224, 100, 20);
+	pb_leftMiniBumper->body->SetTransform(pb_leftMiniBumper->body->GetPosition(), 45 * DEGTORAD);
+	pb_leftMiniBumper->body->GetFixtureList()->SetSensor(true);
+
 
 	walls.add(pb_mainWalls);
 	walls.add(pb_leftWall);
@@ -330,8 +334,8 @@ bool ModuleSceneIntro::Start()
 		r_flipper_bumper[1] = { 256 / 2,0,256 / 2,264 };
 		r_jackpot[0] = { 0,0, 230 / 2,197 };
 		r_jackpot[1] = { 230 / 2,0,230 / 2,197 };
-		r_jumper[0];
-		r_jumper[1];
+		r_jumper[0] = { 0,0,100,20 };
+		r_jumper[1] = { 100,0,100,20 };
 		r_letter_P[0] = { 0,0, 200 / 2,100 };
 		r_letter_P[1] = { 200 / 2,0,200 / 2,100 };
 		r_letter_I[0] = { 0,0, 200 / 2,100 };
@@ -401,6 +405,9 @@ bool ModuleSceneIntro::Start()
 
 	bumperForce = 8.0f;
 	lateralBumperForce = 9.0f;
+
+	leftMiniBumperActive = true;
+	leftMiniBumperForce = 7.0f;
 	// TODO: Homework - create a sensor
 
 
@@ -611,6 +618,23 @@ update_status ModuleSceneIntro::Update()
 	}
 
 	//LATERAL BUMPERS
+
+	if (pb_leftMiniBumper->body->GetContactList() != nullptr && leftMiniBumperActive == true)
+	{
+		if (pb_leftMiniBumper->body->GetContactList()->contact->IsTouching())
+		{
+			b2Body* ball = pb_leftMiniBumper->body->GetContactList()->contact->GetFixtureB()->GetBody();
+
+			b2Vec2 bumpForceVec = { 45, -45 };
+
+			bumpForceVec.Normalize();
+			bumpForceVec *= leftMiniBumperForce;
+
+			ball->SetLinearVelocity(bumpForceVec);
+
+		}
+	}
+
 	if (pb_leftLatearlBumper->body->GetContactList() != nullptr)
 	{
 		if (pb_leftLatearlBumper->body->GetContactList()->contact->IsTouching())
@@ -837,6 +861,11 @@ update_status ModuleSceneIntro::Update()
 		//right: 840  left: 240  y: 1460
 		App->renderer->Blit(flipper_bumper, 240 - GetCenterX(r_flipper_bumper[0]), 1460 - GetCenterY(r_flipper_bumper[0]), &r_flipper_bumper[1], 1, 0, NULL, NULL, SDL_FLIP_HORIZONTAL);
 		App->renderer->Blit(flipper_bumper, 840 - GetCenterX(r_flipper_bumper[0]), 1460 - GetCenterY(r_flipper_bumper[0]), &r_flipper_bumper[1], 1, 0, NULL, NULL, SDL_FLIP_NONE);
+
+		if (leftMiniBumperActive)
+		{
+			App->renderer->Blit(jumper, 16, 1224 - 16, &r_jumper[0], 1.0f, 45.0f);
+		}
 
 		//Bumpers lighting
 
