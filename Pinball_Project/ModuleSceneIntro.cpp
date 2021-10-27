@@ -416,10 +416,10 @@ bool ModuleSceneIntro::Start()
 	maxAngle = 60.0f;
 
 	bumperForce = 8.0f;
-	lateralBumperForce = 9.0f;
+	lateralBumperForce = 13.0f;
 
 	leftMiniBumperActive = true;
-	leftMiniBumperForce = 7.0f;
+	leftMiniBumperForce = 12.0f;
 	// TODO: Homework - create a sensor
 
 
