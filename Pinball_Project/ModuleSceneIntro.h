@@ -43,6 +43,8 @@ public:
 
 	uint sfx_flipper;
 	uint bg_music;
+	uint sfx_bumper;
+	uint sfx_lateralBumper;
 	//List of the different bodies
 
 	PhysBody* pb_startExit;

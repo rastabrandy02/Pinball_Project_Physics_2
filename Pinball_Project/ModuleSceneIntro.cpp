@@ -7,6 +7,12 @@
 #include "ModuleAudio.h"
 #include "ModulePhysics.h"
 #include "ModulePlayer.h"
+
+//#include "SDL_ttf/include/SDL_ttf.h"
+//// "SDL_ttf/lib/x86/SDL2_ttf.lib"
+//
+//#pragma comment( lib, "SDL_ttf/lib/x86/SDL2_ttf.lib" )
+
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	circle = box = rick = NULL;
@@ -36,6 +42,10 @@ bool ModuleSceneIntro::Start()
 
 	bg_music = App->audio->LoadFx("pinball/pinball_elements/Music/pinball_music.ogg");
 	sfx_flipper = App->audio->LoadFx("pinball/pinball_elements/Sounds/sfx_flipper.wav");
+
+	sfx_lateralBumper = App->audio->LoadFx("pinball/pinball_elements/Sounds/sfx_lateralBumper.wav");
+	sfx_bumper = App->audio->LoadFx("pinball/pinball_elements/Sounds/sfx_circleBumper.wav");
+	
 	App->player->ballStart = App->audio->LoadFx("pinball/pinball_elements/Sounds/102811__relwin__sportsman-2.wav");
 	App->player->ballCollider = App->audio->LoadFx("pinball/pinball_elements/Sounds/171059__relwin__harbor-pc1f059-clickbuzz.wav");
 	App->player->ballDeath = App->audio->LoadFx("pinball/pinball_elements/Sounds/Drain7.wav");
@@ -435,7 +445,7 @@ bool ModuleSceneIntro::Start()
 	lateralBumperForce = 13.0f;
 
 	leftMiniBumperActive = true;
-	leftMiniBumperForce = 12.0f;
+	leftMiniBumperForce = 9.0f;
 
 	ballIsAlive = false;
 	// TODO: Homework - create a sensor
@@ -506,7 +516,7 @@ update_status ModuleSceneIntro::Update()
 		//	LOG("ball y: %i", pb_currentBall->body->GetPosition().y);
 		//}
 
-		int h = (SCREEN_HEIGHT + 30) * SCREEN_SIZE;
+		int h = (SCREEN_HEIGHT) * SCREEN_SIZE;
 		int ballPos;
 		if (pb_currentBall != nullptr && pb_currentBall->body != nullptr)
 			ballPos = METERS_TO_PIXELS(pb_currentBall->body->GetPosition().y + 24);
@@ -703,6 +713,9 @@ update_status ModuleSceneIntro::Update()
 
 			b2Vec2 bumpForceVec = { 45, -45 };
 
+			if (masterAudioOn)
+				if (SfxOn)
+					App->audio->PlayFx(sfx_lateralBumper);
 			bumpForceVec.Normalize();
 			bumpForceVec *= leftMiniBumperForce;
 
@@ -719,6 +732,9 @@ update_status ModuleSceneIntro::Update()
 
 			b2Vec2 bumpForceVec = { 24, -35};
 
+			if (masterAudioOn)
+				if (SfxOn)
+					App->audio->PlayFx(sfx_lateralBumper);
 			bumpForceVec.Normalize();
 			bumpForceVec *= lateralBumperForce;
 
@@ -734,7 +750,9 @@ update_status ModuleSceneIntro::Update()
 			b2Body* ball = pb_rightLateralBumper->body->GetContactList()->contact->GetFixtureB()->GetBody();
 
 			b2Vec2 bumpForceVec = { -24, -35 };
-
+			if (masterAudioOn)
+				if (SfxOn)
+					App->audio->PlayFx(sfx_lateralBumper);
 			bumpForceVec.Normalize();
 			bumpForceVec *= lateralBumperForce;
 
@@ -761,6 +779,9 @@ update_status ModuleSceneIntro::Update()
 				bumpForceVec.Normalize();
 				bumpForceVec *= bumperForce;
 
+				if(masterAudioOn)
+					if(SfxOn)
+						App->audio->PlayFx(sfx_bumper);
 				ball->SetLinearVelocity(bumpForceVec);
 
 				bumperPointer->data->playAnimation = true;
@@ -951,82 +972,84 @@ update_status ModuleSceneIntro::Update()
 
 		//Bumpers lighting
 
-
+		int add = 5;
 		//App->renderer->Blit(bumper, 490, 460, &r_bumper[0]);
 		if (pb_bumper01->playAnimation == true)
 		{
 			
 			int x = 490;
 			int y = 460;
+
+			
 			if (bumper01Counter < 10)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[0]);
-				bumper01Counter++;
+				bumper01Counter+= add;
 			}
 			if (bumper01Counter >= 10 && bumper01Counter < 20)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[1]);
-				bumper01Counter++;
+				bumper01Counter+= add;
 			}
 			if (bumper01Counter >= 20 && bumper01Counter < 30)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[2]);
-				bumper01Counter++;
+				bumper01Counter+= add;
 			}
 			if (bumper01Counter >= 30 && bumper01Counter < 40)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[3]);
-				bumper01Counter++;
+				bumper01Counter+= add;
 			}
 			if (bumper01Counter >= 40 && bumper01Counter < 50)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[4]);
-				bumper01Counter++;
+				bumper01Counter+= add;
 			}
 			if (bumper01Counter >= 50 && bumper01Counter < 60)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[5]);
-				bumper01Counter++;
+				bumper01Counter+= add;
 			}
 			if (bumper01Counter >= 60 && bumper01Counter < 70)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[6]);
-				bumper01Counter++;
+				bumper01Counter+= add;
 			}
 			if (bumper01Counter >= 70 && bumper01Counter < 80)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[7]);
-				bumper01Counter++;
+				bumper01Counter+= add;
 			}
 			if (bumper01Counter >= 80 && bumper01Counter < 90)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[8]);
-				bumper01Counter++;
+				bumper01Counter+= add;
 			}
 			if (bumper01Counter >= 90 && bumper01Counter < 100)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[9]);
-				bumper01Counter++;
+				bumper01Counter+= add;
 			}
 			if (bumper01Counter >= 100 && bumper01Counter < 110)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[10]);
-				bumper01Counter++;
+				bumper01Counter+= add;
 			}
 			if (bumper01Counter >= 110 && bumper01Counter < 120)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[11]);
-				bumper01Counter++;
+				bumper01Counter+= add;
 			}
 			if (bumper01Counter >= 120 && bumper01Counter < 130)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[12]);
-				bumper01Counter++;
+				bumper01Counter+= add;
 			}
 			if (bumper01Counter >= 130 && bumper01Counter < 140)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[13]);
-				bumper01Counter++;
+				bumper01Counter+= add;
 			}
 			if (bumper01Counter >= 140)
 			{
@@ -1043,78 +1066,80 @@ update_status ModuleSceneIntro::Update()
 
 		if (pb_bumper02->playAnimation == true)
 		{
-
 			int x = 710;
 			int y = 420;
+
+			
+
 			if (bumper02Counter < 10)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[0]);
-				bumper02Counter++;
+				bumper02Counter+= add;
 			}
 			if (bumper02Counter >= 10 && bumper02Counter < 20)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[1]);
-				bumper02Counter++;
+				bumper02Counter+= add;
 			}
 			if (bumper02Counter >= 20 && bumper02Counter < 30)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[2]);
-				bumper02Counter++;
+				bumper02Counter+= add;
 			}
 			if (bumper02Counter >= 30 && bumper02Counter < 40)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[3]);
-				bumper02Counter++;
+				bumper02Counter+= add;
 			}
 			if (bumper02Counter >= 40 && bumper02Counter < 50)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[4]);
-				bumper02Counter++;
+				bumper02Counter+= add;
 			}
 			if (bumper02Counter >= 50 && bumper02Counter < 60)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[5]);
-				bumper02Counter++;
+				bumper02Counter+= add;
 			}
 			if (bumper02Counter >= 60 && bumper02Counter < 70)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[6]);
-				bumper02Counter++;
+				bumper02Counter+= add;
 			}
 			if (bumper02Counter >= 70 && bumper02Counter < 80)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[7]);
-				bumper02Counter++;
+				bumper02Counter+= add;
 			}
 			if (bumper02Counter >= 80 && bumper02Counter < 90)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[8]);
-				bumper02Counter++;
+				bumper02Counter+= add;
 			}
 			if (bumper02Counter >= 90 && bumper02Counter < 100)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[9]);
-				bumper02Counter++;
+				bumper02Counter+= add;
 			}
 			if (bumper02Counter >= 100 && bumper02Counter < 110)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[10]);
-				bumper02Counter++;
+				bumper02Counter+= add;
 			}
 			if (bumper02Counter >= 110 && bumper02Counter < 120)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[11]);
-				bumper02Counter++;
+				bumper02Counter+= add;
 			}
 			if (bumper02Counter >= 120 && bumper02Counter < 130)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[12]);
-				bumper02Counter++;
+				bumper02Counter+= add;
 			}
 			if (bumper02Counter >= 130 && bumper02Counter < 140)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[13]);
-				bumper02Counter++;
+				bumper02Counter+= add;
 			}
 			if (bumper02Counter >= 140)
 			{
@@ -1134,75 +1159,78 @@ update_status ModuleSceneIntro::Update()
 
 			int x = 650;
 			int y = 600;
+
+			
+
 			if (bumper03Counter < 10)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[0]);
-				bumper03Counter++;
+				bumper03Counter+= add;
 			}
 			if (bumper03Counter >= 10 && bumper03Counter < 20)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[1]);
-				bumper03Counter++;
+				bumper03Counter+= add;
 			}
 			if (bumper03Counter >= 20 && bumper03Counter < 30)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[2]);
-				bumper03Counter++;
+				bumper03Counter+= add;
 			}
 			if (bumper03Counter >= 30 && bumper03Counter < 40)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[3]);
-				bumper03Counter++;
+				bumper03Counter+= add;
 			}
 			if (bumper03Counter >= 40 && bumper03Counter < 50)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[4]);
-				bumper03Counter++;
+				bumper03Counter+= add;
 			}
 			if (bumper03Counter >= 50 && bumper03Counter < 60)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[5]);
-				bumper03Counter++;
+				bumper03Counter+= add;
 			}
 			if (bumper03Counter >= 60 && bumper03Counter < 70)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[6]);
-				bumper03Counter++;
+				bumper03Counter+= add;
 			}
 			if (bumper03Counter >= 70 && bumper03Counter < 80)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[7]);
-				bumper03Counter++;
+				bumper03Counter+= add;
 			}
 			if (bumper03Counter >= 80 && bumper03Counter < 90)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[8]);
-				bumper03Counter++;
+				bumper03Counter+= add;
 			}
 			if (bumper03Counter >= 90 && bumper03Counter < 100)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[9]);
-				bumper03Counter++;
+				bumper03Counter+= add;
 			}
 			if (bumper03Counter >= 100 && bumper03Counter < 110)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[10]);
-				bumper03Counter++;
+				bumper03Counter+= add;
 			}
 			if (bumper03Counter >= 110 && bumper03Counter < 120)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[11]);
-				bumper03Counter++;
+				bumper03Counter+= add;
 			}
 			if (bumper03Counter >= 120 && bumper03Counter < 130)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[12]);
-				bumper03Counter++;
+				bumper03Counter+= add;
 			}
 			if (bumper03Counter >= 130 && bumper03Counter < 140)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[13]);
-				bumper03Counter++;
+				bumper03Counter+= add;
 			}
 			if (bumper03Counter >= 140)
 			{
