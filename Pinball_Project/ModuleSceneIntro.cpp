@@ -235,28 +235,17 @@ bool ModuleSceneIntro::Start()
 	PhysBody* pb_ballStartPositionerLeft = App->physics->CreateStaticChain(0, 0, ballStartPositionerLeft, 6);
 	PhysBody* pb_ballStartPositionerRight = App->physics->CreateStaticChain(0, 0, ballStartPositionerRight, 6);
 	PhysBody* pb_leftBallImpairer = App->physics->CreateStaticChain(0, 0, leftBallImpairer, 6);
-	//PhysBody* pb_rightBallImpairer = App->physics->CreateStaticChain(0, 0, rightBallImpairer, 6);
-	
+
 	pb_startExitSensor = App->physics->CreateKinematicRectangle(835, 150, 20, 150);
 	pb_startExitSensor->body->GetFixtureList()->SetSensor(true);
 
 	pb_startExit = App->physics->CreateKinematicRectangle(868, 150, 20, 150);
 	pb_startExit->body->GetFixtureList()->SetSensor(true);
 
-	//pb_startExit->body->GetFixtureList()->SetSensor(true);
-
-	//pb_startExit = App->physics->CreateKinematicRectangle(1090, 1771 + 25, 80, 50);
-
 	ballLauncherRectangle = App->physics->CreateKinematicRectangle(1090, 1771 + 25, 80, 50); //110 pixels until bottom
 	ballLauncherRecInitPosX = ballLauncherRectangle->body->GetPosition().x;
 	ballLauncherRecInitPosY = ballLauncherRectangle->body->GetPosition().y;
 
-    //pb_blueCapsule = App->physics->CreateStaticChain(0, 0, blueCapsule, 14);
-	////pb_blueCapsule->type = TYPE_SCORE;
-    //pb_greenCapsule = App->physics->CreateStaticChain(0, 0, greenCapsule, 14);
-	////pb_greenCapsule->type = TYPE_SCORE;
-    //pb_yellowCapsule = App->physics->CreateStaticChain(0, 0, yellowCapsule, 14);
-	////pb_yellowCapsule->type = TYPE_SCORE;
 
 	pb_blueCapsuleSensor = App->physics->CreateStaticChain(0, 0, blueCapsuleSensor, 14);
 	pb_blueCapsuleSensor->type = TYPE_SCORE;
@@ -290,6 +279,14 @@ bool ModuleSceneIntro::Start()
 	pb_leftLateralBumper = App->physics->CreateKinematicRectangle(260, 1472, 10, 215);
 	pb_leftLateralBumper->body->SetTransform(pb_leftLateralBumper->body->GetPosition(), -24 * DEGTORAD);
 	pb_leftLateralBumper->body->GetFixtureList()->SetSensor(true);
+
+	for (size_t i = 0; i < 5; i++)
+	{
+		pb_bumperButton[i] = App->physics->CreateKinematicRectangle(36 + 8, 1125 - i * (74 + 16), 23, 74);
+		bumperButtons.add(pb_bumperButton[i]);
+		pb_bumperButton[i]->body->GetFixtureList()->SetSensor(true);
+		bumperButtonActive[i] = false;
+	}
 
 	pb_leftMiniBumper = App->physics->CreateKinematicRectangle(64, 1224, 100, 20);
 	pb_leftMiniBumper->body->SetTransform(pb_leftMiniBumper->body->GetPosition(), 45 * DEGTORAD);
@@ -444,7 +441,7 @@ bool ModuleSceneIntro::Start()
 	bumperForce = 8.0f;
 	lateralBumperForce = 13.0f;
 
-	leftMiniBumperActive = true;
+	leftMiniBumperActive = false;
 	leftMiniBumperForce = 9.0f;
 
 	ballIsAlive = false;
@@ -848,6 +845,30 @@ update_status ModuleSceneIntro::Update()
 
 		fVector normal(0.0f, 0.0f);
 	
+		for (size_t i = 0; i < 5; i++)
+		{
+			if (pb_bumperButton[i]->body->GetContactList() != nullptr)
+			{
+				if (pb_bumperButton[i]->body->GetContactList()->contact->IsTouching())
+				{
+					bumperButtonActive[i] = true;
+					b2Body* ball = pb_bumperButton[i]->body->GetContactList()->contact->GetFixtureB()->GetBody();
+					
+					b2Vec2 bumpForceVec = {
+						ball->GetPosition().x - pb_bumperButton[i]->body->GetPosition().x,
+						ball->GetPosition().y - pb_bumperButton[i]->body->GetPosition().y
+					};
+					
+					b2Vec2 vec{ 5,5 };
+					
+					if (masterAudioOn)
+						if (SfxOn)
+							App->audio->PlayFx(sfx_bumper);
+					ball->SetLinearVelocity(vec);
+				}
+			}
+		}
+
 		// All draw functions ------------------------------------------------------
 		
 
@@ -989,6 +1010,9 @@ update_status ModuleSceneIntro::Update()
 
 		}
 
+		if (bumperButtonActive[0] && bumperButtonActive[1] && bumperButtonActive[2] &&
+			bumperButtonActive[3] && bumperButtonActive[4])
+			leftMiniBumperActive = true;
 
 		if (leftMiniBumperActive)
 		{
@@ -1322,6 +1346,59 @@ update_status ModuleSceneIntro::Update()
 		}
 		if(bumper01Counter == 200) bumper01Counter = 0;
 		//*/
+
+		
+
+		
+
+		for (size_t i = 0; i < 5; i++)
+		{
+			if (bumperButtonActive[i])
+			{
+				App->renderer->Blit(bumper_button, METERS_TO_PIXELS(pb_bumperButton[i]->body->GetPosition().x - GetCenterX(r_bumper_button[0]) / 2) / SCREEN_SIZE, METERS_TO_PIXELS(pb_bumperButton[i]->body->GetPosition().y - GetCenterX(r_bumper_button[0]) - 2) / SCREEN_SIZE, &r_bumper_button[1]);
+			}
+			else
+			{
+				App->renderer->Blit(bumper_button, METERS_TO_PIXELS(pb_bumperButton[i]->body->GetPosition().x - GetCenterX(r_bumper_button[0]) / 2) / SCREEN_SIZE, METERS_TO_PIXELS(pb_bumperButton[i]->body->GetPosition().y - GetCenterX(r_bumper_button[0]) - 2) / SCREEN_SIZE, &r_bumper_button[0]);
+
+			}
+		}
+
+		//bumperPointer = bumperButtons.getFirst();
+		//while (bumperPointer != nullptr)
+		//{
+		//	if (bumperPointer->data->body->GetContactList() != nullptr)
+		//	{
+		//		if (bumperPointer->data->body->GetContactList()->contact->IsTouching())
+		//		{
+		//			//b2Body* ball = bumperPointer->data->body->GetContactList()->contact->GetFixtureB()->GetBody();
+		//			//
+		//			//b2Vec2 bumpForceVec = {
+		//			//	ball->GetPosition().x - bumperPointer->data->body->GetPosition().x,
+		//			//	ball->GetPosition().y - bumperPointer->data->body->GetPosition().y
+		//			//};
+		//			//
+		//			//bumpForceVec.Normalize();
+		//			//bumpForceVec *= bumperForce;
+		//			//
+		//			//if (masterAudioOn)
+		//			//	if (SfxOn)
+		//			//		App->audio->PlayFx(sfx_bumper);
+		//			//ball->SetLinearVelocity(bumpForceVec);
+		//
+		//			//bumperPointer->data->playAnimation = true;
+		//			//App->player->score += 100;
+		//			//playerscore
+		//			//LOG("SCORE: %i", App->player->score);
+		//			//LOG("x: %f, y: %f", bumpForceVec.x, bumpForceVec.y);
+		//
+		//
+		//		}
+		//	}
+		//
+		//	bumperPointer = bumperPointer->next;
+		//}
+
 	return UPDATE_CONTINUE;
 }
 

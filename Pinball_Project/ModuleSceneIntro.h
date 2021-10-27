@@ -105,6 +105,12 @@ public:
 	// 215 height
 	// 5 width
 
+	//
+	p2List<PhysBody*> bumperButtons;
+
+	PhysBody* pb_bumperButton[5];
+	int bumperButtonActive[5];
+
 	//activated when all 4 left sensor are activated
 	bool leftMiniBumperActive;
 	PhysBody* pb_leftMiniBumper;
