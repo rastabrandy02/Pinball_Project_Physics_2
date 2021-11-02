@@ -1403,6 +1403,13 @@ update_status ModuleSceneIntro::Update()
 		//	bumperPointer = bumperPointer->next;
 		//}
 
+
+		if (App->gamePaused)
+		{
+			SDL_Rect pause_r = { 0, 0, SCREEN_WIDTH,SCREEN_HEIGHT };
+			App->renderer->DrawQuad(pause_r, 0, 0, 0, 128, true, true);
+		}
+
 	return UPDATE_CONTINUE;
 }
 
