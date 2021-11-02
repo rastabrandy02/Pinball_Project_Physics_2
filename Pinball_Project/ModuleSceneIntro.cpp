@@ -992,7 +992,7 @@ update_status ModuleSceneIntro::Update()
 		if (leftLateralBumperCounter > 0)
 		{
 			App->renderer->Blit(flipper_bumper, 240 - GetCenterX(r_flipper_bumper[0]), 1460 - GetCenterY(r_flipper_bumper[0]), &r_flipper_bumper[0], 1, 0, NULL, NULL, SDL_FLIP_HORIZONTAL);
-			leftLateralBumperCounter--;
+			if (!App->gamePaused) leftLateralBumperCounter--;
 		}
 		else
 		{
@@ -1003,7 +1003,8 @@ update_status ModuleSceneIntro::Update()
 		if (rightLateralBumperCounter > 0)
 		{
 			App->renderer->Blit(flipper_bumper, 840 - GetCenterX(r_flipper_bumper[0]), 1460 - GetCenterY(r_flipper_bumper[0]), &r_flipper_bumper[0], 1, 0, NULL, NULL, SDL_FLIP_NONE);
-			rightLateralBumperCounter--;
+			if (!App->gamePaused) rightLateralBumperCounter--;
+
 		}
 		else
 		{
@@ -1020,7 +1021,8 @@ update_status ModuleSceneIntro::Update()
 			if (miniLateralBumperCounter > 0)
 			{
 				App->renderer->Blit(jumper, 16, 1224 - 16, &r_jumper[0], 1.0f, 45.0f);
-				miniLateralBumperCounter--;
+				if (!App->gamePaused) leftLateralBumperCounter--;
+
 			}
 			else
 			{
@@ -1042,72 +1044,73 @@ update_status ModuleSceneIntro::Update()
 			if (bumper01Counter < 10)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[0]);
-				bumper01Counter+= add;
+				if (!App->gamePaused) bumper01Counter += add;
+					
 			}
 			if (bumper01Counter >= 10 && bumper01Counter < 20)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[1]);
-				bumper01Counter+= add;
+				if (!App->gamePaused) bumper01Counter += add; bumper01Counter += add;
 			}
 			if (bumper01Counter >= 20 && bumper01Counter < 30)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[2]);
-				bumper01Counter+= add;
+				if (!App->gamePaused) bumper01Counter += add;
 			}
 			if (bumper01Counter >= 30 && bumper01Counter < 40)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[3]);
-				bumper01Counter+= add;
+				if (!App->gamePaused) bumper01Counter += add;
 			}
 			if (bumper01Counter >= 40 && bumper01Counter < 50)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[4]);
-				bumper01Counter+= add;
+				if (!App->gamePaused) bumper01Counter += add;
 			}
 			if (bumper01Counter >= 50 && bumper01Counter < 60)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[5]);
-				bumper01Counter+= add;
+				if (!App->gamePaused) bumper01Counter += add;
 			}
 			if (bumper01Counter >= 60 && bumper01Counter < 70)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[6]);
-				bumper01Counter+= add;
+				if (!App->gamePaused) bumper01Counter += add;
 			}
 			if (bumper01Counter >= 70 && bumper01Counter < 80)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[7]);
-				bumper01Counter+= add;
+				if (!App->gamePaused) bumper01Counter += add;
 			}
 			if (bumper01Counter >= 80 && bumper01Counter < 90)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[8]);
-				bumper01Counter+= add;
+				if (!App->gamePaused) bumper01Counter += add;
 			}
 			if (bumper01Counter >= 90 && bumper01Counter < 100)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[9]);
-				bumper01Counter+= add;
+				if (!App->gamePaused) bumper01Counter += add;
 			}
 			if (bumper01Counter >= 100 && bumper01Counter < 110)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[10]);
-				bumper01Counter+= add;
+				if (!App->gamePaused) bumper01Counter += add;
 			}
 			if (bumper01Counter >= 110 && bumper01Counter < 120)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[11]);
-				bumper01Counter+= add;
+				if (!App->gamePaused) bumper01Counter += add;
 			}
 			if (bumper01Counter >= 120 && bumper01Counter < 130)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[12]);
-				bumper01Counter+= add;
+				if (!App->gamePaused) bumper01Counter += add;
 			}
 			if (bumper01Counter >= 130 && bumper01Counter < 140)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[13]);
-				bumper01Counter+= add;
+				if (!App->gamePaused) bumper01Counter += add;
 			}
 			if (bumper01Counter >= 140)
 			{
@@ -1132,72 +1135,72 @@ update_status ModuleSceneIntro::Update()
 			if (bumper02Counter < 10)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[0]);
-				bumper02Counter+= add;
+				if (!App->gamePaused) bumper02Counter += add;
 			}
 			if (bumper02Counter >= 10 && bumper02Counter < 20)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[1]);
-				bumper02Counter+= add;
+				if (!App->gamePaused) bumper02Counter += add;
 			}
 			if (bumper02Counter >= 20 && bumper02Counter < 30)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[2]);
-				bumper02Counter+= add;
+				if (!App->gamePaused) bumper02Counter += add;
 			}
 			if (bumper02Counter >= 30 && bumper02Counter < 40)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[3]);
-				bumper02Counter+= add;
+				if (!App->gamePaused) bumper02Counter += add;
 			}
 			if (bumper02Counter >= 40 && bumper02Counter < 50)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[4]);
-				bumper02Counter+= add;
+				if (!App->gamePaused) bumper02Counter += add;
 			}
 			if (bumper02Counter >= 50 && bumper02Counter < 60)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[5]);
-				bumper02Counter+= add;
+				if (!App->gamePaused) bumper02Counter += add;
 			}
 			if (bumper02Counter >= 60 && bumper02Counter < 70)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[6]);
-				bumper02Counter+= add;
+				if (!App->gamePaused) bumper02Counter += add;
 			}
 			if (bumper02Counter >= 70 && bumper02Counter < 80)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[7]);
-				bumper02Counter+= add;
+				if (!App->gamePaused) bumper02Counter += add;
 			}
 			if (bumper02Counter >= 80 && bumper02Counter < 90)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[8]);
-				bumper02Counter+= add;
+				if (!App->gamePaused) bumper02Counter += add;
 			}
 			if (bumper02Counter >= 90 && bumper02Counter < 100)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[9]);
-				bumper02Counter+= add;
+				if (!App->gamePaused) bumper02Counter += add;
 			}
 			if (bumper02Counter >= 100 && bumper02Counter < 110)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[10]);
-				bumper02Counter+= add;
+				if (!App->gamePaused) bumper02Counter += add;
 			}
 			if (bumper02Counter >= 110 && bumper02Counter < 120)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[11]);
-				bumper02Counter+= add;
+				if (!App->gamePaused) bumper02Counter += add;
 			}
 			if (bumper02Counter >= 120 && bumper02Counter < 130)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[12]);
-				bumper02Counter+= add;
+				if (!App->gamePaused) bumper02Counter += add;
 			}
 			if (bumper02Counter >= 130 && bumper02Counter < 140)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[13]);
-				bumper02Counter+= add;
+				if (!App->gamePaused) bumper02Counter += add;
 			}
 			if (bumper02Counter >= 140)
 			{
@@ -1223,72 +1226,72 @@ update_status ModuleSceneIntro::Update()
 			if (bumper03Counter < 10)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[0]);
-				bumper03Counter+= add;
+				if (!App->gamePaused) bumper03Counter += add;
 			}
 			if (bumper03Counter >= 10 && bumper03Counter < 20)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[1]);
-				bumper03Counter+= add;
+				if (!App->gamePaused) bumper03Counter += add;
 			}
 			if (bumper03Counter >= 20 && bumper03Counter < 30)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[2]);
-				bumper03Counter+= add;
+				if (!App->gamePaused) bumper03Counter += add;
 			}
 			if (bumper03Counter >= 30 && bumper03Counter < 40)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[3]);
-				bumper03Counter+= add;
+				if (!App->gamePaused) bumper03Counter += add;
 			}
 			if (bumper03Counter >= 40 && bumper03Counter < 50)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[4]);
-				bumper03Counter+= add;
+				if (!App->gamePaused) bumper03Counter += add;
 			}
 			if (bumper03Counter >= 50 && bumper03Counter < 60)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[5]);
-				bumper03Counter+= add;
+				if (!App->gamePaused) bumper03Counter += add;
 			}
 			if (bumper03Counter >= 60 && bumper03Counter < 70)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[6]);
-				bumper03Counter+= add;
+				if (!App->gamePaused) bumper03Counter += add;
 			}
 			if (bumper03Counter >= 70 && bumper03Counter < 80)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[7]);
-				bumper03Counter+= add;
+				if (!App->gamePaused) bumper03Counter += add;
 			}
 			if (bumper03Counter >= 80 && bumper03Counter < 90)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[8]);
-				bumper03Counter+= add;
+				if (!App->gamePaused) bumper03Counter += add;
 			}
 			if (bumper03Counter >= 90 && bumper03Counter < 100)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[9]);
-				bumper03Counter+= add;
+				if (!App->gamePaused) bumper03Counter += add;
 			}
 			if (bumper03Counter >= 100 && bumper03Counter < 110)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[10]);
-				bumper03Counter+= add;
+				if (!App->gamePaused) bumper03Counter += add;
 			}
 			if (bumper03Counter >= 110 && bumper03Counter < 120)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[11]);
-				bumper03Counter+= add;
+				if (!App->gamePaused) bumper03Counter += add;
 			}
 			if (bumper03Counter >= 120 && bumper03Counter < 130)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[12]);
-				bumper03Counter+= add;
+				if (!App->gamePaused) bumper03Counter += add;
 			}
 			if (bumper03Counter >= 130 && bumper03Counter < 140)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[13]);
-				bumper03Counter+= add;
+				if (!App->gamePaused) bumper03Counter += add;
 			}
 			if (bumper03Counter >= 140)
 			{
