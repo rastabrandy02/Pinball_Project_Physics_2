@@ -25,6 +25,8 @@ public:
 	ModuleSceneIntro* scene_intro;
 	ModulePhysics* physics;
 
+	//float limitFrames = 60;
+	bool gamePaused = false;
 private:
 
 	p2List<Module*> list_modules;

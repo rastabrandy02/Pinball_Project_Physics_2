@@ -83,7 +83,7 @@ bool Application::Init()
 update_status Application::Update()
 {
 
-	init = SDL_GetTicks();
+	
 
 	update_status ret = UPDATE_CONTINUE;
 	p2List_item<Module*>* item = list_modules.getFirst();
@@ -106,12 +106,25 @@ update_status Application::Update()
 
 	item = list_modules.getFirst();
 
+	init = SDL_GetTicks();
 	while(item != NULL && ret == UPDATE_CONTINUE)
 	{
 		if(item->data->IsEnabled())
 			ret = item->data->PostUpdate();
 		item = item->next;
 	}
+
+
+	if (input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
+	{
+		limitFrames /= 4;
+	}
+	if (input->GetKey(SDL_SCANCODE_W) == KEY_UP)
+	{
+		limitFrames *= 4;
+	}
+
+
 
 	end = SDL_GetTicks();
 
@@ -120,7 +133,7 @@ update_status Application::Update()
 
 	float frameSpeed = 1000 / limitFrames;
 
-	//LOG("Current FPS: %5f", (1000.0f / elapsedTime));
+	LOG("Current FPS: %5f", (1000.0f / elapsedTime));
 	//LOG("time left: %f", frameSpeed - elapsedTime);
 	if ((frameSpeed - elapsedTime) > 0.0f)
 	{

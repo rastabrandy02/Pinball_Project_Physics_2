@@ -469,7 +469,7 @@ update_status ModuleSceneIntro::Update()
 	
 
 	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_UP)
-		gamePaused = !gamePaused;
+		App->gamePaused = !App->gamePaused;
 
 	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
 	{
@@ -477,7 +477,7 @@ update_status ModuleSceneIntro::Update()
 
 	}
 
-	if (!gamePaused && (App->player->playerLives>0))
+	if (!App->gamePaused && (App->player->playerLives>0))
 	{
 
 		/*if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
@@ -859,7 +859,7 @@ update_status ModuleSceneIntro::Update()
 						ball->GetPosition().y - pb_bumperButton[i]->body->GetPosition().y
 					};
 					
-					b2Vec2 vec{ 5,5 };
+					b2Vec2 vec{ 5,0 };
 					
 					if (masterAudioOn)
 						if (SfxOn)
@@ -881,11 +881,12 @@ update_status ModuleSceneIntro::Update()
 
 		//Impairers
 		App->renderer->Blit(gate, 590 * SCREEN_SIZE, 280 * SCREEN_SIZE);
-		App->renderer->Blit(gate, 2140 * SCREEN_SIZE, 280 * SCREEN_SIZE,nullptr,NULL,NULL,NULL,NULL, SDL_FLIP_HORIZONTAL);
+		//App->renderer->Blit(gate, 2140 * SCREEN_SIZE, 280 * SCREEN_SIZE,nullptr,NULL,NULL,NULL,NULL, SDL_FLIP_HORIZONTAL);
 		App->renderer->Blit(gate, 590 * SCREEN_SIZE, 1370 * SCREEN_SIZE, nullptr, NULL, 90, NULL, NULL, SDL_FLIP_VERTICAL);
 		//App->renderer->Blit();
 
-		
+		//start tunnel
+		App->renderer->Blit(tunnel_start, 880, 138);
 		
 
 		//Capsules
