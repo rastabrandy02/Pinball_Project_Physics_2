@@ -282,7 +282,7 @@ bool ModuleSceneIntro::Start()
 
 	for (size_t i = 0; i < 5; i++)
 	{
-		pb_bumperButton[i] = App->physics->CreateKinematicRectangle(36 + 8, 1125 - i * (74 + 16), 23, 74);
+		pb_bumperButton[i] = App->physics->CreateKinematicRectangle(36, 1125 - i * (60), 23 - 10, 65);
 		bumperButtons.add(pb_bumperButton[i]);
 		pb_bumperButton[i]->body->GetFixtureList()->SetSensor(true);
 		bumperButtonActive[i] = false;
@@ -859,11 +859,13 @@ update_status ModuleSceneIntro::Update()
 						ball->GetPosition().y - pb_bumperButton[i]->body->GetPosition().y
 					};
 					
-					b2Vec2 vec{ 5,0 };
+					b2Vec2 vec{ 7,-3 };
 					
 					if (masterAudioOn)
 						if (SfxOn)
 							App->audio->PlayFx(sfx_bumper);
+					
+
 					ball->SetLinearVelocity(vec);
 				}
 			}
@@ -1021,7 +1023,7 @@ update_status ModuleSceneIntro::Update()
 			if (miniLateralBumperCounter > 0)
 			{
 				App->renderer->Blit(jumper, 16, 1224 - 16, &r_jumper[0], 1.0f, 45.0f);
-				if (!App->gamePaused) leftLateralBumperCounter--;
+				if (!App->gamePaused) miniLateralBumperCounter--;
 
 			}
 			else

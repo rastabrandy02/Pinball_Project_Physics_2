@@ -84,7 +84,7 @@ update_status Application::Update()
 {
 
 	
-
+	init = SDL_GetTicks();
 	update_status ret = UPDATE_CONTINUE;
 	p2List_item<Module*>* item = list_modules.getFirst();
 
@@ -106,14 +106,14 @@ update_status Application::Update()
 
 	item = list_modules.getFirst();
 
-	init = SDL_GetTicks();
+	
 	while(item != NULL && ret == UPDATE_CONTINUE)
 	{
 		if(item->data->IsEnabled())
 			ret = item->data->PostUpdate();
 		item = item->next;
 	}
-
+	end = SDL_GetTicks();
 
 	if (input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
 	{
@@ -126,7 +126,7 @@ update_status Application::Update()
 
 
 
-	end = SDL_GetTicks();
+	
 
 	long elapsedTime = (float)(end - init);
 	(float)SDL_GetPerformanceFrequency();
