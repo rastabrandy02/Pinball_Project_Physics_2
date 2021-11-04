@@ -28,15 +28,26 @@ public:
 	ModuleFonts* fonts;
 
 	//float limitFrames = 60;
-	bool gamePaused = false;
+	
+	bool checkPaused() const
+	{
+		return gamePaused;
+	}
+
+	bool checkFPS() const
+	{
+		return currentFPS;
+	}
+
 private:
 
 	p2List<Module*> list_modules;
 
-	
+	bool gamePaused = false;
 	float limitFrames = 60;
 	float init;
 	float end;
+	float currentFPS;
 
 public:
 

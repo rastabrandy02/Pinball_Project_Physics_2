@@ -58,7 +58,7 @@ bool ModulePhysics::Start()
 // 
 update_status ModulePhysics::PreUpdate()
 {
-	if (!App->gamePaused)
+	if (App->checkPaused())
 	{
 		world->Step(1.0f / 60, 6, 2);
 

@@ -134,8 +134,8 @@ update_status Application::Update()
 	(float)SDL_GetPerformanceFrequency();
 
 	float frameSpeed = 1000 / limitFrames;
-
-	LOG("Current FPS: %5f", (1000.0f / elapsedTime));
+	currentFPS = 1000.0f / elapsedTime;
+	//LOG("Current FPS: %f", currentFPS);
 	//LOG("time left: %f", frameSpeed - elapsedTime);
 	if ((frameSpeed - elapsedTime) > 0.0f)
 	{

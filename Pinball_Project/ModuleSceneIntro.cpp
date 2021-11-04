@@ -7,6 +7,7 @@
 #include "ModuleAudio.h"
 #include "ModulePhysics.h"
 #include "ModulePlayer.h"
+#include <string.h>
 
 //#include "SDL_ttf/include/SDL_ttf.h"
 //// "SDL_ttf/lib/x86/SDL2_ttf.lib"
@@ -30,9 +31,9 @@ bool ModuleSceneIntro::Start()
 	bool ret = true;
 
 	//load fonts
-	char lookupTable1[] = { "abcdefghijklmnopqrstuvwxyz1234567890!?()[]_-+=,:’”% " };
+	char lookupTable1[] = { "abcdefghijklmnopqrstuvwxyz1234567890!?()[]_-+=,:’%ç " };
 	
-	fontScore50 = App->fonts->Load("pinball/UI_elements/Fonts/fnt_score_50.png", lookupTable1, 2);
+	fontScore50 = App->fonts->Load("pinball/UI_elements/Fonts/test50.png", lookupTable1, 2);
 	fontScore120 = App->fonts->Load("pinball/UI_elements/Fonts/fnt_score_120.png", lookupTable1, 2);
 
 	//player
@@ -42,6 +43,11 @@ bool ModuleSceneIntro::Start()
 	App->player->ballDeath = 0;
 
 	//set sounds
+
+	startTime = SDL_GetTicks();
+	counterMusic = 0;
+	repetition = 1;
+
 	masterAudioOn = true;
 	SfxOn = true;
 	MusicOn = true;
@@ -453,7 +459,7 @@ bool ModuleSceneIntro::Start()
 	ballIsAlive = false;
 
 	lateralBumperCounterRef = 20;
-	// TODO: Homework - create a sensor
+	
 
 
 	return ret;
@@ -472,10 +478,10 @@ update_status ModuleSceneIntro::Update()
 {
 	//if not paused not update elements but still draw them 
 	
-	
+	gamePaused = App->checkPaused();
 
 	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_UP)
-		App->gamePaused = !App->gamePaused;
+		gamePaused = !gamePaused;
 
 	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
 	{
@@ -483,7 +489,7 @@ update_status ModuleSceneIntro::Update()
 
 	}
 
-	if (!App->gamePaused && (App->player->playerLives>0))
+	if (!gamePaused && (App->player->playerLives>0))
 	{
 
 		/*if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
@@ -1000,7 +1006,7 @@ update_status ModuleSceneIntro::Update()
 		if (leftLateralBumperCounter > 0)
 		{
 			App->renderer->Blit(flipper_bumper, 240 - GetCenterX(r_flipper_bumper[0]), 1460 - GetCenterY(r_flipper_bumper[0]), &r_flipper_bumper[0], 1, 0, NULL, NULL, SDL_FLIP_HORIZONTAL);
-			if (!App->gamePaused) leftLateralBumperCounter--;
+			if (!gamePaused) leftLateralBumperCounter--;
 		}
 		else
 		{
@@ -1011,7 +1017,7 @@ update_status ModuleSceneIntro::Update()
 		if (rightLateralBumperCounter > 0)
 		{
 			App->renderer->Blit(flipper_bumper, 840 - GetCenterX(r_flipper_bumper[0]), 1460 - GetCenterY(r_flipper_bumper[0]), &r_flipper_bumper[0], 1, 0, NULL, NULL, SDL_FLIP_NONE);
-			if (!App->gamePaused) rightLateralBumperCounter--;
+			if (!gamePaused) rightLateralBumperCounter--;
 
 		}
 		else
@@ -1029,7 +1035,7 @@ update_status ModuleSceneIntro::Update()
 			if (miniLateralBumperCounter > 0)
 			{
 				App->renderer->Blit(jumper, 16, 1224 - 16, &r_jumper[0], 1.0f, 45.0f);
-				if (!App->gamePaused) miniLateralBumperCounter--;
+				if (!gamePaused) miniLateralBumperCounter--;
 
 			}
 			else
@@ -1052,73 +1058,73 @@ update_status ModuleSceneIntro::Update()
 			if (bumper01Counter < 10)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[0]);
-				if (!App->gamePaused) bumper01Counter += add;
+				if (!gamePaused) bumper01Counter += add;
 					
 			}
 			if (bumper01Counter >= 10 && bumper01Counter < 20)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[1]);
-				if (!App->gamePaused) bumper01Counter += add; bumper01Counter += add;
+				if (!gamePaused) bumper01Counter += add; bumper01Counter += add;
 			}
 			if (bumper01Counter >= 20 && bumper01Counter < 30)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[2]);
-				if (!App->gamePaused) bumper01Counter += add;
+				if (!gamePaused) bumper01Counter += add;
 			}
 			if (bumper01Counter >= 30 && bumper01Counter < 40)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[3]);
-				if (!App->gamePaused) bumper01Counter += add;
+				if (!gamePaused) bumper01Counter += add;
 			}
 			if (bumper01Counter >= 40 && bumper01Counter < 50)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[4]);
-				if (!App->gamePaused) bumper01Counter += add;
+				if (!gamePaused) bumper01Counter += add;
 			}
 			if (bumper01Counter >= 50 && bumper01Counter < 60)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[5]);
-				if (!App->gamePaused) bumper01Counter += add;
+				if (!gamePaused) bumper01Counter += add;
 			}
 			if (bumper01Counter >= 60 && bumper01Counter < 70)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[6]);
-				if (!App->gamePaused) bumper01Counter += add;
+				if (!gamePaused) bumper01Counter += add;
 			}
 			if (bumper01Counter >= 70 && bumper01Counter < 80)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[7]);
-				if (!App->gamePaused) bumper01Counter += add;
+				if (!gamePaused) bumper01Counter += add;
 			}
 			if (bumper01Counter >= 80 && bumper01Counter < 90)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[8]);
-				if (!App->gamePaused) bumper01Counter += add;
+				if (!gamePaused) bumper01Counter += add;
 			}
 			if (bumper01Counter >= 90 && bumper01Counter < 100)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[9]);
-				if (!App->gamePaused) bumper01Counter += add;
+				if (!gamePaused) bumper01Counter += add;
 			}
 			if (bumper01Counter >= 100 && bumper01Counter < 110)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[10]);
-				if (!App->gamePaused) bumper01Counter += add;
+				if (!gamePaused) bumper01Counter += add;
 			}
 			if (bumper01Counter >= 110 && bumper01Counter < 120)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[11]);
-				if (!App->gamePaused) bumper01Counter += add;
+				if (!gamePaused) bumper01Counter += add;
 			}
 			if (bumper01Counter >= 120 && bumper01Counter < 130)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[12]);
-				if (!App->gamePaused) bumper01Counter += add;
+				if (!gamePaused) bumper01Counter += add;
 			}
 			if (bumper01Counter >= 130 && bumper01Counter < 140)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[13]);
-				if (!App->gamePaused) bumper01Counter += add;
+				if (!gamePaused) bumper01Counter += add;
 			}
 			if (bumper01Counter >= 140)
 			{
@@ -1143,72 +1149,72 @@ update_status ModuleSceneIntro::Update()
 			if (bumper02Counter < 10)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[0]);
-				if (!App->gamePaused) bumper02Counter += add;
+				if (!gamePaused) bumper02Counter += add;
 			}
 			if (bumper02Counter >= 10 && bumper02Counter < 20)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[1]);
-				if (!App->gamePaused) bumper02Counter += add;
+				if (!gamePaused) bumper02Counter += add;
 			}
 			if (bumper02Counter >= 20 && bumper02Counter < 30)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[2]);
-				if (!App->gamePaused) bumper02Counter += add;
+				if (!gamePaused) bumper02Counter += add;
 			}
 			if (bumper02Counter >= 30 && bumper02Counter < 40)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[3]);
-				if (!App->gamePaused) bumper02Counter += add;
+				if (!gamePaused) bumper02Counter += add;
 			}
 			if (bumper02Counter >= 40 && bumper02Counter < 50)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[4]);
-				if (!App->gamePaused) bumper02Counter += add;
+				if (!gamePaused) bumper02Counter += add;
 			}
 			if (bumper02Counter >= 50 && bumper02Counter < 60)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[5]);
-				if (!App->gamePaused) bumper02Counter += add;
+				if (!gamePaused) bumper02Counter += add;
 			}
 			if (bumper02Counter >= 60 && bumper02Counter < 70)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[6]);
-				if (!App->gamePaused) bumper02Counter += add;
+				if (!gamePaused) bumper02Counter += add;
 			}
 			if (bumper02Counter >= 70 && bumper02Counter < 80)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[7]);
-				if (!App->gamePaused) bumper02Counter += add;
+				if (!gamePaused) bumper02Counter += add;
 			}
 			if (bumper02Counter >= 80 && bumper02Counter < 90)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[8]);
-				if (!App->gamePaused) bumper02Counter += add;
+				if (!gamePaused) bumper02Counter += add;
 			}
 			if (bumper02Counter >= 90 && bumper02Counter < 100)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[9]);
-				if (!App->gamePaused) bumper02Counter += add;
+				if (!gamePaused) bumper02Counter += add;
 			}
 			if (bumper02Counter >= 100 && bumper02Counter < 110)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[10]);
-				if (!App->gamePaused) bumper02Counter += add;
+				if (!gamePaused) bumper02Counter += add;
 			}
 			if (bumper02Counter >= 110 && bumper02Counter < 120)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[11]);
-				if (!App->gamePaused) bumper02Counter += add;
+				if (!gamePaused) bumper02Counter += add;
 			}
 			if (bumper02Counter >= 120 && bumper02Counter < 130)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[12]);
-				if (!App->gamePaused) bumper02Counter += add;
+				if (!gamePaused) bumper02Counter += add;
 			}
 			if (bumper02Counter >= 130 && bumper02Counter < 140)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[13]);
-				if (!App->gamePaused) bumper02Counter += add;
+				if (!gamePaused) bumper02Counter += add;
 			}
 			if (bumper02Counter >= 140)
 			{
@@ -1234,72 +1240,72 @@ update_status ModuleSceneIntro::Update()
 			if (bumper03Counter < 10)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[0]);
-				if (!App->gamePaused) bumper03Counter += add;
+				if (!gamePaused) bumper03Counter += add;
 			}
 			if (bumper03Counter >= 10 && bumper03Counter < 20)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[1]);
-				if (!App->gamePaused) bumper03Counter += add;
+				if (!gamePaused) bumper03Counter += add;
 			}
 			if (bumper03Counter >= 20 && bumper03Counter < 30)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[2]);
-				if (!App->gamePaused) bumper03Counter += add;
+				if (!gamePaused) bumper03Counter += add;
 			}
 			if (bumper03Counter >= 30 && bumper03Counter < 40)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[3]);
-				if (!App->gamePaused) bumper03Counter += add;
+				if (!gamePaused) bumper03Counter += add;
 			}
 			if (bumper03Counter >= 40 && bumper03Counter < 50)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[4]);
-				if (!App->gamePaused) bumper03Counter += add;
+				if (!gamePaused) bumper03Counter += add;
 			}
 			if (bumper03Counter >= 50 && bumper03Counter < 60)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[5]);
-				if (!App->gamePaused) bumper03Counter += add;
+				if (!gamePaused) bumper03Counter += add;
 			}
 			if (bumper03Counter >= 60 && bumper03Counter < 70)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[6]);
-				if (!App->gamePaused) bumper03Counter += add;
+				if (!gamePaused) bumper03Counter += add;
 			}
 			if (bumper03Counter >= 70 && bumper03Counter < 80)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[7]);
-				if (!App->gamePaused) bumper03Counter += add;
+				if (!gamePaused) bumper03Counter += add;
 			}
 			if (bumper03Counter >= 80 && bumper03Counter < 90)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[8]);
-				if (!App->gamePaused) bumper03Counter += add;
+				if (!gamePaused) bumper03Counter += add;
 			}
 			if (bumper03Counter >= 90 && bumper03Counter < 100)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[9]);
-				if (!App->gamePaused) bumper03Counter += add;
+				if (!gamePaused) bumper03Counter += add;
 			}
 			if (bumper03Counter >= 100 && bumper03Counter < 110)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[10]);
-				if (!App->gamePaused) bumper03Counter += add;
+				if (!gamePaused) bumper03Counter += add;
 			}
 			if (bumper03Counter >= 110 && bumper03Counter < 120)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[11]);
-				if (!App->gamePaused) bumper03Counter += add;
+				if (!gamePaused) bumper03Counter += add;
 			}
 			if (bumper03Counter >= 120 && bumper03Counter < 130)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[12]);
-				if (!App->gamePaused) bumper03Counter += add;
+				if (!gamePaused) bumper03Counter += add;
 			}
 			if (bumper03Counter >= 130 && bumper03Counter < 140)
 			{
 				App->renderer->Blit(bumper, x, y, &r_bumper[13]);
-				if (!App->gamePaused) bumper03Counter += add;
+				if (!gamePaused) bumper03Counter += add;
 			}
 			if (bumper03Counter >= 140)
 			{
@@ -1412,15 +1418,42 @@ update_status ModuleSceneIntro::Update()
 		//}
 
 
-		if (App->gamePaused)
+		if (gamePaused)
 		{
-			SDL_Rect pause_r = { 0, 0, SCREEN_WIDTH,SCREEN_HEIGHT };
-			App->renderer->DrawQuad(pause_r, 0, 0, 0, 128, true, true);
+			SDL_Rect pause_bg_r = { 0, 0, SCREEN_WIDTH,SCREEN_HEIGHT };
+			App->renderer->DrawQuad(pause_bg_r, 0, 0, 0, 128, true, true);
 			App->fonts->BlitText(SCREEN_WIDTH / 2 - 350, SCREEN_HEIGHT / 2 - 100, fontScore120, "paused");
-
-			
 		}
 		
+		float fps = App->checkFPS();
+
+		char fpsText[10] = { "\0" };
+		sprintf_s(fpsText, "%d", fps);
+		App->fonts->BlitText(0, 100, fontScore50, "abcdefghijklmnopqrstuvwxyz");
+
+
+
+		//audio
+		currentTime = SDL_GetTicks();
+		elapsedTime = (currentTime - startTime) / 1000.0f;
+
+		if (counterMusic < repetition)
+		{
+			if (elapsedTime > 54.0f * repetition)
+			{
+				LOG("%f",elapsedTime);
+				if (masterAudioOn)
+					if (MusicOn)
+						App->audio->PlayFx(bg_music);
+				counterMusic++;
+				repetition++;
+				
+			}
+
+		}
+		
+
+
 	return UPDATE_CONTINUE;
 }
 

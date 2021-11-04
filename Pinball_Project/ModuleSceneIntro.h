@@ -36,8 +36,9 @@ public:
 
 public:
 
+	
+	
 	//Fonts
-
 	int fontScore50 = -1;
 	int fontScore120 = -1;
 
@@ -45,6 +46,14 @@ public:
 	bool masterAudioOn;
 	bool MusicOn;
 	bool SfxOn;
+
+	uint32_t startTime;
+
+	uint32_t currentTime;
+	int counterMusic;
+	int repetition;
+	bool afterStart = false;
+	float elapsedTime; // Convert to seconds.
 
 	uint sfx_flipper;
 	uint bg_music;
