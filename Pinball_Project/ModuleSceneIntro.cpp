@@ -29,6 +29,12 @@ bool ModuleSceneIntro::Start()
 	LOG("Loading Intro assets");
 	bool ret = true;
 
+	//load fonts
+	char lookupTable1[] = { "abcdefghijklmnopqrstuvwxyz1234567890!?()[]_-+=,:’”% " };
+	
+	fontScore50 = App->fonts->Load("pinball/UI_elements/Fonts/fnt_score_50.png", lookupTable1, 2);
+	fontScore120 = App->fonts->Load("pinball/UI_elements/Fonts/fnt_score_120.png", lookupTable1, 2);
+
 	//player
 	App->player->ballStart = 0;
 	App->player->ballCollider = 0;
@@ -1410,8 +1416,11 @@ update_status ModuleSceneIntro::Update()
 		{
 			SDL_Rect pause_r = { 0, 0, SCREEN_WIDTH,SCREEN_HEIGHT };
 			App->renderer->DrawQuad(pause_r, 0, 0, 0, 128, true, true);
-		}
+			App->fonts->BlitText(SCREEN_WIDTH / 2 - 350, SCREEN_HEIGHT / 2 - 100, fontScore120, "paused");
 
+			
+		}
+		
 	return UPDATE_CONTINUE;
 }
 

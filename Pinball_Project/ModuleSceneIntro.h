@@ -3,6 +3,7 @@
 #include "p2List.h"
 #include "p2Point.h"
 #include "Globals.h"
+#include "ModuleFonts.h"
 
 class PhysBody;
 struct bumper_def
@@ -35,6 +36,10 @@ public:
 
 public:
 
+	//Fonts
+
+	int fontScore50 = -1;
+	int fontScore120 = -1;
 
 	//audio
 	bool masterAudioOn;
