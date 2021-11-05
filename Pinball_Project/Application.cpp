@@ -125,6 +125,8 @@ update_status Application::Update()
 	{
 		limitFrames *= 4;
 	}
+	if (input->GetKey(SDL_SCANCODE_P) == KEY_UP)
+		gamePaused = !gamePaused;
 
 
 

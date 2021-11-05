@@ -480,8 +480,7 @@ update_status ModuleSceneIntro::Update()
 	
 	gamePaused = App->checkPaused();
 
-	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_UP)
-		gamePaused = !gamePaused;
+	
 
 	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
 	{
@@ -1005,6 +1004,7 @@ update_status ModuleSceneIntro::Update()
 		//right: 840  left: 240  y: 1460
 		if (leftLateralBumperCounter > 0)
 		{
+			
 			App->renderer->Blit(flipper_bumper, 240 - GetCenterX(r_flipper_bumper[0]), 1460 - GetCenterY(r_flipper_bumper[0]), &r_flipper_bumper[0], 1, 0, NULL, NULL, SDL_FLIP_HORIZONTAL);
 			if (!gamePaused) leftLateralBumperCounter--;
 		}
