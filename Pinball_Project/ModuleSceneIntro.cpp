@@ -887,7 +887,9 @@ update_status ModuleSceneIntro::Update()
 
 		//Background
 		App->renderer->Blit(pinball_bg, 0, 0, nullptr);
+
 		
+
 		App->renderer->Blit(spring, 1069, (METERS_TO_PIXELS(ballLauncherRectangle->body->GetPosition().y) -3) / SCREEN_SIZE , nullptr);
 		
 		//LOG("startforce: %f", startForce);
@@ -999,6 +1001,14 @@ update_status ModuleSceneIntro::Update()
 		//App->renderer->Blit(flipper, 560, 1680, nullptr, 1, METERS_TO_PIXELS(pb_rightFlipper->body->GetAngle()), 176, 118, SDL_FLIP_NONE);
 		App->renderer->Blit(flipper, 572, 1675, nullptr, 1, pb_rightFlipper->body->GetAngle() / DEGTORAD  , 145 * SCREEN_SIZE, 25 * SCREEN_SIZE, SDL_FLIP_NONE);
 		
+		if (App->player->ballsInGame == 1)
+		{
+			App->renderer->Blit(logo, 800 * SCREEN_SIZE, 2500 * SCREEN_SIZE, &r_logo[0]);
+		}
+		else
+		{
+			App->renderer->Blit(logo, 800 * SCREEN_SIZE, 2500 * SCREEN_SIZE, &r_logo[1]);
+		}
 		
 		
 		//right: 840  left: 240  y: 1460
