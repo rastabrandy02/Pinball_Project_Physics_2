@@ -117,14 +117,6 @@ update_status Application::Update()
 	}
 	end = SDL_GetTicks();
 
-	if (input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
-	{
-		limitFrames /= 4;
-	}
-	if (input->GetKey(SDL_SCANCODE_W) == KEY_UP)
-	{
-		limitFrames *= 4;
-	}
 	if (input->GetKey(SDL_SCANCODE_P) == KEY_UP)
 		gamePaused = !gamePaused;
 

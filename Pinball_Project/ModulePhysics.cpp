@@ -74,22 +74,6 @@ update_status ModulePhysics::PreUpdate()
 	return UPDATE_CONTINUE;
 }
 
-b2RevoluteJoint* ModulePhysics::CreateFlipperJoint(b2Body* ground, b2Vec2 groundAnchor, b2Body* flipper, b2Vec2 flipperAnchor)
-{
-	b2RevoluteJointDef FlipperJoint;
-	FlipperJoint.bodyA = ground;
-	FlipperJoint.bodyB = flipper;
-	FlipperJoint.collideConnected = false;
-	FlipperJoint.enableLimit = false;
-	FlipperJoint.enableMotor = true;
-	FlipperJoint.localAnchorA.Set(PIXEL_TO_METERS(groundAnchor.x), PIXEL_TO_METERS(groundAnchor.y));
-	FlipperJoint.localAnchorB.Set(PIXEL_TO_METERS(flipperAnchor.x), PIXEL_TO_METERS(flipperAnchor.y));
-
-	b2RevoluteJoint* Flippjoint = (b2RevoluteJoint*)world->CreateJoint(&FlipperJoint);
-	return Flippjoint;
-}
-
-
 PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius)
 {
 	b2BodyDef body;

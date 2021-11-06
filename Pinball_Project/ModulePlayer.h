@@ -12,7 +12,7 @@ public:
 	bool Start();
 	update_status Update();
 	bool CleanUp();
-	int playerLives = 3;
+	int playerLifes = 3;
 	int ballsInGame = 0;
 	int score = 0;
 	uint ballStart;
@@ -23,7 +23,7 @@ public:
 	void RestartPlayer()
 	{
 		score = 0;
-		playerLives = 3;
+		playerLifes = 3;
 		ballsInGame = 0;
 	}
 };

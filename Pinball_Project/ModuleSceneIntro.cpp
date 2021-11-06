@@ -30,10 +30,12 @@ bool ModuleSceneIntro::Start()
 	LOG("Loading Intro assets");
 	bool ret = true;
 
+
+	//fps showing
 	//load fonts
-	char lookupTable1[] = { "abcdefghijklmnopqrstuvwxyz1234567890!?()[]_-+=,:’%ç " };
+	char lookupTable1[] = { "abcdefghijklmnopqrstuvwxyz1234567890!?()[]_-+=.,:’% " };
 	
-	fontScore50 = App->fonts->Load("pinball/UI_elements/Fonts/test50.png", lookupTable1, 2);
+	fontScore50 = App->fonts->Load("pinball/UI_elements/Fonts/fnt_score_50.png", lookupTable1, 2);
 	fontScore120 = App->fonts->Load("pinball/UI_elements/Fonts/fnt_score_120.png", lookupTable1, 2);
 
 	//player
@@ -57,6 +59,9 @@ bool ModuleSceneIntro::Start()
 
 	sfx_lateralBumper = App->audio->LoadFx("pinball/pinball_elements/Sounds/sfx_lateralBumper.wav");
 	sfx_bumper = App->audio->LoadFx("pinball/pinball_elements/Sounds/sfx_circleBumper.wav");
+	sfx_bonusLife = App->audio->LoadFx("pinball/pinball_elements/Sounds/sfx_bonusLife.wav");
+	sfx_capsuleActivate = App->audio->LoadFx("pinball/pinball_elements/Sounds/sfx_capsuleActivate.wav");
+	sfx_allCapsulesActive = App->audio->LoadFx("pinball/pinball_elements/Sounds/sfx_allCapsulesActive.wav");
 	
 	App->player->ballStart = App->audio->LoadFx("pinball/pinball_elements/Sounds/102811__relwin__sportsman-2.wav");
 	App->player->ballCollider = App->audio->LoadFx("pinball/pinball_elements/Sounds/171059__relwin__harbor-pc1f059-clickbuzz.wav");
@@ -353,6 +358,7 @@ bool ModuleSceneIntro::Start()
 			r_bumper[i + 7] = { 1218 / 7 * i, 348 / 2, 1218 / 7, 348 / 2 };
 		}
 
+		r_ball_icon = { 0,0,48,48 };
 		r_bumper_button[0] = { 0,0,46 / 2,74 };
 		r_bumper_button[1] = { 46 / 2,0,46 / 2,74 };
 		r_button_light_0[0] = { 0,0,188 / 2,94 };
@@ -443,8 +449,9 @@ bool ModuleSceneIntro::Start()
 
 	}
 
+	playerNextLiveScore = 10000;
+
 	angleMargin = 10.0f;
-	
 
 	angularSpeed = 15.0f;
 	minAngle = 0.0f;
@@ -488,7 +495,7 @@ update_status ModuleSceneIntro::Update()
 
 	}
 
-	if (!gamePaused && (App->player->playerLives>0))
+	if (!gamePaused && (App->player->playerLifes>0))
 	{
 
 		/*if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
@@ -519,7 +526,7 @@ update_status ModuleSceneIntro::Update()
 			// TODO 8: Make sure to add yourself as collision callback to the circle you creates
 			circles.add(pb_currentBall);
 		}
-		LOG("player lifes: %i", App->player->playerLives);
+		//LOG("player lifes: %i", App->player->playerLifes);
 		//
 		//if (pb_currentBall != nullptr)
 		//{
@@ -539,7 +546,7 @@ update_status ModuleSceneIntro::Update()
 			if ( ballPos > h)
 			{
 				App->player->ballsInGame--;
-				App->player->playerLives--;
+				App->player->playerLifes--;
 				
 				pb_startExit->body->GetFixtureList()->SetSensor(true);
 				if (masterAudioOn)
@@ -555,7 +562,7 @@ update_status ModuleSceneIntro::Update()
 
 		if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
 		{
-			App->player->playerLives--;
+			App->player->playerLifes--;
 			circles.clear();
 			App->player->ballsInGame = 0;
 			App->player->ballStart = App->player->ballRefill;
@@ -565,7 +572,7 @@ update_status ModuleSceneIntro::Update()
 
 		if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
 		{
-			App->player->playerLives = 3;
+			App->player->playerLifes = 3;
 			circles.clear();
 			App->player->ballStart = App->player->ballRefill;
 			App->audio->PlayFx(App->player->ballDeath);
@@ -584,8 +591,52 @@ update_status ModuleSceneIntro::Update()
 		}
 		
 
+		//MANAGE START SPRING
 
-		//MANAGE LEFT FLIPPER
+		if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_STATE::KEY_DOWN)
+		{
+			startForce = 0;
+		}
+		if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_STATE::KEY_REPEAT)
+		{
+			if (startForce < 0.5f)
+			{
+				startForce += 0.005f;
+			}
+			b2Vec2 relativePos = { ballLauncherRecInitPosX , ballLauncherRecInitPosY + startForce };
+			ballLauncherRectangle->body->SetTransform(relativePos, 0.0f);
+		}
+		if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_STATE::KEY_UP)
+		{
+			//LOG("%i", METERS_TO_PIXELS(ballLauncherRectangle->body->GetPosition().y * SCREEN_SIZE));
+			//LOG("%i", METERS_TO_PIXELS(ballLauncherRecInitPosY * SCREEN_SIZE));
+			float y1 = METERS_TO_PIXELS(ballLauncherRecInitPosY );
+			float y2 = METERS_TO_PIXELS(ballLauncherRectangle->body->GetPosition().y);
+
+			//LOG("%f", (y2 - y1 + startForce * 2));
+
+			b2Vec2 force = { 0,-( y2 - y1 + startForce * 2) };
+			ballLauncherRectangle->body->SetLinearVelocity(force);
+
+			//LOG("%f", (y2 - y1 + startForce * 2));
+		}
+		if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_STATE::KEY_IDLE)
+		{
+			//
+			if (METERS_TO_PIXELS(ballLauncherRectangle->body->GetPosition().y) < 1850 * SCREEN_SIZE)
+			{
+				//LOG("%f", METERS_TO_PIXELS(ballLauncherRectangle->body->GetPosition().y))
+				//b2Vec2 pos = { PIXEL_TO_METERS((1050 + 40) * SCREEN_SIZE),PIXEL_TO_METERS((1850 - 40) * SCREEN_SIZE) };
+				//ballLauncherRectangle->body->SetTransform(pos, 0.0f * DEGTORAD);
+				b2Vec2 zeroSpeed = { 0,0 };
+				ballLauncherRectangle->body->SetLinearVelocity(zeroSpeed);
+				b2Vec2 initPos = { ballLauncherRecInitPosX,ballLauncherRecInitPosY };
+				ballLauncherRectangle->body->SetTransform(initPos, 0.0f);
+			}
+		}
+	}
+
+	//MANAGE LEFT FLIPPER
 		if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_STATE::KEY_DOWN)
 		{
 			if (masterAudioOn)
@@ -667,51 +718,6 @@ update_status ModuleSceneIntro::Update()
 				pb_rightFlipper->body->SetAngularVelocity(0.0f);
 			}
 		}
-
-		//MANAGE START SPRING
-
-		if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_STATE::KEY_DOWN)
-		{
-			startForce = 0;
-		}
-		if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_STATE::KEY_REPEAT)
-		{
-			if (startForce < 0.5f)
-			{
-				startForce += 0.005f;
-			}
-			b2Vec2 relativePos = { ballLauncherRecInitPosX , ballLauncherRecInitPosY + startForce };
-			ballLauncherRectangle->body->SetTransform(relativePos, 0.0f);
-		}
-		if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_STATE::KEY_UP)
-		{
-			//LOG("%i", METERS_TO_PIXELS(ballLauncherRectangle->body->GetPosition().y * SCREEN_SIZE));
-			//LOG("%i", METERS_TO_PIXELS(ballLauncherRecInitPosY * SCREEN_SIZE));
-			float y1 = METERS_TO_PIXELS(ballLauncherRecInitPosY );
-			float y2 = METERS_TO_PIXELS(ballLauncherRectangle->body->GetPosition().y);
-
-			//LOG("%f", (y2 - y1 + startForce * 2));
-
-			b2Vec2 force = { 0,-( y2 - y1 + startForce * 2) };
-			ballLauncherRectangle->body->SetLinearVelocity(force);
-
-			//LOG("%f", (y2 - y1 + startForce * 2));
-		}
-		if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_STATE::KEY_IDLE)
-		{
-			//
-			if (METERS_TO_PIXELS(ballLauncherRectangle->body->GetPosition().y) < 1850 * SCREEN_SIZE)
-			{
-				//LOG("%f", METERS_TO_PIXELS(ballLauncherRectangle->body->GetPosition().y))
-				//b2Vec2 pos = { PIXEL_TO_METERS((1050 + 40) * SCREEN_SIZE),PIXEL_TO_METERS((1850 - 40) * SCREEN_SIZE) };
-				//ballLauncherRectangle->body->SetTransform(pos, 0.0f * DEGTORAD);
-				b2Vec2 zeroSpeed = { 0,0 };
-				ballLauncherRectangle->body->SetLinearVelocity(zeroSpeed);
-				b2Vec2 initPos = { ballLauncherRecInitPosX,ballLauncherRecInitPosY };
-				ballLauncherRectangle->body->SetTransform(initPos, 0.0f);
-			}
-		}
-	}
 
 	//LATERAL BUMPERS
 
@@ -831,8 +837,17 @@ update_status ModuleSceneIntro::Update()
 				//Bumping force ignored (?)
 				//ball->SetLinearVelocity(bumpForceVec);
 
-				App->player->score += 1000;
-				capsulePointer->data->playAnimation = true;
+				if (capsulePointer->data->playAnimation == false && capsuleActivatedCounter < 4)
+				{
+					App->player->score += 1000;
+					capsulePointer->data->playAnimation = true;
+					capsuleActivatedCounter++;
+					if (masterAudioOn)
+						if (SfxOn)
+							App->audio->PlayFx(sfx_capsuleActivate);
+					
+				}
+				
 				//LOG("SCORE: %i", App->player->score);
 				//LOG("x: %f, y: %f", bumpForceVec.x, bumpForceVec.y);
 
@@ -841,9 +856,6 @@ update_status ModuleSceneIntro::Update()
 		}
 		capsulePointer = capsulePointer->next;
 	}
-	
-
-	
 		
 	//END BUMPERS
 
@@ -862,7 +874,12 @@ update_status ModuleSceneIntro::Update()
 			{
 				if (pb_bumperButton[i]->body->GetContactList()->contact->IsTouching())
 				{
-					bumperButtonActive[i] = true;
+					if (!bumperButtonActive[i])
+					{
+						bumperButtonActive[i] = true;
+						App->player->score += 200;
+					}
+						
 					b2Body* ball = pb_bumperButton[i]->body->GetContactList()->contact->GetFixtureB()->GetBody();
 					
 					b2Vec2 bumpForceVec = {
@@ -882,13 +899,40 @@ update_status ModuleSceneIntro::Update()
 			}
 		}
 
+		if (App->player->score >= playerNextLiveScore && App->player->playerLifes < 5)
+		{
+			if (masterAudioOn)
+				if (SfxOn)
+					App->audio->PlayFx(sfx_bonusLife);
+			App->player->playerLifes++;
+			playerNextLiveScore += 5000;
+		}
+
+
+
 		// All draw functions ------------------------------------------------------
 		
+
+
+
+
+
+
+
+
+
 
 		//Background
 		App->renderer->Blit(pinball_bg, 0, 0, nullptr);
 
-		
+		if (App->player->ballsInGame == 1)
+		{
+			App->renderer->Blit(logo, 800 * SCREEN_SIZE, 2500 * SCREEN_SIZE, &r_logo[0]);
+		}
+		else
+		{
+			App->renderer->Blit(logo, 800 * SCREEN_SIZE, 2500 * SCREEN_SIZE, &r_logo[1]);
+		}
 
 		App->renderer->Blit(spring, 1069, (METERS_TO_PIXELS(ballLauncherRectangle->body->GetPosition().y) -3) / SCREEN_SIZE , nullptr);
 		
@@ -896,12 +940,11 @@ update_status ModuleSceneIntro::Update()
 
 		//Impairers
 		App->renderer->Blit(gate, 590 * SCREEN_SIZE, 280 * SCREEN_SIZE);
-		//App->renderer->Blit(gate, 2140 * SCREEN_SIZE, 280 * SCREEN_SIZE,nullptr,NULL,NULL,NULL,NULL, SDL_FLIP_HORIZONTAL);
 		App->renderer->Blit(gate, 590 * SCREEN_SIZE, 1370 * SCREEN_SIZE, nullptr, NULL, 90, NULL, NULL, SDL_FLIP_VERTICAL);
-		//App->renderer->Blit();
+		
 
 		//start tunnel
-		App->renderer->Blit(tunnel_start, 880, 138);
+		
 		
 
 		//Capsules
@@ -952,6 +995,50 @@ update_status ModuleSceneIntro::Update()
 
 		App->renderer->Blit(capsule_3, 566 + 134 , 200 , &r_temp);
 			
+
+		if (capsuleActivatedCounter >= 4)
+		{
+			pb_yellowCapsuleSensor->playAnimation = false;
+			pb_greenCapsuleSensor->playAnimation = false;
+			pb_blueCapsuleSensor->playAnimation = false;
+			pb_pinkCapsuleSensor->playAnimation = false;
+			capsuleResetAplha++;
+		}
+
+		if (capsuleResetAplha == 1)
+		{
+			App->player->score += 1500;
+			if (masterAudioOn)
+				if (SfxOn)
+					App->audio->PlayFx(sfx_allCapsulesActive);
+		}
+		float m = 0.4;
+		float a = sin(capsuleResetAplha * m);
+
+		if (a > 0)
+		{
+			App->renderer->Blit(capsule_0, 357, 203, &r_capsule_0[0]);
+			App->renderer->Blit(capsule_1, 337 + 134, 223, &r_capsule_1[0]);
+			App->renderer->Blit(capsule_2, 454 + 134, 223, &r_capsule_2[0]);
+			App->renderer->Blit(capsule_3, 566 + 134, 200, &r_capsule_3[0]);
+
+
+
+
+		}
+
+		if (capsuleResetAplha > 150)
+		{
+			capsuleActivatedCounter = 0;
+			capsuleResetAplha = 0;
+		}
+
+		//LOG("a: %f", a);
+		//LOG("ar: %i", capsuleResetAplha);
+
+
+
+
 		//Alien
 		App->renderer->Blit(curve_tunnel, 166, 301, nullptr);
 		App->renderer->Blit(eye, 354, 511, nullptr);
@@ -972,7 +1059,7 @@ update_status ModuleSceneIntro::Update()
 			c = c->next;
 		}
 		
-		
+		App->renderer->Blit(tunnel_start, 880, 138);
 		
 
 		c = boxes.getFirst();
@@ -1001,14 +1088,7 @@ update_status ModuleSceneIntro::Update()
 		//App->renderer->Blit(flipper, 560, 1680, nullptr, 1, METERS_TO_PIXELS(pb_rightFlipper->body->GetAngle()), 176, 118, SDL_FLIP_NONE);
 		App->renderer->Blit(flipper, 572, 1675, nullptr, 1, pb_rightFlipper->body->GetAngle() / DEGTORAD  , 145 * SCREEN_SIZE, 25 * SCREEN_SIZE, SDL_FLIP_NONE);
 		
-		if (App->player->ballsInGame == 1)
-		{
-			App->renderer->Blit(logo, 800 * SCREEN_SIZE, 2500 * SCREEN_SIZE, &r_logo[0]);
-		}
-		else
-		{
-			App->renderer->Blit(logo, 800 * SCREEN_SIZE, 2500 * SCREEN_SIZE, &r_logo[1]);
-		}
+		
 		
 		
 		//right: 840  left: 240  y: 1460
@@ -1428,20 +1508,51 @@ update_status ModuleSceneIntro::Update()
 		//}
 
 
+
+		//Draw UI ---------------------------------------------------------------------------------
+
+		App->renderer->Blit(score_panel, 20,20, NULL);
+
+		char scoreText[20] = { "\0" };
+		sprintf_s(scoreText, "%i", App->player->score);
+
+		App->renderer->Blit(star, 60, 50, NULL);
+		App->fonts->BlitText(140, 70, fontScore50, scoreText);
+
+		for (int i = 0; i < App->player->playerLifes; i++)
+		{
+			App->renderer->Blit(ball, 70 + (10 + 50) * (i), 150, &r_ball_icon);
+		}
+
+		
+		
+		
+		
+		float currFps = fps;
+		if (fpsTimer < 0)
+		{
+			fps = roundf(App->checkFPS() * 100) / 100;
+			
+			fpsTimer = 60;
+			LOG("fps: %f", fps);
+		}
+		else
+		{
+			
+			fpsTimer--;
+		}
+		
+		sprintf_s(fpsText, "%.2f", fps);
+		int txtRMargin = 920;
+		App->fonts->BlitText(txtRMargin, 20, fontScore50, fpsText);
+		App->fonts->BlitText(txtRMargin - 44 * 4, 20, fontScore50, "fps:");
+
 		if (gamePaused)
 		{
 			SDL_Rect pause_bg_r = { 0, 0, SCREEN_WIDTH,SCREEN_HEIGHT };
 			App->renderer->DrawQuad(pause_bg_r, 0, 0, 0, 128, true, true);
 			App->fonts->BlitText(SCREEN_WIDTH / 2 - 350, SCREEN_HEIGHT / 2 - 100, fontScore120, "paused");
 		}
-		
-		float fps = App->checkFPS();
-
-		char fpsText[10] = { "\0" };
-		sprintf_s(fpsText, "%d", fps);
-		App->fonts->BlitText(0, 100, fontScore50, "abcdefghijklmnopqrstuvwxyz");
-
-
 
 		//audio
 		currentTime = SDL_GetTicks();

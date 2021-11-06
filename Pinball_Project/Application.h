@@ -34,7 +34,7 @@ public:
 		return gamePaused;
 	}
 
-	bool checkFPS() const
+	float checkFPS() const
 	{
 		return currentFPS;
 	}

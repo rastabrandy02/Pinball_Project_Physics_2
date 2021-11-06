@@ -36,6 +36,8 @@ public:
 
 public:
 
+	//player related
+	int playerNextLiveScore;
 	
 	
 	//Fonts
@@ -53,12 +55,23 @@ public:
 	int counterMusic;
 	int repetition;
 	bool afterStart = false;
-	float elapsedTime; // Convert to seconds.
 
 	uint sfx_flipper;
 	uint bg_music;
 	uint sfx_bumper;
 	uint sfx_lateralBumper;
+	uint sfx_bonusLife;
+	uint sfx_capsuleActivate;
+	uint sfx_allCapsulesActive;
+
+	//fps showing
+	char fpsText[20] = { "\0" };
+	float elapsedTime; // Convert to seconds.
+	int fpsTimer = 120;
+	float fps;
+
+
+	
 	//List of the different bodies
 
 	PhysBody* pb_startExit;
@@ -78,6 +91,9 @@ public:
 
 	p2List<PhysBody*> walls;
 	p2List<PhysBody*> capsules;
+	int capsuleActivatedCounter;
+	int capsuleResetAplha = 0;
+	int capsuleBlinkCounter = 0;
 	p2List<PhysBody*> bumpers;
 	//p2List<b2RevoluteJoint*> flippers;
 	//b2RevoluteJoint a;
@@ -130,6 +146,7 @@ public:
 	PhysBody* pb_leftMiniBumper;
 	float leftMiniBumperForce;
 	int miniLateralBumperCounter;
+
 
 
 	int lateralBumperCounterRef;
@@ -233,6 +250,7 @@ public:
 
 
 	//image rects
+	SDL_Rect r_ball_icon;
 	SDL_Rect r_arrow_light_0[2];
 	SDL_Rect r_arrow_light_1[2];
 	SDL_Rect r_arrow_start[2];
