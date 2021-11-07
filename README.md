@@ -105,7 +105,7 @@ High score system.
 
 Pause system.
 
-## Pol Farreras
+## Pol Farreras (fakefarreraspol)
 
 Ripped and searched sounds.
 
