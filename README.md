@@ -10,6 +10,9 @@ The pinball project made during the physics 2 subject - Second year of videogame
 *1*: Spawn ball
 *M*: Restart Player
 *Space*: Mouse joint
+*Q*: Refill ball
+*L*: Loose ball
+*R*: Reset player balls
 
 #Combos
 *All Capsules*: +1500 points

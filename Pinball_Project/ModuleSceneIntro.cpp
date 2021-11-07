@@ -967,9 +967,10 @@ update_status ModuleSceneIntro::Update()
 		//LOG("startforce: %f", startForce);
 
 		//Impairers
-		App->renderer->Blit(gate, 590 * SCREEN_SIZE, 280 * SCREEN_SIZE);
-		App->renderer->Blit(gate, 590 * SCREEN_SIZE, 1370 * SCREEN_SIZE, nullptr, NULL, 90, NULL, NULL, SDL_FLIP_VERTICAL);
-		
+		//App->renderer->Blit(gate, 590 * SCREEN_SIZE, 280 * SCREEN_SIZE);
+		//App->renderer->Blit(gate, 590 * SCREEN_SIZE, 1370 * SCREEN_SIZE, nullptr, NULL, 90, NULL, NULL, SDL_FLIP_VERTICAL);
+		App->renderer->Blit(gate, 580 * SCREEN_SIZE, 280 * SCREEN_SIZE, nullptr, NULL, 15.0f);
+		App->renderer->Blit(gate, 320 * SCREEN_SIZE, 1370 * SCREEN_SIZE, nullptr,NULL, 180.0f);
 
 		//start tunnel
 		
