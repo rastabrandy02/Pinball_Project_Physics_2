@@ -2,7 +2,17 @@
 
 The pinball project made during the physics 2 subject - Second year of videogame development.
 
-#Controls
+### Orignial Game
+
+http://www.freewebarcade.com/html5/spaceadventurepinball/game.html
+
+
+### GitHub repository
+
+https://github.com/rastabrandy02/SpaceAdventure_Pinball
+
+
+# Controls
 
 ## Gameplay
 
@@ -34,6 +44,15 @@ The pinball project made during the physics 2 subject - Second year of videogame
 
 *All Left Buttons*: A special bumper appears.
 
+
+
+## Differences with the Original Game
+
+Due to time limitations, we have replicated  the basic gameplay (launching, flippers, map) plus the principal bumpers and a few combo elements.
+
+Our game presents a way of obtaining extra balls by reaching a certain score. Also we could not find the original audio other from the background music, but we have replaced them with new sounds that matches all the interactions (bumpers, flippers, refill, lost ball etc...)
+
+
 # Responsibles of the work:
 
 ## Fernando Freixinet
@@ -58,7 +77,7 @@ Created the animations for the capsules and bumpers.
 
 Added the gates and impairers for the ball.
 
-## Brandon Arandia
+## Brandon Arandia (IconicGIT)
 
 Added Game textures and correspondant Rects.
 
@@ -101,6 +120,8 @@ Score system.
 Fixed player score/lifes bugs.
 
 Background logo.
+
+
 
 
 
