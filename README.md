@@ -55,7 +55,7 @@ Our game presents a way of obtaining extra balls by reaching a certain score. Al
 
 # Responsibles of the work:
 
-## Fernando Freixinet
+## Fernando Freixinet (rastabrandy02)
 
 Create the repository.
 
