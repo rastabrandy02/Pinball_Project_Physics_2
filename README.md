@@ -86,5 +86,22 @@ High score system.
 
 Pause system.
 
+##Pol Farreras
+
+Ripped and searched sounds.
+
+Music and sound implementation.
+
+Ball Spawning.
+
+Player Lifes/balls  system.
+
+Score system.
+
+Fixed player score/lifes bugs.
+
+Background logo.
+
+
 
 
