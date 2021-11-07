@@ -138,6 +138,18 @@ Fixed player score/lifes bugs.
 
 Background logo.
 
+### Development Process
+
+One of the problems was the audio, the game we took had images accessible but not sounds. After time trying to find an application to rip the sound i decided to record and cut the music by myself, this solution was only acceptable for the music. For the sfx we took pack of sounds from the internet and decide which sound fit more in the game.
+
+An other problem was the player could not play, after the player placed a ball, one of the colliders detected it and deleted all player lifes. To change it we fixed the collider. The same happened with balls in game: to use a ball in the game, ballsInGame has to be 0; a collider was resting ballsInGame to bellow 0 so after using one ball you could never use one more. To solve this we changed ballsInGame-- to ballsInGame++ and also fixed the collider.
+
+Audio Module had also problems: we tried using .ogg (earrape) .wav(some errors) and .mp3(didn't work), so we decided to use PlayFX instead of PlayMusic.
+
+Finally we had other collider problems: the ball at the start sometimes didn't collide with the spring, and also sometimes the ball entered in a bucle by hiting walls and bumpers or others. 
+
+
+
 
 
 
