@@ -1692,4 +1692,7 @@ void ModuleSceneIntro::RestartLevel()
 	pb_pinkCapsuleSensor->playAnimation = false;
 	pb_blueCapsuleSensor->playAnimation = false;
 	pb_greenCapsuleSensor->playAnimation = false;
+
+	capsuleActivatedCounter = 0;
+
 }
