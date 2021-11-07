@@ -80,8 +80,6 @@ Physic bodies Creation Functions.
 
 Music loop.
 
-Application icon.
-
 Game loop.
 
 High score system.
