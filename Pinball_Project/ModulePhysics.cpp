@@ -417,9 +417,11 @@ update_status ModulePhysics::PostUpdate()
 				break;
 			}
 
-			if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+ 			if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 			{
-				b2Vec2 p = { PIXEL_TO_METERS(App->input->GetMouseX()), PIXEL_TO_METERS(App->input->GetMouseY()) };
+        		b2Vec2 p = { PIXEL_TO_METERS(App->input->GetMouseX()), PIXEL_TO_METERS(App->input->GetMouseY()) };
+				b2Shape* s = f->GetShape();
+				bool isMouseOnBall = f->GetShape()->TestPoint(b->GetTransform(), p);
 				if (f->GetShape()->TestPoint(b->GetTransform(), p) == true)
 				{
 					mouseBody = b;
