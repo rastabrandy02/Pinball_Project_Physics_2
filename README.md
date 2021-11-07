@@ -78,6 +78,12 @@ Created the animations for the capsules and bumpers.
 
 Added the gates and impairers for the ball.
 
+### Development Process
+At first we had several problems with box2D solved with adjustments on the project's settings
+We had parts of the scenario where the ball would do the same movements and places where it might get stuck, this was solved changed some colliders and adding the impairers
+The sprites of the flippers didn't rotate correctly, this was solved changing the pivot point
+
+
 ## Brandon Arandia (IconicGIT)
 
 Added Game textures and correspondant Rects.
