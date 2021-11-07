@@ -53,6 +53,11 @@ public:
 	update_status PostUpdate();
 	bool CleanUp();
 
+	bool CheckDebug() const
+	{
+		return debug;
+	}
+
 	PhysBody* CreateCircle(int x, int y, int radius);
 	PhysBody* CreateStaticCircle(int x, int y, int radius);
 	PhysBody* CreateSensorCircle(int x, int y, int radius);

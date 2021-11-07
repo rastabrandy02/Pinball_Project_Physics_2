@@ -6,6 +6,13 @@
 #include "ModuleFonts.h"
 
 class PhysBody;
+struct UIPanel
+{
+	float x, y;
+	float xSpeed, ySpeed;
+	float xAcc, yAcc;
+};
+
 struct bumper_def
 {
 	int x;
@@ -32,12 +39,24 @@ public:
 		return  r.y + r.h / 2;
 	}
 
+	void RestartLevel();
 	
 
 public:
 
+	//UI related
+	UIPanel startPanel;
+	UIPanel endPanel;
+	bool outOfGame = true;
+	bool beforeGame = true;
+	bool afterGame = false;
+
 	//player related
 	int playerNextLiveScore;
+	char playerScoreText[10] = { "\0" };
+	char playerHighScoreText[10] = { "\0" };
+	int nextRefill;
+	bool debugMode = false;
 	
 	
 	//Fonts
@@ -193,6 +212,7 @@ public:
 	SDL_Texture* msg_box = nullptr;
 	SDL_Texture* progress_bar = nullptr;
 	SDL_Texture* score_panel = nullptr;
+	SDL_Texture* score_panel_2 = nullptr;
 	SDL_Texture* star = nullptr;
 
 	//pinball textures
@@ -250,7 +270,7 @@ public:
 
 
 	//image rects
-	SDL_Rect r_ball_icon;
+	SDL_Rect r_scorePanel;
 	SDL_Rect r_arrow_light_0[2];
 	SDL_Rect r_arrow_light_1[2];
 	SDL_Rect r_arrow_start[2];

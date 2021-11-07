@@ -8,6 +8,7 @@
 #include "ModulePhysics.h"
 #include "ModulePlayer.h"
 #include <string.h>
+#include "SDL_mixer/include/SDL_mixer.h"
 
 //#include "SDL_ttf/include/SDL_ttf.h"
 //// "SDL_ttf/lib/x86/SDL2_ttf.lib"
@@ -107,6 +108,7 @@ bool ModuleSceneIntro::Start()
 		msg_box = App->textures->Load("pinball/UI_elements/msg_box.png");
 		progress_bar = App->textures->Load("pinball/UI_elements/progress_bar.png");
 		score_panel = App->textures->Load("pinball/UI_elements/score_panel.png");
+		score_panel_2 = App->textures->Load("pinball/UI_elements/score_panel_2.png");
 		star = App->textures->Load("pinball/UI_elements/star.png");
 
 		//load pinball elements
@@ -358,7 +360,7 @@ bool ModuleSceneIntro::Start()
 			r_bumper[i + 7] = { 1218 / 7 * i, 348 / 2, 1218 / 7, 348 / 2 };
 		}
 
-		r_ball_icon = { 0,0,48,48 };
+		r_scorePanel = { 0,0,631,226 };
 		r_bumper_button[0] = { 0,0,46 / 2,74 };
 		r_bumper_button[1] = { 46 / 2,0,46 / 2,74 };
 		r_button_light_0[0] = { 0,0,188 / 2,94 };
@@ -467,7 +469,19 @@ bool ModuleSceneIntro::Start()
 
 	lateralBumperCounterRef = 20;
 	
+	startPanel.x = 160;
+	startPanel.y = 2000;
+	startPanel.yAcc = -1;
+	startPanel.xAcc = 0;
+	startPanel.ySpeed = 0;
+	startPanel.xSpeed = 0;
 
+	endPanel.x = 160;
+	endPanel.y = 2000;
+	endPanel.yAcc = -1;
+	endPanel.xAcc = 0;
+	endPanel.ySpeed = 0;
+	endPanel.xSpeed = 0;
 
 	return ret;
 }
@@ -486,35 +500,35 @@ update_status ModuleSceneIntro::Update()
 	//if not paused not update elements but still draw them 
 	
 	gamePaused = App->checkPaused();
+	debugMode = App->physics->CheckDebug();
 
 	
 
-	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
+	if (debugMode)
 	{
-		App->player->RestartPlayer();
+		if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
+		{
+			App->player->RestartPlayer();
 
+		}
 	}
 
 	if (!gamePaused && (App->player->playerLifes>0))
 	{
 
-		/*if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+		if (debugMode)
 		{
-			ray_on = !ray_on;
-			ray.x = App->input->GetMouseX();
-			ray.y = App->input->GetMouseY();
-		}*/
+			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+			{
+				pb_currentBall = App->physics->CreateCircle(App->input->GetMouseX(), App->input->GetMouseY(), 24 * SCREEN_SIZE);
 
-		if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
-		{
-			pb_currentBall = App->physics->CreateCircle(App->input->GetMouseX(), App->input->GetMouseY(), 24 * SCREEN_SIZE);
-			
-			pb_currentBall->type == TYPE_BALL;
-			// TODO 8: Make sure to add yourself as collision callback to the circle you creates
-			circles.add(pb_currentBall);
+				pb_currentBall->type == TYPE_BALL;
+				// TODO 8: Make sure to add yourself as collision callback to the circle you creates
+				circles.add(pb_currentBall);
+			}
 		}
 
-		if ((App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN)&&(App->player->ballsInGame==0))
+		if (((debugMode && App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN) || nextRefill > 120)&&(App->player->ballsInGame==0))
 		{
 			ballIsAlive = true;
 			pb_currentBall = App->physics->CreateCircle(1090 * SCREEN_SIZE, 1730 * SCREEN_SIZE, 24 * SCREEN_SIZE);
@@ -525,6 +539,12 @@ update_status ModuleSceneIntro::Update()
 					App->audio->PlayFx(App->player->ballStart);
 			// TODO 8: Make sure to add yourself as collision callback to the circle you creates
 			circles.add(pb_currentBall);
+			nextRefill = 0;
+		}
+
+		if (App->player->ballsInGame <= 0 && (!beforeGame && !afterGame))
+		{
+			nextRefill++;
 		}
 		//LOG("player lifes: %i", App->player->playerLifes);
 		//
@@ -560,23 +580,26 @@ update_status ModuleSceneIntro::Update()
 
 		//LOG("ball alive: %i", ballIsAlive);
 
-		if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
+		if (debugMode)
 		{
-			App->player->playerLifes--;
-			circles.clear();
-			App->player->ballsInGame = 0;
-			App->player->ballStart = App->player->ballRefill;
-			App->audio->PlayFx(App->player->ballDeath);
-		
-		}
+			if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
+			{
+				App->player->playerLifes--;
+				circles.clear();
+				App->player->ballsInGame = 0;
+				App->player->ballStart = App->player->ballRefill;
+				App->audio->PlayFx(App->player->ballDeath);
 
-		if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
-		{
-			App->player->playerLifes = 3;
-			circles.clear();
-			App->player->ballStart = App->player->ballRefill;
-			App->audio->PlayFx(App->player->ballDeath);
+			}
 
+			if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
+			{
+				App->player->playerLifes = 3;
+				circles.clear();
+				App->player->ballStart = App->player->ballRefill;
+				App->audio->PlayFx(App->player->ballDeath);
+
+			}
 		}
 		
 		//MANAGE START EXIT
@@ -798,15 +821,20 @@ update_status ModuleSceneIntro::Update()
 				bumpForceVec.Normalize();
 				bumpForceVec *= bumperForce;
 
-				if(masterAudioOn)
-					if(SfxOn)
-						App->audio->PlayFx(sfx_bumper);
+				if (!gamePaused)
+				{
+					if (masterAudioOn)
+						if (SfxOn)
+							App->audio->PlayFx(sfx_bumper);
+
+					App->player->score += 50;
+				}
 				ball->SetLinearVelocity(bumpForceVec);
 
 				bumperPointer->data->playAnimation = true;
-				App->player->score += 100;
+				
 				//playerscore
-				LOG("SCORE: %i", App->player->score);
+				//LOG("SCORE: %i", App->player->score);
 				//LOG("x: %f, y: %f", bumpForceVec.x, bumpForceVec.y);
 
 
@@ -839,7 +867,7 @@ update_status ModuleSceneIntro::Update()
 
 				if (capsulePointer->data->playAnimation == false && capsuleActivatedCounter < 4)
 				{
-					App->player->score += 1000;
+					App->player->score += 500;
 					capsulePointer->data->playAnimation = true;
 					capsuleActivatedCounter++;
 					if (masterAudioOn)
@@ -1021,9 +1049,6 @@ update_status ModuleSceneIntro::Update()
 			App->renderer->Blit(capsule_1, 337 + 134, 223, &r_capsule_1[0]);
 			App->renderer->Blit(capsule_2, 454 + 134, 223, &r_capsule_2[0]);
 			App->renderer->Blit(capsule_3, 566 + 134, 200, &r_capsule_3[0]);
-
-
-
 
 		}
 
@@ -1406,55 +1431,6 @@ update_status ModuleSceneIntro::Update()
 		}
 		else App->renderer->Blit(bumper, 650, 600, &r_bumper[0]);
 
-		/*
-		if (bumper01Counter <= 20)
-		{
-		 App->renderer->Blit(bumper, 490 - 174*0, 460, &r_bumper[0]);
-		 bumper01Counter++;
-		}
-		else if (bumper01Counter >= 20 && bumper01Counter < 40)
-		{
-			App->renderer->Blit(bumper, 490-174*1, 460, &r_bumper[1]);
-			bumper01Counter++;
-		}
-		else if (bumper01Counter >= 40 && bumper01Counter < 60)
-		{
-			App->renderer->Blit(bumper, 490-174*2, 460, &r_bumper[2]);
-			bumper01Counter++;
-		}
-		else if (bumper01Counter >= 60 && bumper01Counter < 80)
-		{
-			App->renderer->Blit(bumper, 490-174*3, 460, &r_bumper[3]);
-			bumper01Counter++;
-		}
-		else if (bumper01Counter >= 100 && bumper01Counter < 120)
-		{
-			App->renderer->Blit(bumper, 490-174*4, 460, &r_bumper[4]);
-			bumper01Counter++;
-		}
-		else if (bumper01Counter >= 120 && bumper01Counter < 140)
-		{
-			App->renderer->Blit(bumper, 490-174*5, 460, &r_bumper[5]);
-			bumper01Counter++;
-		}
-		else if (bumper01Counter >= 140 && bumper01Counter < 160)
-		{
-			App->renderer->Blit(bumper, 490-174*6, 460, &r_bumper[6]);
-			bumper01Counter++;
-		}
-		else if (bumper01Counter >= 160 && bumper01Counter < 180)
-		{
-			App->renderer->Blit(bumper, 490-174*7, 460, &r_bumper[7]);
-			bumper01Counter++;
-		}
-		else if (bumper01Counter >= 180 && bumper01Counter < 200)
-		{
-			App->renderer->Blit(bumper, 490, 460, &r_bumper[8]);
-			bumper01Counter++;
-		}
-		if(bumper01Counter == 200) bumper01Counter = 0;
-		//*/
-
 		
 
 		
@@ -1472,46 +1448,12 @@ update_status ModuleSceneIntro::Update()
 			}
 		}
 
-		//bumperPointer = bumperButtons.getFirst();
-		//while (bumperPointer != nullptr)
-		//{
-		//	if (bumperPointer->data->body->GetContactList() != nullptr)
-		//	{
-		//		if (bumperPointer->data->body->GetContactList()->contact->IsTouching())
-		//		{
-		//			//b2Body* ball = bumperPointer->data->body->GetContactList()->contact->GetFixtureB()->GetBody();
-		//			//
-		//			//b2Vec2 bumpForceVec = {
-		//			//	ball->GetPosition().x - bumperPointer->data->body->GetPosition().x,
-		//			//	ball->GetPosition().y - bumperPointer->data->body->GetPosition().y
-		//			//};
-		//			//
-		//			//bumpForceVec.Normalize();
-		//			//bumpForceVec *= bumperForce;
-		//			//
-		//			//if (masterAudioOn)
-		//			//	if (SfxOn)
-		//			//		App->audio->PlayFx(sfx_bumper);
-		//			//ball->SetLinearVelocity(bumpForceVec);
-		//
-		//			//bumperPointer->data->playAnimation = true;
-		//			//App->player->score += 100;
-		//			//playerscore
-		//			//LOG("SCORE: %i", App->player->score);
-		//			//LOG("x: %f, y: %f", bumpForceVec.x, bumpForceVec.y);
-		//
-		//
-		//		}
-		//	}
-		//
-		//	bumperPointer = bumperPointer->next;
-		//}
-
-
+		
 
 		//Draw UI ---------------------------------------------------------------------------------
 
-		App->renderer->Blit(score_panel, 20,20, NULL);
+
+		App->renderer->Blit(score_panel, 20,20, &r_scorePanel);
 
 		char scoreText[20] = { "\0" };
 		sprintf_s(scoreText, "%i", App->player->score);
@@ -1521,20 +1463,21 @@ update_status ModuleSceneIntro::Update()
 
 		for (int i = 0; i < App->player->playerLifes; i++)
 		{
-			App->renderer->Blit(ball, 70 + (10 + 50) * (i), 150, &r_ball_icon);
+			App->renderer->Blit(ball, 70 + (10 + 50) * (i), 150, NULL);
+				
 		}
 
 		
 		
 		
 		
-		float currFps = fps;
+		
 		if (fpsTimer < 0)
 		{
 			fps = roundf(App->checkFPS() * 100) / 100;
 			
 			fpsTimer = 60;
-			LOG("fps: %f", fps);
+			//LOG("fps: %f", fps);
 		}
 		else
 		{
@@ -1547,14 +1490,157 @@ update_status ModuleSceneIntro::Update()
 		App->fonts->BlitText(txtRMargin, 20, fontScore50, fpsText);
 		App->fonts->BlitText(txtRMargin - 44 * 4, 20, fontScore50, "fps:");
 
-		if (gamePaused)
+		if (gamePaused && !beforeGame && !afterGame)
 		{
 			SDL_Rect pause_bg_r = { 0, 0, SCREEN_WIDTH,SCREEN_HEIGHT };
 			App->renderer->DrawQuad(pause_bg_r, 0, 0, 0, 128, true, true);
 			App->fonts->BlitText(SCREEN_WIDTH / 2 - 350, SCREEN_HEIGHT / 2 - 100, fontScore120, "paused");
 		}
 
-		//audio
+		if (beforeGame)
+		{
+			
+			if (startPanel.ySpeed <= 0)
+			{
+				startPanel.ySpeed += startPanel.yAcc;
+				startPanel.y += startPanel.ySpeed;
+
+				startPanel.yAcc += 0.022f;
+				
+			}
+			else
+			{
+				startPanel.yAcc = 0;
+			}
+
+			App->renderer->Blit(msg_box, startPanel.x, startPanel.y, NULL);
+			App->fonts->BlitText(startPanel.x + 44 * 3, startPanel.y + 130, fontScore50, "controls:");
+			App->renderer->Blit(keys, startPanel.x + 44 * 13, startPanel.y + 80, NULL);
+
+			int margin = 40 * 2;
+			App->fonts->BlitText(startPanel.x + 44 * 3, startPanel.y + 120 + margin, fontScore50, "pause:");
+			App->fonts->BlitText(startPanel.x + 44 * 9.5f, startPanel.y + 120 + margin, fontScore50, "[p]");
+			App->fonts->BlitText(startPanel.x + 44 * 4, startPanel.y + 130 + 40 * 2 + margin, fontScore50, "get as many");
+			App->fonts->BlitText(startPanel.x + 44 * 5, startPanel.y + 130 + 40 * 3.5f + margin, fontScore50, "points as");
+			App->fonts->BlitText(startPanel.x + 44 * 4.8f, startPanel.y + 130 + 40 * 5 + margin, fontScore50, "possible!");
+
+			SDL_Rect temp = r_scorePanel;
+			temp.w *= 1.6f;
+			temp.h /= 2;
+			App->renderer->Blit(score_panel_2, startPanel.x - 80, startPanel.y + 650, &temp);
+			App->fonts->BlitText(startPanel.x, startPanel.y + 600 + 40 * 2 , fontScore50, "press down to start!");
+
+			if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN)
+			{
+				beforeGame = false;
+				ballIsAlive = true;
+				pb_currentBall = App->physics->CreateCircle(1090 * SCREEN_SIZE, 1730 * SCREEN_SIZE, 24 * SCREEN_SIZE);
+				pb_currentBall->type == TYPE_BALL;
+				App->player->ballsInGame++;
+				if (masterAudioOn)
+					if (SfxOn)
+						App->audio->PlayFx(App->player->ballStart);
+				// TODO 8: Make sure to add yourself as collision callback to the circle you creates
+				circles.add(pb_currentBall);
+			}
+
+		}
+		
+		//if (App->input->GetKey(SDL_SCANCODE_E)) afterGame = true;
+		if (App->player->playerLifes <= 0) afterGame = true;
+		if (afterGame)
+		{
+
+			if (endPanel.ySpeed <= 0)
+			{
+				endPanel.ySpeed += endPanel.yAcc;
+				endPanel.y += endPanel.ySpeed;
+
+				endPanel.yAcc += 0.022f;
+
+			}
+			else
+			{
+				endPanel.yAcc = 0;
+			}
+
+			App->renderer->Blit(msg_box, endPanel.x, endPanel.y, NULL);
+			App->fonts->BlitText(endPanel.x + 44 * 3, endPanel.y + 130, fontScore50, "no balls left!");
+
+			sprintf_s(playerScoreText, "%i", App->player->score);
+			sprintf_s(playerHighScoreText, "%i", App->player->maxScore);
+			int margin = 40;
+			App->fonts->BlitText(endPanel.x + 44 * 2, endPanel.y + 130 + 40 * 2 + margin, fontScore50, "score:");
+			App->fonts->BlitText(endPanel.x + 44 * 8.5f, endPanel.y + 130 + 40 * 2 + margin, fontScore50, playerScoreText);
+			App->fonts->BlitText(endPanel.x + 44 * 2, endPanel.y + 130 + 40 * 3.5f + margin, fontScore50, "max score:");
+			App->fonts->BlitText(endPanel.x + 44 * 12.5f, endPanel.y + 130 + 40 * 3.5f + margin, fontScore50, playerHighScoreText);
+
+
+
+			SDL_Rect temp = r_scorePanel;
+			temp.w *= 1.3f;
+			
+			App->renderer->Blit(score_panel_2, endPanel.x + 20, endPanel.y + 620, &temp);
+			App->fonts->BlitText(endPanel.x + 140, endPanel.y + 600 + 40 * 2, fontScore50, "press down to");
+			App->fonts->BlitText(endPanel.x + 140 + 44, endPanel.y + 600 + 40 * 3.5f, fontScore50, "start again!");
+
+			if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN)
+			{
+				App->player->RestartPlayer();
+				RestartLevel();
+				
+
+				afterGame = false;
+				ballIsAlive = true;
+				pb_currentBall = App->physics->CreateCircle(1090 * SCREEN_SIZE, 1730 * SCREEN_SIZE, 24 * SCREEN_SIZE);
+				pb_currentBall->type == TYPE_BALL;
+				App->player->ballsInGame++;
+				if (masterAudioOn)
+					if (SfxOn)
+						App->audio->PlayFx(App->player->ballStart);
+				// TODO 8: Make sure to add yourself as collision callback to the circle you creates
+				circles.add(pb_currentBall);
+
+				endPanel.x = 160;
+				endPanel.y = 2000;
+				endPanel.yAcc = -1;
+				endPanel.xAcc = 0;
+				endPanel.ySpeed = 0;
+				endPanel.xSpeed = 0;
+			}
+
+			
+		}
+		
+		
+		/*
+		
+		int butPosX = SCREEN_WIDTH - 130;
+		int butPosY = 100;
+		int mousePosX = App->input->GetMouseX() / SCREEN_SIZE;
+		int mousePosY = App->input->GetMouseY() / SCREEN_SIZE;
+		LOG("mouse x: %i, y: %i", mousePosX, mousePosY);
+
+		if (mousePosX > butPosX && mousePosX < (butPosX + r_audio_icon[0].w) &&
+			mousePosY > butPosY && mousePosY < (butPosY + r_audio_icon[0].h))
+		{
+			if (App->input->GetMouseButton(SDL_BUTTON_LEFT))
+			{
+				
+				masterAudioOn = false;
+			}
+			LOG("on button");
+			
+		}
+		if (masterAudioOn)
+			App->renderer->Blit(audio_icon, butPosX, butPosY, &r_audio_icon[0]);
+		else
+			App->renderer->Blit(audio_icon, butPosX, butPosY, &r_audio_icon[1]);
+
+
+
+		*/
+		//audio--------------------------------------------------------------------------------
 		currentTime = SDL_GetTicks();
 		elapsedTime = (currentTime - startTime) / 1000.0f;
 
@@ -1562,7 +1648,7 @@ update_status ModuleSceneIntro::Update()
 		{
 			if (elapsedTime > 54.0f * repetition)
 			{
-				LOG("%f",elapsedTime);
+				//LOG("%f",elapsedTime);
 				if (masterAudioOn)
 					if (MusicOn)
 						App->audio->PlayFx(bg_music);
@@ -1591,4 +1677,17 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 	{
 		
 	}
+}
+
+void ModuleSceneIntro::RestartLevel()
+{
+	for (size_t i = 0; i < 5; i++)
+	{
+		bumperButtonActive[i] = false;
+	}
+
+	pb_yellowCapsuleSensor->playAnimation = false;
+	pb_pinkCapsuleSensor->playAnimation = false;
+	pb_blueCapsuleSensor->playAnimation = false;
+	pb_greenCapsuleSensor->playAnimation = false;
 }

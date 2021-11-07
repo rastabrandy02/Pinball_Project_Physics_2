@@ -27,6 +27,11 @@ bool ModulePlayer::CleanUp()
 // Update: draw background
 update_status ModulePlayer::Update()
 {
+	if (score > maxScore)
+	{
+		maxScore = score;
+	}
+
 	return UPDATE_CONTINUE;
 }
 

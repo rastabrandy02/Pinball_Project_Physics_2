@@ -15,6 +15,7 @@ public:
 	int playerLifes = 3;
 	int ballsInGame = 0;
 	int score = 0;
+	int maxScore = 0;
 	uint ballStart;
 	uint ballCollider;
 	uint ballRefill;
