@@ -50,7 +50,7 @@ https://github.com/rastabrandy02/SpaceAdventure_Pinball
 
 Due to time limitations, we have replicated  the basic gameplay (launching, flippers, map) plus the principal bumpers and a few combo elements.
 
-Our game presents a way of obtaining extra balls by reaching a certain score. Also we could not find the original audio other from the background music, but we have replaced them with new sounds that matches all the interactions (bumpers, flippers, refill, lost ball etc...). It also uses a similar cartoon-ish font, but not the original.
+Our game presents a way of obtaining extra balls by reaching a certain score. Also we could not find the original audio other of the game's sound effects, but we have replaced them with new sounds that matches all the interactions (bumpers, flippers, refill, lost ball etc...). It also uses a similar cartoon-ish font, but not the original.
 
 Also, the way the original game is presented is by zooming in the game and letting the camera follow the ball as it moves throught the map, in ours the player has full view over the whole map.
 
@@ -113,6 +113,8 @@ A major problem we had when developing the game was when the ball sometimes deci
 Another problem we had was that the fonts were not displayed correctly, showing some letters being cut, and others with parts of differents letters. This was an external problem caused by the incorrect dimension of the font texture, that caused minor errors to pile up as the program kept procecssing the texture, causing those disturbances.
 
 In the beginning we had in mind using the TTF library, but due to problems with compatibility with SDL being too old and not having enough time and knowledge about how changing the SDL would be in the so advanced project, we decided to use our own modules instead.
+
+Also the Audio module had problems in reproducing the background music using its PlayMusic() function, no matter what format the music is in (pm3, ogg, wav), but strangely works perfectly fine by using the PlayFx() function, so we ended using this last one.
 
 ## Pol Farreras (fakefarreraspol)
 
